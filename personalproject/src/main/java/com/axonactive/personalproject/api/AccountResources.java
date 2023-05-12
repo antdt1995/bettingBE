@@ -28,28 +28,29 @@ public class AccountResources {
     @GetMapping("/{id}")
     public ResponseEntity<AccountDto> getAccountById(@PathVariable("id") Long id) {
         log.info("Get account by Id {}", id);
-            return ResponseEntity.ok().body(accountService.getAccountById(id));
+        return ResponseEntity.ok().body(accountService.getAccountById(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable("id") Long id) {
         log.info("Delete account by Id {}", id);
-            accountService.deleteAccount(id);
-            return ResponseEntity.noContent().build();
+        accountService.deleteAccount(id);
+        String message = "Account with ID " + id + " has been successfully deleted.";
+        return ResponseEntity.noContent().header("Success", message).build();
     }
 
     @PutMapping("/{accountId}")
     public ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto accountDto, @PathVariable("accountId") Long accountId) {
         log.info("Update account {}", accountId);
-            AccountDto account = accountService.updateAccount(accountDto, accountId);
-            return ResponseEntity.ok().body(account);
+        AccountDto account = accountService.updateAccount(accountDto, accountId);
+        return ResponseEntity.ok().body(account);
     }
 
     @PostMapping("/{customerId}")
     public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto, @PathVariable("customerId") Long customerId) {
         log.info("Create account on customer {}", customerId);
-            AccountDto account = accountService.createAccount(accountDto, customerId);
-            return ResponseEntity.created(URI.create("/project/accounts/"+account.getId())).body(account);
+        AccountDto account = accountService.createAccount(accountDto, customerId);
+        return ResponseEntity.created(URI.create("/project/accounts/" + account.getId())).body(account);
 
     }
 }

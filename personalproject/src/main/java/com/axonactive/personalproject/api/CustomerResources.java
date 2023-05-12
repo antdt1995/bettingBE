@@ -35,7 +35,8 @@ public class CustomerResources {
     public ResponseEntity<Void> deleteCustomerById(@PathVariable("id") Long id) {
         log.info("delete customer by id {}", id);
         customerService.deleteCustomer(id);
-        return ResponseEntity.noContent().build();
+        String message = "Customer with ID " + id + " has been successfully deleted.";
+        return ResponseEntity.noContent().header("Success",message).build();
     }
 
     @PostMapping
