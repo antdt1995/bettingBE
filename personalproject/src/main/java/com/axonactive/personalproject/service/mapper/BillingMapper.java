@@ -1,6 +1,7 @@
 package com.axonactive.personalproject.service.mapper;
 
 import com.axonactive.personalproject.entity.Billing;
+import com.axonactive.personalproject.service.customDto.BillingCustomDto;
 import com.axonactive.personalproject.service.dto.BillingDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,7 +15,7 @@ public interface BillingMapper {
     BillingMapper INSTANCE= Mappers.getMapper(BillingMapper.class);
 
     @Mapping(source = "account.id", target ="accountId" )
-    BillingDto toDto(Billing billing);
+    BillingCustomDto toDto(Billing billing);
 
-    List<BillingDto> toDtos(List<Billing>billings);
+    List<BillingCustomDto> toDtos(List<Billing>billings);
 }

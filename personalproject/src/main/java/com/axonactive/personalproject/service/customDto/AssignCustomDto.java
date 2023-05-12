@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.service.dto;
+package com.axonactive.personalproject.service.customDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountDto {
-    private Long id;
+public class AssignCustomDto {
+    private String roleType;
     private String userName;
-    private String userPassword;
-    private Double totalBalance;
 }

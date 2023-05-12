@@ -9,6 +9,6 @@ public interface AccountService {
     List<AccountDto> getAllAccount();
     AccountDto getAccountById(Long id);
     void deleteAccount(Long id);
-    Account updateAccount(AccountDto accountDto, Long accountId);
-    Account createAccount(AccountDto accountDto, Long customerId);
+    AccountDto updateAccount(AccountDto accountDto, Long accountId);
+    AccountDto createAccount(AccountDto accountDto, Long customerId);
 }

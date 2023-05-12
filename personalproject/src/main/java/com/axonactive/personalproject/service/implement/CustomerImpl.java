@@ -20,7 +20,7 @@ public class CustomerImpl implements CustomerService {
 
     @Override
     public CustomerDto getCustomerById(Long id) {
-        Customer customer=customerRepository.findById(id).orElseThrow(ProjectException::CustomerNotFound);
+        Customer customer = customerRepository.findById(id).orElseThrow(ProjectException::CustomerNotFound);
         return CustomerMapper.INSTANCE.toDto(customer);
     }
 
@@ -31,27 +31,30 @@ public class CustomerImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(Long id) {
-        Customer customer=customerRepository.findById(id).orElseThrow(ProjectException::CustomerNotFound);
+        Customer customer = customerRepository.findById(id).orElseThrow(ProjectException::CustomerNotFound);
         customerRepository.delete(customer);
     }
 
     @Override
-    public Customer createCustomer(CustomerDto customerDto) {
-        Customer customer=new Customer();
+    public CustomerDto createCustomer(CustomerDto customerDto) {
+
+        Customer customer = new Customer();
         customer.setEmail(customerDto.getEmail());
         customer.setPhone(customerDto.getPhone());
         customer.setFirstName(customerDto.getFirstName());
         customer.setFirstName(customerDto.getLastName());
-        return customerRepository.save(customer);
+        customer = customerRepository.save(customer);
+        return CustomerMapper.INSTANCE.toDto(customer);
     }
 
     @Override
-    public Customer updateCustomer(CustomerDto customerDto, Long customerId) {
-        Customer customer=customerRepository.findById(customerId).orElseThrow(ProjectException::CustomerNotFound);
+    public CustomerDto updateCustomer(CustomerDto customerDto, Long customerId) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(ProjectException::CustomerNotFound);
         customer.setLastName(customerDto.getLastName());
         customer.setFirstName(customerDto.getFirstName());
         customer.setEmail(customerDto.getEmail());
         customer.setPhone(customerDto.getPhone());
-        return customerRepository.save(customer);
+        customer=customerRepository.save(customer);
+        return CustomerMapper.INSTANCE.toDto(customer);
     }
 }

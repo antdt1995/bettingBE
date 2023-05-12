@@ -1,6 +1,7 @@
 package com.axonactive.personalproject.service.mapper;
 
 import com.axonactive.personalproject.entity.Assign;
+import com.axonactive.personalproject.service.customDto.AssignCustomDto;
 import com.axonactive.personalproject.service.dto.AssignDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,6 +15,6 @@ public interface AssignMapper {
     AssignMapper INSTANCE= Mappers.getMapper(AssignMapper.class);
     @Mapping(source = "roleType.roleName",target = "roleType")
     @Mapping(source = "customer.lastName", target = "userName")
-    AssignDto toDto(Assign assign);
-    List<AssignDto> toDtos(List<Assign> assigns);
+    AssignCustomDto toDto(Assign assign);
+    List<AssignCustomDto> toDtos(List<Assign> assigns);
 }

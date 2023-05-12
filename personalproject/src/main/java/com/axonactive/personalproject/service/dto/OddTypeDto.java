@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OddTypeDto {
+    private Long id;
     private String oddType;
 
 }

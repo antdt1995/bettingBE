@@ -1,6 +1,7 @@
 package com.axonactive.personalproject.service.mapper;
 
 import com.axonactive.personalproject.entity.BillingDetail;
+import com.axonactive.personalproject.service.customDto.BillingDetailCustomDto;
 import com.axonactive.personalproject.service.dto.BillingDetailDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,8 +15,8 @@ public interface BillingDetailMapper {
     BillingDetailMapper INSTANCE = Mappers.getMapper(BillingDetailMapper.class);
 
     @Mapping(source = "odd.id", target = "oddId")
-    @Mapping(source = "billing.id", target = "billingId")
-    BillingDetailDto toDto(BillingDetail billingDetail);
+    @Mapping(source = "billing.id", target = "billId")
+    BillingDetailCustomDto toDto(BillingDetail billingDetail);
 
-    List<BillingDetailDto> toDtos(List<BillingDetail> billingDetails);
+    List<BillingDetailCustomDto> toDtos(List<BillingDetail> billingDetails);
 }

@@ -1,6 +1,7 @@
 package com.axonactive.personalproject.service.mapper;
 
 import com.axonactive.personalproject.entity.FootballMatch;
+import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
 import com.axonactive.personalproject.service.dto.FootballMatchDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,7 +16,6 @@ public interface FootballMatchMapper {
 
     @Mapping(source = "homeTeam.name", target = "homeTeamName")
     @Mapping(source = "awayTeam.name", target = "awayTeamName")
-    FootballMatchDto toDto(FootballMatch footballMatch);
-
-    List<FootballMatchDto> toDtos(List<FootballMatch> footballMatches);
+    FootballMatchCustomDto toDto(FootballMatch footballMatch);
+    List<FootballMatchCustomDto> toDtos(List<FootballMatch> footballMatches);
 }

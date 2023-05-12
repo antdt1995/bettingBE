@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HouseDto {
+    private Long id;
     private String name;
+    private String address;
+    private String password;
     private Double balance;
 
 }

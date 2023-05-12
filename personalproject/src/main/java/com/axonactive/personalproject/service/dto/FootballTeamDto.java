@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FootballTeamDto {
+    private Long id;
     private String name;
     private String league;
     private String manager;

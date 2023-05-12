@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.service.dto;
+package com.axonactive.personalproject.service.customDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BillingDetailDto {
-    private Long id;
+public class BillingDetailCustomDto {
+    private Long oddId;
+    private Long billId;
     private Double betAmount;
 }

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -44,20 +45,22 @@ public class CustomerResources {
         }
     }
     @PostMapping
-    public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDto customerDto){
+    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto){
         log.info("create customer {}");
         try {
-            return ResponseEntity.ok().body(customerService.createCustomer(customerDto));
+            CustomerDto customer=customerService.createCustomer(customerDto);
+            return ResponseEntity.created(URI.create("project/customers/"+customer.getId())).body(customer);
         }catch (ResponseException e){
             log.error("an error occur: {}",e.getMessage());
             throw e;
         }
     }
     @PutMapping("/{customerId}")
-    public ResponseEntity<Customer> updateCustomer (@RequestBody CustomerDto customerDto,@PathVariable("customerId") Long customerId){
+    public ResponseEntity<CustomerDto> updateCustomer (@RequestBody CustomerDto customerDto,@PathVariable("customerId") Long customerId){
         log.info("update customer by id {}", customerId);
         try {
-            return ResponseEntity.ok().body(customerService.updateCustomer(customerDto,customerId));
+            CustomerDto customer=customerService.updateCustomer(customerDto,customerId);
+            return ResponseEntity.ok(customer);
         }catch (ResponseException e) {
             log.error("an error occur: {}", e.getMessage());
             throw e;

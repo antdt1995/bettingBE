@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -48,10 +49,10 @@ public class AccountResources {
     }
 
     @PutMapping("/{accountId}")
-    public ResponseEntity<Account> updateAccount(@RequestBody AccountDto accountDto, @PathVariable("accountId") Long accountId) {
+    public ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto accountDto, @PathVariable("accountId") Long accountId) {
         log.info("Update account {}", accountId);
         try {
-            Account account = accountService.updateAccount(accountDto, accountId);
+            AccountDto account = accountService.updateAccount(accountDto, accountId);
             return ResponseEntity.ok().body(account);
         } catch (ResponseException e) {
             log.error("an error occur: {}", e.getMessage());
@@ -60,11 +61,11 @@ public class AccountResources {
     }
 
     @PostMapping("/{customerId}")
-    public ResponseEntity<Account> createAccount(@RequestBody AccountDto accountDto, @PathVariable("customerId") Long customerId) {
+    public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto, @PathVariable("customerId") Long customerId) {
         log.info("Create account on customer {}", customerId);
         try {
-            Account account = accountService.createAccount(accountDto, customerId);
-            return ResponseEntity.ok().body(account);
+            AccountDto account = accountService.createAccount(accountDto, customerId);
+            return ResponseEntity.created(URI.create("/project/accounts/"+account.getId())).body(account);
         } catch (ResponseException e) {
             log.error("an error occur: {}", e.getMessage());
             throw e;
