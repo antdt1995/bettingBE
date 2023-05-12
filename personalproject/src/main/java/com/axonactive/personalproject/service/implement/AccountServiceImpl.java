@@ -23,11 +23,7 @@ public class AccountServiceImpl implements AccountService {
     private final CustomerRepository customerRepository;
     @Override
     public List<AccountDto> getAllAccount() {
-        List<Account> accounts=accountRepository.findAll();
-        if(accounts.isEmpty()){
-            throw ProjectException.AccountNotFound();
-        }
-        return AccountMapper.INSTANCE.toDtos(accounts);
+        return AccountMapper.INSTANCE.toDtos(accountRepository.findAll());
     }
 
     @Override
@@ -38,7 +34,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void deleteAccount(Long id) {
-        accountRepository.deleteById(id);
+        Account accounts=accountRepository.findById(id).orElseThrow(ProjectException::AccountNotFound);
+        accountRepository.delete(accounts);
     }
 
     @Override
@@ -63,7 +60,6 @@ public class AccountServiceImpl implements AccountService {
         account.setTotalBalance(accountDto.getTotalBalance());
         account.setUserName(accountDto.getUserName());
         account.setUserPassword(accountDto.getUserPassword());
-
         if(customer.isPresent()){
             account.setCustomer(customer.get());
         }
