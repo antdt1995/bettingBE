@@ -11,13 +11,14 @@ import com.axonactive.personalproject.service.dto.AccountDto;
 import com.axonactive.personalproject.service.dto.CustomerDto;
 import com.axonactive.personalproject.service.mapper.AccountMapper;
 import com.axonactive.personalproject.service.mapper.CustomerMapper;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @Transactional
@@ -25,7 +26,7 @@ import java.util.Optional;
 @Slf4j
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
-     private final CustomerService customerService;
+    private final CustomerService customerService;
 
     @Override
     public List<AccountDto> getAllAccount() {
@@ -59,16 +60,18 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDto createAccount(AccountDto accountDto, Long customerId) {
-        CustomerDto customerDto=customerService.getCustomerById(customerId);
-        Customer customer=CustomerMapper.INSTANCE.toEntity(customerDto);
+        CustomerDto customerDto = customerService.getCustomerById(customerId);
+        Customer customer = CustomerMapper.INSTANCE.toEntity(customerDto);
         Account account = new Account();
         if (accountDto.getTotalBalance() < 0) {
             throw ProjectException.badRequest("Balance Cannot Negative", "Enter again");
         }
-        account.setTotalBalance(accountDto.getTotalBalance());
-        account.setUserName(accountDto.getUserName());
-        account.setUserPassword(accountDto.getUserPassword());
-        account.setCustomer(customer);
+        account = Account.builder()
+                .userName(accountDto.getUserName())
+                .totalBalance(accountDto.getTotalBalance())
+                .userPassword(accountDto.getUserPassword())
+                .customer(customer)
+                .build();
 
         account = accountRepository.save(account);
         return AccountMapper.INSTANCE.toDto(account);

@@ -28,47 +28,28 @@ public class AccountResources {
     @GetMapping("/{id}")
     public ResponseEntity<AccountDto> getAccountById(@PathVariable("id") Long id) {
         log.info("Get account by Id {}", id);
-        try {
             return ResponseEntity.ok().body(accountService.getAccountById(id));
-        } catch (ResponseException e) {
-            log.error("an error occur: {}", e.getMessage());
-            throw e;
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable("id") Long id) {
         log.info("Delete account by Id {}", id);
-        try {
             accountService.deleteAccount(id);
             return ResponseEntity.noContent().build();
-        } catch (ResponseException e) {
-            log.error("an error occur: {}", e.getMessage());
-            throw e;
-        }
     }
 
     @PutMapping("/{accountId}")
     public ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto accountDto, @PathVariable("accountId") Long accountId) {
         log.info("Update account {}", accountId);
-        try {
             AccountDto account = accountService.updateAccount(accountDto, accountId);
             return ResponseEntity.ok().body(account);
-        } catch (ResponseException e) {
-            log.error("an error occur: {}", e.getMessage());
-            throw e;
-        }
     }
 
     @PostMapping("/{customerId}")
     public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto, @PathVariable("customerId") Long customerId) {
         log.info("Create account on customer {}", customerId);
-        try {
             AccountDto account = accountService.createAccount(accountDto, customerId);
             return ResponseEntity.created(URI.create("/project/accounts/"+account.getId())).body(account);
-        } catch (ResponseException e) {
-            log.error("an error occur: {}", e.getMessage());
-            throw e;
-        }
+
     }
 }

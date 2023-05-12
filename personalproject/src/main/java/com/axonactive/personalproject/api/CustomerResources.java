@@ -18,52 +18,38 @@ import java.util.List;
 @RequestMapping("/project/customers")
 public class CustomerResources {
     private final CustomerService customerService;
+
     @GetMapping
-    public ResponseEntity<List<CustomerDto>>getAllCustomer(){
+    public ResponseEntity<List<CustomerDto>> getAllCustomer() {
         log.info("Get all customer");
-            return ResponseEntity.ok(customerService.getAllCustomer());
+        return ResponseEntity.ok(customerService.getAllCustomer());
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDto> getCustomerById(@PathVariable("id") Long id){
-        log.info("Get customer by id {}",id);
-        try {
-            return ResponseEntity.ok().body(customerService.getCustomerById(id));
-        }catch (ResponseException e){
-            log.error("an error occur by id: {}",id+" "+e.getMessage());
-            throw e;
-        }
+    public ResponseEntity<CustomerDto> getCustomerById(@PathVariable("id") Long id) {
+        log.info("Get customer by id {}", id);
+        return ResponseEntity.ok().body(customerService.getCustomerById(id));
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomerById(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteCustomerById(@PathVariable("id") Long id) {
         log.info("delete customer by id {}", id);
-        try {
-            customerService.deleteCustomer(id);
-            return ResponseEntity.noContent().build();
-        }catch (ResponseException e){
-            log.error("an error occur by id: {}",id+" "+e.getMessage());
-            throw e;
-        }
+        customerService.deleteCustomer(id);
+        return ResponseEntity.noContent().build();
     }
+
     @PostMapping
-    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto){
+    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto) {
         log.info("create customer {}");
-        try {
-            CustomerDto customer=customerService.createCustomer(customerDto);
-            return ResponseEntity.created(URI.create("project/customers/"+customer.getId())).body(customer);
-        }catch (ResponseException e){
-            log.error("an error occur: {}",e.getMessage());
-            throw e;
-        }
+        CustomerDto customer = customerService.createCustomer(customerDto);
+        return ResponseEntity.created(URI.create("project/customers/" + customer.getId())).body(customer);
     }
+
     @PutMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> updateCustomer (@RequestBody CustomerDto customerDto,@PathVariable("customerId") Long customerId){
+    public ResponseEntity<CustomerDto> updateCustomer(@RequestBody CustomerDto customerDto, @PathVariable("customerId") Long customerId) {
         log.info("update customer by id {}", customerId);
-        try {
-            CustomerDto customer=customerService.updateCustomer(customerDto,customerId);
-            return ResponseEntity.ok(customer);
-        }catch (ResponseException e) {
-            log.error("an error occur: {}", e.getMessage());
-            throw e;
-        }
+        CustomerDto customer = customerService.updateCustomer(customerDto, customerId);
+        return ResponseEntity.ok(customer);
+
     }
 }

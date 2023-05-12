@@ -13,6 +13,8 @@ public class ProjectException {
     private static final String BILLING_DETAIL_NOT_FOUND_MSG = "Billing Detail Not Found";
     private static final String CUSTOMER_NOT_FOUND_MSG_KEY = "CustomerNotExisted";
     private static final String CUSTOMER_NOT_FOUND_MSG = "Customer Not Found";
+    private static final String FOOTBALL_TEAM_NOT_FOUND_MSG_KEY = "FootballTeamNotExisted";
+    private static final String FOOTBALL_TEAM_NOT_FOUND_MSG = "Football Team Not Found";
     public static ResponseException notFound(String messageKey, String message) {
         return new ResponseException(messageKey, message, HttpStatus.NOT_FOUND);
     }
@@ -38,5 +40,8 @@ public class ProjectException {
     }
     public static ResponseException CustomerNotFound(){
         return notFound(CUSTOMER_NOT_FOUND_MSG_KEY,CUSTOMER_NOT_FOUND_MSG);
+    }
+    public static ResponseException footballTeamNotFound(){
+        return notFound(FOOTBALL_TEAM_NOT_FOUND_MSG_KEY, FOOTBALL_TEAM_NOT_FOUND_MSG);
     }
 }

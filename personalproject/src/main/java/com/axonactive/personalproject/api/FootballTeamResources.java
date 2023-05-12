@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project/footballteam")
+@RequestMapping("/project/footballteams")
 public class FootballTeamResources {
 }
