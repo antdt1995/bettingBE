@@ -13,4 +13,6 @@ public interface FootballTeamMapper {
     FootballTeamMapper INSTANCE= Mappers.getMapper(FootballTeamMapper.class);
     FootballTeamDto toDto(FootballTeam footballTeam);
     List<FootballTeamDto> toDtos(List<FootballTeam> footballTeams);
+    FootballTeam toEntity(FootballTeamDto footballTeamDto);
+    List<FootballTeam> toEntities(List<FootballTeamDto>footballTeamDtos);
 }

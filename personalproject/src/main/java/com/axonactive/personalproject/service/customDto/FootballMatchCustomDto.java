@@ -1,5 +1,6 @@
 package com.axonactive.personalproject.service.customDto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,6 @@ public class FootballMatchCustomDto {
     private String awayTeamName;
     private Long awayScore;
     private Long totalScore;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate startDate;
 }
