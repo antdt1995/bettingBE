@@ -17,11 +17,4 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(e.getResponseBody(), new HttpHeaders(), e.getResponseBody().getHttpStatus());
     }
-    @ExceptionHandler(DateTimeParseException.class)
-    public ResponseEntity<Object> handleInvalidDateFormat(DateTimeParseException ex) {
-        String errorMessage = "Invalid date format: " + ex.getParsedString();
-        ResponseException responseException = ProjectException.badRequest("InvalidDateFormat", errorMessage);
-        logger.error("Error occurred", ex);
-        return new ResponseEntity<>(responseException.getResponseBody(), new HttpHeaders(), responseException.getResponseBody().getHttpStatus());
-    }
 }

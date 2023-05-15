@@ -1,7 +1,5 @@
-package com.axonactive.personalproject.api;
+package com.axonactive.personalproject.rest;
 
-import com.axonactive.personalproject.entity.Account;
-import com.axonactive.personalproject.exception.ResponseException;
 import com.axonactive.personalproject.service.dto.AccountDto;
 import com.axonactive.personalproject.service.implement.AccountServiceImpl;
 import lombok.RequiredArgsConstructor;

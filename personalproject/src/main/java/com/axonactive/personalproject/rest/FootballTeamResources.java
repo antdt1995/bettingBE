@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.api;
+package com.axonactive.personalproject.rest;
 
 import com.axonactive.personalproject.service.FootBallTeamService;
 import com.axonactive.personalproject.service.dto.FootballTeamDto;

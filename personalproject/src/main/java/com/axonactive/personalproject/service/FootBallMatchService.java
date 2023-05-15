@@ -9,6 +9,6 @@ public interface FootBallMatchService {
     List<FootballMatchCustomDto> findAllFootballMatch();
     FootballMatchCustomDto findFootballMatchById(Long id);
     void deleteFootballMatchById(Long id);
-    FootballMatchCustomDto createFootballMatch(FootballMatchDto footballMatchDto, Long teamId);
-    FootballMatchCustomDto updateFootballMatch(FootballMatchDto footballMatchDto, Long id);
+    FootballMatchDto createFootballMatch(FootballMatchDto footballMatchDto, Long homeId,Long awayId);
+    FootballMatchDto updateFootballMatch(FootballMatchDto footballMatchDto, Long id);
 }

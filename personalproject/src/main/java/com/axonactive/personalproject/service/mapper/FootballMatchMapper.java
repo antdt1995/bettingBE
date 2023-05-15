@@ -18,4 +18,6 @@ public interface FootballMatchMapper {
     @Mapping(source = "awayTeam.name", target = "awayTeamName")
     FootballMatchCustomDto toDto(FootballMatch footballMatch);
     List<FootballMatchCustomDto> toDtos(List<FootballMatch> footballMatches);
+    FootballMatchDto toXDto(FootballMatch footballMatch);
+    List<FootballMatchDto> toXDtos(List<FootballMatch>footballMatches);
 }

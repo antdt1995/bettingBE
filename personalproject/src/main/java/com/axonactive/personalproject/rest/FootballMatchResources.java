@@ -1,0 +1,76 @@
+package com.axonactive.personalproject.rest;
+
+import com.axonactive.personalproject.exception.ProjectException;
+import com.axonactive.personalproject.exception.ResponseException;
+import com.axonactive.personalproject.service.FootBallMatchService;
+import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
+import com.axonactive.personalproject.service.dto.FootballMatchDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@Slf4j
+@RequestMapping("/project/footballmatchs")
+public class FootballMatchResources {
+    private final FootBallMatchService footBallMatchService;
+    @GetMapping
+    public ResponseEntity<List<FootballMatchCustomDto>> getAllFootballMatch(){
+        log.info("Get all football match info");
+        List<FootballMatchCustomDto> footballMatchCustomDto=footBallMatchService.findAllFootballMatch();
+        if(footballMatchCustomDto.isEmpty()){
+            throw ProjectException.footballMatchNotFound();
+        }
+        return ResponseEntity.ok(footballMatchCustomDto);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<FootballMatchCustomDto> getFootballMatchById(@PathVariable("id")Long id){
+        log.info("Get football match by Id {}", id);
+        FootballMatchCustomDto footballMatchCustomDto=footBallMatchService.findFootballMatchById(id);
+        if(footballMatchCustomDto==null){
+            throw ProjectException.footballMatchNotFound();
+        }
+        return ResponseEntity.ok(footballMatchCustomDto);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteFootballMatchById(@PathVariable("id") Long id){
+        log.info("Delete account by Id {}", id);
+        footBallMatchService.deleteFootballMatchById(id);
+        if(id== null) {
+            throw ProjectException.badRequest("MatchIdIsNull","Football Match Id is null");
+        }
+        String message = "Football Match with ID " + id + " has been successfully deleted.";
+        return ResponseEntity.noContent().header("Success", message).build();
+    }
+    @PostMapping("/{homeId}/{awayId}")
+    public ResponseEntity<FootballMatchDto> createFootballMatch(@RequestBody FootballMatchDto footballMatchDto,
+                                                                @PathVariable("homeId") Long homeId,
+                                                                @PathVariable("awayId") Long awayId){
+        log.info("create football match base on home team {}",homeId,awayId);
+        FootballMatchDto footballMatchDtos  =footBallMatchService.createFootballMatch(footballMatchDto,homeId,awayId);
+        if(footballMatchDto.getAwayScore()<0||footballMatchDto.getHomeScore()<0 || footballMatchDto.getTotalScore()<0){
+            throw ProjectException.badRequest("EnterScoreError","Enter score cannot be negative");
+        }
+        if(homeId==null || awayId==null){
+            throw new ResponseException("InvalidId","Invalid Id", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.created(URI.create("/project/footballmatchs/"+footballMatchDtos.getId())).body(footballMatchDtos);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<FootballMatchDto> updateFootballMatch(@RequestBody FootballMatchDto footballMatchDto,@PathVariable("id") Long id){
+        log.info("update football match id{}",id);
+        FootballMatchDto footballMatchDto1=footBallMatchService.updateFootballMatch(footballMatchDto,id);
+        if(footballMatchDto.getAwayScore()<0||footballMatchDto.getHomeScore()<0 || footballMatchDto.getTotalScore()<0){
+            throw ProjectException.badRequest("EnterScoreError","Enter score cannot be negative");
+        }
+        return ResponseEntity.ok().body(footballMatchDto1);
+    }
+
+
+}
