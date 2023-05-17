@@ -20,7 +20,7 @@ public class Account {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "customer_id",nullable = false)
     private Customer customer;
 
     @Column(name = "user_name")

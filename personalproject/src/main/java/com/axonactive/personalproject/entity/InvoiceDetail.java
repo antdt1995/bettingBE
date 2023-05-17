@@ -10,15 +10,15 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "billing_detail")
-public class BillingDetail {
+@Table(name = "invoice_detail")
+public class InvoiceDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "bill_id",nullable = false)
-    private Billing billing;
+    private Invoice invoice;
 
     @ManyToOne
     @JoinColumn(name = "odd_id",nullable = false)

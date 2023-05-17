@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "assign")
+@Table(name = "assign_authority")
 
 public class Assign {
     @Id
@@ -18,10 +18,10 @@ public class Assign {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "customer_id",nullable = false)
     private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "role_id",nullable = false)
-    private RoleType roleType;
+    private Authority authority;
 }

@@ -1,4 +1,4 @@
 package com.axonactive.personalproject.service;
 
-public interface BillingService {
+public interface InvoiceService {
 }

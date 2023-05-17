@@ -17,6 +17,6 @@ public class OddType {
     private Long id;
 
     @Column(name = "odd_type")
-    private String oddType;
+    private String name;
 
 }

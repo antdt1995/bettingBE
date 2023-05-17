@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleTypeDto {
+public class InvoiceDetailDto {
     private Long id;
-    private String roleName;
-
+    private Double betAmount;
 }

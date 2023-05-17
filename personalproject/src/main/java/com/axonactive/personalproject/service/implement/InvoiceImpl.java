@@ -1,6 +1,6 @@
 package com.axonactive.personalproject.service.implement;
 
-import com.axonactive.personalproject.service.RoleTypeService;
+import com.axonactive.personalproject.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class RoleTypeImpl implements RoleTypeService {
+public class InvoiceImpl implements InvoiceService {
 }
