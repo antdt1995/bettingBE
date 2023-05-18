@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.axonactive.personalproject.exception.BooleanMethod.isAlpha;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -37,7 +39,9 @@ public class CustomerImpl implements CustomerService {
 
     @Override
     public CustomerDto createCustomer(CustomerDto customerDto) {
-
+        if (!isAlpha(customerDto.getFirstName()) || !isAlpha(customerDto.getLastName())) {
+            throw ProjectException.badRequest("WrongFormatName", "Name contain only letters");
+        }
         Customer customer = new Customer();
         customer.setEmail(customerDto.getEmail());
         customer.setPhone(customerDto.getPhone());
@@ -50,6 +54,9 @@ public class CustomerImpl implements CustomerService {
     @Override
     public CustomerDto updateCustomer(CustomerDto customerDto, Long customerId) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(ProjectException::CustomerNotFound);
+        if (!isAlpha(customerDto.getFirstName()) || !isAlpha(customerDto.getLastName())) {
+            throw ProjectException.badRequest("WrongFormatName", "Name should contain only letters");
+        }
         customer.setLastName(customerDto.getLastName());
         customer.setFirstName(customerDto.getFirstName());
         customer.setEmail(customerDto.getEmail());

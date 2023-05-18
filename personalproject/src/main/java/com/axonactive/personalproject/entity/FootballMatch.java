@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -38,5 +39,8 @@ public class FootballMatch {
 
     @Column(name = "start_date")
     private LocalDate startDate;
+
+    @OneToMany(mappedBy = "footballMatch")
+    private List<Odd> odds;
 
 }

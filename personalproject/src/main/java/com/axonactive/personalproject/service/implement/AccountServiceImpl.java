@@ -3,6 +3,7 @@ package com.axonactive.personalproject.service.implement;
 import com.axonactive.personalproject.entity.Account;
 import com.axonactive.personalproject.entity.Customer;
 import com.axonactive.personalproject.exception.ProjectException;
+import com.axonactive.personalproject.exception.ResponseException;
 import com.axonactive.personalproject.repository.AccountRepository;
 import com.axonactive.personalproject.repository.CustomerRepository;
 import com.axonactive.personalproject.service.AccountService;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+
+import static com.axonactive.personalproject.exception.BooleanMethod.isAlphanumeric;
+import static com.axonactive.personalproject.exception.BooleanMethod.isAlphanumericWithSpecial;
 
 
 @Service
@@ -42,7 +46,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount(Long id) {
         Account accounts = accountRepository.findById(id).orElseThrow(ProjectException::AccountNotFound);
-        accountRepository.delete(accounts);
+        try {
+            accountRepository.delete(accounts);
+        } catch (ResponseException e) {
+            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
+        }
     }
 
     @Override
@@ -51,29 +59,49 @@ public class AccountServiceImpl implements AccountService {
         if (accountDto.getTotalBalance() < 0) {
             throw ProjectException.badRequest("Balance Cannot Negative", "Enter again");
         }
-        account.setTotalBalance(accountDto.getTotalBalance());
-        account.setUserName(accountDto.getUserName());
-        account.setUserPassword(accountDto.getUserPassword());
-        account = accountRepository.save(account);
-        return AccountMapper.INSTANCE.toDto(account);
+        if (!isAlphanumeric(accountDto.getUserName())) {
+            throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
+        }
+        if (!isAlphanumericWithSpecial(accountDto.getUserPassword())) {
+            throw ProjectException.badRequest("WrongPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
+        }
+        try {
+            account.setTotalBalance(accountDto.getTotalBalance());
+            account.setUserName(accountDto.getUserName());
+            account.setUserPassword(accountDto.getUserPassword());
+            account = accountRepository.save(account);
+            return AccountMapper.INSTANCE.toDto(account);
+        } catch (ResponseException e) {
+            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
+        }
     }
 
     @Override
     public AccountDto createAccount(AccountDto accountDto, Long customerId) {
         CustomerDto customerDto = customerService.getCustomerById(customerId);
         Customer customer = CustomerMapper.INSTANCE.toEntity(customerDto);
-        Account account = new Account();
+
         if (accountDto.getTotalBalance() < 0) {
             throw ProjectException.badRequest("Balance Cannot Negative", "Enter again");
         }
-        account = Account.builder()
-                .userName(accountDto.getUserName())
-                .totalBalance(accountDto.getTotalBalance())
-                .userPassword(accountDto.getUserPassword())
-                .customer(customer)
-                .build();
+        if (!isAlphanumeric(accountDto.getUserName())) {
+            throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
+        }
+        if (!isAlphanumericWithSpecial(accountDto.getUserPassword())) {
+            throw ProjectException.badRequest("WrongUserPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
+        }
+        try {
+            Account account = Account.builder()
+                    .userName(accountDto.getUserName())
+                    .totalBalance(accountDto.getTotalBalance())
+                    .userPassword(accountDto.getUserPassword())
+                    .customer(customer)
+                    .build();
 
-        account = accountRepository.save(account);
-        return AccountMapper.INSTANCE.toDto(account);
+            account = accountRepository.save(account);
+            return AccountMapper.INSTANCE.toDto(account);
+        } catch (ResponseException e) {
+            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
+        }
     }
 }

@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project/billdetail")
+@RequestMapping("/project/invoicedetail")
 public class InvoiceDetailResources {
 }

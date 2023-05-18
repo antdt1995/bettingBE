@@ -1,11 +1,13 @@
 package com.axonactive.personalproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,6 +24,9 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "customer_id",nullable = false)
     private Customer customer;
+    @OneToMany(mappedBy = "account")
+    @JsonIgnore
+    private List<Invoice> invoices;
 
     @Column(name = "user_name")
     private String userName;

@@ -1,11 +1,13 @@
 package com.axonactive.personalproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,6 +22,10 @@ public class Invoice {
     @ManyToOne
     @JoinColumn(name = "account_id",nullable = false)
     private Account account;
+
+    @OneToMany(mappedBy = "invoice")
+    @JsonIgnore
+    private List<InvoiceDetail>invoiceDetails;
 
     @Column(name = "total_bet")
     private Double total_bet;

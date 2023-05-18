@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project/account")
+@RequestMapping("/project/house")
 public class HouseResources {
 }
