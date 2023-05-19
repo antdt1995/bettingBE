@@ -25,9 +25,6 @@ public class FootballMatchResources {
     public ResponseEntity<List<FootballMatchCustomDto>> getAllFootballMatch() {
         log.info("Get all football match info");
         List<FootballMatchCustomDto> footballMatchCustomDto = footBallMatchService.findAllFootballMatch();
-        if (footballMatchCustomDto.isEmpty()) {
-            throw ProjectException.footballMatchNotFound();
-        }
         try {
             return ResponseEntity.ok(footballMatchCustomDto);
         } catch (ResponseException e) {
@@ -39,9 +36,6 @@ public class FootballMatchResources {
     public ResponseEntity<FootballMatchCustomDto> getFootballMatchById(@PathVariable("id") Long id) {
         log.info("Get football match by Id ");
         FootballMatchCustomDto footballMatchCustomDto = footBallMatchService.findFootballMatchById(id);
-        if (footballMatchCustomDto == null) {
-            throw ProjectException.footballMatchNotFound();
-        }
         try {
             return ResponseEntity.ok(footballMatchCustomDto);
         } catch (ResponseException e) {
@@ -53,9 +47,6 @@ public class FootballMatchResources {
     public ResponseEntity<Void> deleteFootballMatchById(@PathVariable("id") Long id) {
         log.info("Delete account by Id ");
         footBallMatchService.deleteFootballMatchById(id);
-        if (id == null) {
-            throw ProjectException.badRequest("MatchIdIsNull", "Football Match Id is null");
-        }
         try {
             String message = "Football Match with ID " + id + " has been successfully deleted.";
             return ResponseEntity.noContent().header("Success", message).build();
@@ -70,12 +61,6 @@ public class FootballMatchResources {
                                                                 @PathVariable("awayId") Long awayId) {
         log.info("create football match base on home team ");
         FootballMatchDto footballMatchDtos = footBallMatchService.createFootballMatch(footballMatchDto, homeId, awayId);
-        if (footballMatchDto.getAwayScore() < 0 || footballMatchDto.getHomeScore() < 0 || footballMatchDto.getTotalScore() < 0) {
-            throw ProjectException.badRequest("EnterScoreError", "Enter score cannot be negative");
-        }
-        if (homeId == null || awayId == null) {
-            throw new ResponseException("InvalidId", "Invalid Id", HttpStatus.BAD_REQUEST);
-        }
         try {
             return ResponseEntity.created(URI.create("/project/footballmatchs/" + footballMatchDtos.getId())).body(footballMatchDtos);
         } catch (ResponseException e) {
@@ -87,14 +72,6 @@ public class FootballMatchResources {
     public ResponseEntity<FootballMatchDto> updateFootballMatch(@RequestBody FootballMatchDto footballMatchDto, @PathVariable("id") Long id) {
         log.info("update football match id{}", id);
         FootballMatchDto footballMatchDto1 = footBallMatchService.updateFootballMatch(footballMatchDto, id);
-
-        if (footballMatchDto.getAwayScore() < 0 || footballMatchDto.getHomeScore() < 0 || footballMatchDto.getTotalScore() < 0) {
-            throw ProjectException.badRequest("EnterScoreError", "Enter score cannot be negative");
-        }
-        if (id == null) {
-            throw new ResponseException("InvalidId", "Invalid Id", HttpStatus.BAD_REQUEST);
-        }
-
         try {
             return ResponseEntity.ok().body(footballMatchDto1);
         } catch (ResponseException e) {

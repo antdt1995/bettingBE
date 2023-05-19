@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AssignCustomDto {
-    private String roleType;
+
     private String userName;
 }

@@ -8,31 +8,31 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "house")
-public class House {
+@Table(name = "assign_authority")
+
+public class AccountRoleAssignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "house_name")
-    private String name;
-
-    @Column(name = "address")
-    private String address;
 
     @ManyToOne
     @JoinColumn(name = "account_id",nullable = false)
     private Account account;
 
-    @Column(name = "house_balance")
-    private Double balance;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
+    @CreationTimestamp
+    @Column(name = "assigned_date")
+    private LocalDateTime assignedDate;
 
+    @UpdateTimestamp
+    @Column(name = "modified_date")
+    private LocalDateTime updatedDate;
 }

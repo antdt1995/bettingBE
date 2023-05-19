@@ -3,16 +3,13 @@ package com.axonactive.personalproject.service.implement;
 import com.axonactive.personalproject.entity.Account;
 import com.axonactive.personalproject.entity.Customer;
 import com.axonactive.personalproject.exception.ProjectException;
-import com.axonactive.personalproject.exception.ResponseException;
 import com.axonactive.personalproject.repository.AccountRepository;
-import com.axonactive.personalproject.repository.CustomerRepository;
 import com.axonactive.personalproject.service.AccountService;
 import com.axonactive.personalproject.service.CustomerService;
 import com.axonactive.personalproject.service.dto.AccountDto;
 import com.axonactive.personalproject.service.dto.CustomerDto;
 import com.axonactive.personalproject.service.mapper.AccountMapper;
 import com.axonactive.personalproject.service.mapper.CustomerMapper;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,11 +43,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount(Long id) {
         Account accounts = accountRepository.findById(id).orElseThrow(ProjectException::AccountNotFound);
-        try {
             accountRepository.delete(accounts);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+
     }
 
     @Override
@@ -65,15 +59,11 @@ public class AccountServiceImpl implements AccountService {
         if (!isAlphanumericWithSpecial(accountDto.getUserPassword())) {
             throw ProjectException.badRequest("WrongPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
         }
-        try {
             account.setTotalBalance(accountDto.getTotalBalance());
             account.setUserName(accountDto.getUserName());
             account.setUserPassword(accountDto.getUserPassword());
             account = accountRepository.save(account);
             return AccountMapper.INSTANCE.toDto(account);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
     }
 
     @Override
@@ -90,7 +80,6 @@ public class AccountServiceImpl implements AccountService {
         if (!isAlphanumericWithSpecial(accountDto.getUserPassword())) {
             throw ProjectException.badRequest("WrongUserPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
         }
-        try {
             Account account = Account.builder()
                     .userName(accountDto.getUserName())
                     .totalBalance(accountDto.getTotalBalance())
@@ -100,8 +89,5 @@ public class AccountServiceImpl implements AccountService {
 
             account = accountRepository.save(account);
             return AccountMapper.INSTANCE.toDto(account);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
     }
 }

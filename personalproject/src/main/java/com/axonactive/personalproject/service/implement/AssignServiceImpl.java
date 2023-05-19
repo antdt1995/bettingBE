@@ -1,6 +1,6 @@
 package com.axonactive.personalproject.service.implement;
 
-import com.axonactive.personalproject.entity.Assign;
+import com.axonactive.personalproject.entity.AccountRoleAssignment;
 import com.axonactive.personalproject.repository.AssignRepository;
 import com.axonactive.personalproject.service.AssignService;
 import com.axonactive.personalproject.service.dto.AssignDto;
@@ -32,12 +32,12 @@ public class AssignServiceImpl implements AssignService {
     }
 
     @Override
-    public Assign updateAssign(AssignDto assignDto, Long id) {
+    public AccountRoleAssignment updateAssign(AssignDto assignDto, Long id) {
         return null;
     }
 
     @Override
-    public Assign createAssign(AssignDto assignDto, Long customerId, Long roleId) {
+    public AccountRoleAssignment createAssign(AssignDto assignDto, Long customerId, Long roleId) {
         return null;
     }
 }

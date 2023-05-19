@@ -24,9 +24,17 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "customer_id",nullable = false)
     private Customer customer;
+
     @OneToMany(mappedBy = "account")
-    @JsonIgnore
     private List<Invoice> invoices;
+
+    @OneToMany(mappedBy = "account")
+    private List<AccountRoleAssignment> roles;
+
+    @OneToMany(mappedBy = "account")
+    private List<House> house;
+
+    private Boolean active;
 
     @Column(name = "user_name")
     private String userName;
@@ -36,5 +44,6 @@ public class Account {
 
     @Column(name = "total_balance")
     private Double totalBalance;
+
 
 }

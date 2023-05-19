@@ -7,10 +7,10 @@ public class ProjectException {
     private static final String ACCOUNT_NOT_FOUND_MSG = "Account Not Found";
     private static final String ASSIGN_NOT_FOUND_MSG_KEY = "AssignNotExisted";
     private static final String ASSIGN_NOT_FOUND_MSG = "Assign Not Found";
-    private static final String BILLING_NOT_FOUND_MSG_KEY = "BillingNotExisted";
-    private static final String BILLING_NOT_FOUND_MSG = "Billing Not Found";
-    private static final String BILLING_DETAIL_NOT_FOUND_MSG_KEY = "BillingDetailNotExisted";
-    private static final String BILLING_DETAIL_NOT_FOUND_MSG = "Billing Detail Not Found";
+    private static final String INVOICE_NOT_FOUND_MSG_KEY = "InvoiceNotExisted";
+    private static final String INVOICE_NOT_FOUND_MSG = "Invoice Not Found";
+    private static final String INVOICE_DETAIL_NOT_FOUND_MSG_KEY = "InvoiceDetailNotExisted";
+    private static final String INVOICE_DETAIL_NOT_FOUND_MSG = "Invoice Detail Not Found";
     private static final String CUSTOMER_NOT_FOUND_MSG_KEY = "CustomerNotExisted";
     private static final String CUSTOMER_NOT_FOUND_MSG = "Customer Not Found";
     private static final String FOOTBALL_TEAM_NOT_FOUND_MSG_KEY = "FootballTeamNotExisted";
@@ -34,11 +34,11 @@ public class ProjectException {
     public static ResponseException AssignNotFound(){
         return notFound(ASSIGN_NOT_FOUND_MSG_KEY,ASSIGN_NOT_FOUND_MSG);
     }
-    public static ResponseException BillingNotFound(){
-        return notFound(BILLING_NOT_FOUND_MSG_KEY,BILLING_NOT_FOUND_MSG);
+    public static ResponseException InvoiceNotFound(){
+        return notFound(INVOICE_NOT_FOUND_MSG_KEY,INVOICE_NOT_FOUND_MSG);
     }
-    public static ResponseException BillingDetailNotFound(){
-        return notFound(BILLING_DETAIL_NOT_FOUND_MSG_KEY,BILLING_DETAIL_NOT_FOUND_MSG);
+    public static ResponseException InvoiceDetailNotFound(){
+        return notFound(INVOICE_DETAIL_NOT_FOUND_MSG_KEY,INVOICE_DETAIL_NOT_FOUND_MSG);
     }
     public static ResponseException CustomerNotFound(){
         return notFound(CUSTOMER_NOT_FOUND_MSG_KEY,CUSTOMER_NOT_FOUND_MSG);

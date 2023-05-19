@@ -31,14 +31,7 @@ public class FootballTeamResources {
     @GetMapping("/{id}")
     public ResponseEntity<FootballTeamDto> getFootballTeamById(@PathVariable("id") Long id) {
         log.info("Get football team by id {}", id);
-
-        if (id == null) {
-            throw ProjectException.badRequest("MatchIdIsNull", "Football Match Id is null");
-        }
         FootballTeamDto footballTeamDto = footBallTeamService.getFootballTeamById(id);
-        if (footballTeamDto == null) {
-            throw ProjectException.footballTeamNotFound();
-        }
         try {
             return ResponseEntity.ok(footballTeamDto);
         } catch (ResponseException e) {
@@ -50,11 +43,9 @@ public class FootballTeamResources {
     public ResponseEntity<Void> deleteFootballTeamById(@PathVariable("id") Long id) {
         log.info("delete football team by id{}", id);
         String message = "Football team with ID " + id + " has been successfully deleted.";
-        if (id == null) {
-            throw ProjectException.badRequest("TeamIdIsNull", "Football Team Id is null");
-        }
+        footBallTeamService.deleteFootballTeam(id);
         try {
-            footBallTeamService.deleteFootballTeam(id);
+
             return ResponseEntity.noContent().header("Success", message).build();
         } catch (ResponseException e) {
             throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
@@ -64,12 +55,6 @@ public class FootballTeamResources {
     @PostMapping
     public ResponseEntity<FootballTeamDto> createFootballTeam(@RequestBody FootballTeamDto footballTeamDto) {
         log.info("create football team");
-        if (!isAlpha(footballTeamDto.getManager())) {
-            throw ProjectException.badRequest("ManagerFormatError", "Manager format should contain only letters");
-        }
-        if (!isAlphanumeric(footballTeamDto.getLeague())) {
-            throw ProjectException.badRequest("LeagueFormatError", "League format should contain only letters or numbers");
-        }
         try {
             FootballTeamDto footballTeamDto1 = footBallTeamService.createFootballTeam(footballTeamDto);
             return ResponseEntity.created(URI.create("/project/footballteams/" + footballTeamDto1.getId())).body(footballTeamDto1);
@@ -81,17 +66,8 @@ public class FootballTeamResources {
     @PutMapping("/{id}")
     public ResponseEntity<FootballTeamDto> updateFootballTeam(@RequestBody FootballTeamDto footballTeamDto, @PathVariable("id") Long id) {
         log.info("update football team by id");
-        if (id == null) {
-            throw ProjectException.badRequest("TeamIdIsNull", "Football Team Id is null");
-        }
-        if (!isAlpha(footballTeamDto.getManager())) {
-            throw ProjectException.badRequest("ManagerFormatError", "Manager format should contain only letters");
-        }
-        if (!isAlphanumeric(footballTeamDto.getLeague())) {
-            throw ProjectException.badRequest("LeagueFormatError", "League format should contain only letters or numbers");
-        }
+        FootballTeamDto footballTeamDto1 = footBallTeamService.updateFootballTeam(footballTeamDto, id);
         try {
-            FootballTeamDto footballTeamDto1 = footBallTeamService.updateFootballTeam(footballTeamDto, id);
             return ResponseEntity.ok().body(footballTeamDto1);
         } catch (ResponseException e) {
             throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");

@@ -6,15 +6,11 @@ import com.axonactive.personalproject.service.dto.AccountDto;
 import com.axonactive.personalproject.service.implement.AccountServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-
-import static com.axonactive.personalproject.exception.BooleanMethod.isAlphanumeric;
-import static com.axonactive.personalproject.exception.BooleanMethod.isAlphanumericWithSpecial;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,13 +28,7 @@ public class AccountResources {
     @GetMapping("/{id}")
     public ResponseEntity<AccountDto> getAccountById(@PathVariable("id") Long id) {
         log.info("Get account by Id ");
-        if (id == null) {
-            throw ProjectException.badRequest("IdIsNull", "Id is null, please enter");
-        }
         AccountDto accountDto = accountService.getAccountById(id);
-        if (accountDto == null) {
-            throw ProjectException.AccountNotFound();
-        }
         try {
             return ResponseEntity.ok().body(accountDto);
         } catch (ResponseException e) {
@@ -49,11 +39,9 @@ public class AccountResources {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable("id") Long id) {
         log.info("Delete account by Id ");
-        if (id == null) {
-            throw ProjectException.AccountNotFound();
-        }
+        accountService.deleteAccount(id);
         try {
-            accountService.deleteAccount(id);
+
             String message = "Account with ID " + id + " has been successfully deleted.";
             return ResponseEntity.noContent().header("Success", message).build();
         } catch (ResponseException e) {
@@ -64,20 +52,9 @@ public class AccountResources {
     @PutMapping("/{accountId}")
     public ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto accountDto, @PathVariable("accountId") Long accountId) {
         log.info("Update account ");
-        if (accountDto.getTotalBalance() < 0) {
-            throw ProjectException.badRequest("Balance Cannot Negative", "Enter again");
-        }
-        if (!isAlphanumeric(accountDto.getUserName())) {
-            throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
-        }
-        if (!isAlphanumericWithSpecial(accountDto.getUserPassword())) {
-            throw ProjectException.badRequest("WrongUserPasswordFormat", "User should only contain alphabet,number, special character and minimum 6 characters");
-        }
-        if (accountId == null) {
-            throw ProjectException.AccountNotFound();
-        }
+        AccountDto account = accountService.updateAccount(accountDto, accountId);
         try {
-            AccountDto account = accountService.updateAccount(accountDto, accountId);
+
             return ResponseEntity.ok().body(account);
         } catch (ResponseException e) {
             throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
@@ -87,20 +64,9 @@ public class AccountResources {
     @PostMapping("/{customerId}")
     public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto, @PathVariable("customerId") Long customerId) {
         log.info("Create account on customer ");
-        if (accountDto.getTotalBalance() < 0) {
-            throw ProjectException.badRequest("Balance Cannot Negative", "Enter again");
-        }
-        if (!isAlphanumeric(accountDto.getUserName())) {
-            throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
-        }
-        if (!isAlphanumericWithSpecial(accountDto.getUserPassword())) {
-            throw ProjectException.badRequest("WrongUserPasswordFormat", "User should only contain alphabet,number, special character and minimum 6 characters");
-        }
-        if (customerId == null) {
-            throw new ResponseException("InvalidId", "Invalid Id", HttpStatus.BAD_REQUEST);
-        }
+        AccountDto account = accountService.createAccount(accountDto, customerId);
         try {
-            AccountDto account = accountService.createAccount(accountDto, customerId);
+
             return ResponseEntity.created(URI.create("/project/accounts/" + account.getId())).body(account);
         } catch (ResponseException e) {
             throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");

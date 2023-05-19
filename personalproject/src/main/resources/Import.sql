@@ -1,5 +1,5 @@
 --Insert data into account--
-
+INSERT INTO account (customer_id,user_name,user_password,total_balance) VALUES (1,'supperRick','superrich6996',1000);
 INSERT INTO account (customer_id,user_name,user_password,total_balance) VALUES (21,'kkubecka0','DfG2IseuT',1000);
 INSERT INTO account (customer_id,user_name,user_password,total_balance) VALUES	 (2,'mwones1','hTbE2Vh',2000);
 INSERT INTO account (customer_id,user_name,user_password,total_balance) VALUES	 (3,'hpurdom2','6t1HXOIBc',1500);
@@ -250,34 +250,34 @@ INSERT INTO invoice (account_id,total_bet,bet_date) VALUES	 (13,100,'2023-04-04'
 INSERT INTO invoice (account_id,total_bet,bet_date) VALUES	 (14,100,'2023-04-05');
 
 --insert house
-INSERT INTO house (house_name,address,admin_id,admin_password,house_balance) VALUES ('Bet69x','Bet69x.com',1,'superrich6996',10000);
+INSERT INTO house (house_name,address,account_id,house_balance) VALUES ('Bet69x','Bet69x.com',1,10000);
 
 
 --insert role_type 
 INSERT INTO authority  (role_name) VALUES ('Admin');
 INSERT INTO authority  (role_name) VALUES	('User');
 
-insert into assign_authority (customer_id, role_id)values (1,1);
-insert into assign_authority (customer_id, role_id)values (21 ,2);
-insert into assign_authority (customer_id, role_id)values(2	,2);
-insert into assign_authority (customer_id, role_id)values(3	,2);
-insert into assign_authority (customer_id, role_id)values(4	,2);
-insert into assign_authority (customer_id, role_id)values(5	,2);
-insert into assign_authority (customer_id, role_id)values(6	,2);
-insert into assign_authority (customer_id, role_id)values(7	,2);
-insert into assign_authority (customer_id, role_id)values(8	,2);
-insert into assign_authority (customer_id, role_id)values(9	,2);
-insert into assign_authority (customer_id, role_id)values(10	,2);
-insert into assign_authority (customer_id, role_id)values(11	,2);
-insert into assign_authority (customer_id, role_id)values(12, 2);
-insert into assign_authority (customer_id, role_id)values(13	,2);
-insert into assign_authority (customer_id, role_id)values(14	,2);
-insert into assign_authority (customer_id, role_id)values(15,2);
-insert into assign_authority (customer_id, role_id)values(16,2);
-insert into assign_authority (customer_id, role_id)values(17	,2);
-insert into assign_authority (customer_id, role_id)values(18	,2);
-insert into assign_authority (customer_id, role_id)values(19,2);
-insert into assign_authority (customer_id, role_id)values(20	,2);
+insert into assign_authority (account_id, role)values (1,'Admin');
+insert into assign_authority (account_id, role)values (1 ,'User');
+insert into assign_authority (account_id, role)values(2	,'User');
+insert into assign_authority (account_id, role)values(3	,'User');
+insert into assign_authority (account_id, role)values(4	,'User');
+insert into assign_authority (account_id, role)values(5	,'User');
+insert into assign_authority (account_id, role)values(6	,'User');
+insert into assign_authority (account_id, role)values(7	,'User');
+insert into assign_authority (account_id, role)values(8	,'User');
+insert into assign_authority (account_id, role)values(9	,'User');
+insert into assign_authority (account_id, role)values(10	,'User');
+insert into assign_authority (account_id, role)values(11	,'User');
+insert into assign_authority (account_id, role)values(12, 'User');
+insert into assign_authority (account_id, role)values(13	,'User');
+insert into assign_authority (account_id, role)values(14	,'User');
+insert into assign_authority (account_id, role)values(15,'User');
+insert into assign_authority (account_id, role)values(16,'User');
+insert into assign_authority (account_id, role)values(17	,'User');
+insert into assign_authority (account_id, role)values(18	,'User');
+insert into assign_authority (account_id, role)values(19,'User');
+insert into assign_authority (account_id, role)values(20	,'User');
 
 
 

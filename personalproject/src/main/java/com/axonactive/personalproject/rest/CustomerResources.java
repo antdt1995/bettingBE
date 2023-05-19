@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-import static com.axonactive.personalproject.exception.BooleanMethod.isAlpha;
-
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -30,13 +28,7 @@ public class CustomerResources {
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDto> getCustomerById(@PathVariable("id") Long id) {
         log.info("Get customer by id ");
-        if (id == null) {
-            throw ProjectException.badRequest("IdIsNull", "Id is null, please enter");
-        }
         CustomerDto customerDto = customerService.getCustomerById(id);
-        if (customerDto == null) {
-            throw ProjectException.CustomerNotFound();
-        }
         try {
             return ResponseEntity.ok().body(customerDto);
         } catch (ResponseException e) {
@@ -47,11 +39,8 @@ public class CustomerResources {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomerById(@PathVariable("id") Long id) {
         log.info("delete customer by id ");
-        if (id == null) {
-            throw ProjectException.badRequest("IdIsNull", "Id is null, please enter");
-        }
+        customerService.deleteCustomer(id);
         try {
-            customerService.deleteCustomer(id);
             String message = "Customer with ID " + id + " has been successfully deleted.";
             return ResponseEntity.noContent().header("Success", message).build();
         } catch (ResponseException e) {
@@ -62,11 +51,9 @@ public class CustomerResources {
     @PostMapping
     public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto) {
         log.info("create customer ");
-        if (!isAlpha(customerDto.getFirstName()) || !isAlpha(customerDto.getLastName())) {
-            throw ProjectException.badRequest("WrongFormatName", "Name contain only letters");
-        }
+        CustomerDto customer = customerService.createCustomer(customerDto);
         try {
-            CustomerDto customer = customerService.createCustomer(customerDto);
+
             return ResponseEntity.created(URI.create("project/customers/" + customer.getId())).body(customer);
         } catch (ResponseException e) {
             throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
@@ -76,12 +63,6 @@ public class CustomerResources {
     @PutMapping("/{customerId}")
     public ResponseEntity<CustomerDto> updateCustomer(@RequestBody CustomerDto customerDto, @PathVariable("customerId") Long customerId) {
         log.info("update customer by id");
-        if (!isAlpha(customerDto.getFirstName()) || !isAlpha(customerDto.getLastName())) {
-            throw ProjectException.badRequest("WrongFormatName", "Name should contain only letters");
-        }
-        if (customerId == null) {
-            throw ProjectException.badRequest("IdIsNull", "Id is null, please enter");
-        }
         CustomerDto customer = customerService.updateCustomer(customerDto, customerId);
         try {
             return ResponseEntity.ok(customer);

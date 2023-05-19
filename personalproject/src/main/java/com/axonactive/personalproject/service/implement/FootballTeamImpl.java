@@ -41,7 +41,6 @@ public class FootballTeamImpl implements FootBallTeamService {
         if (!isAlphanumeric(footballTeamDto.getLeague())) {
             throw ProjectException.badRequest("LeagueFormatError", "League format should contain only letters or numbers");
         }
-        try {
             FootballTeam footballTeam = FootballTeam.builder()
                     .name(footballTeamDto.getName())
                     .league(footballTeamDto.getLeague())
@@ -49,9 +48,7 @@ public class FootballTeamImpl implements FootBallTeamService {
                     .build();
             footballTeam = footballTeamRepository.save(footballTeam);
             return FootballTeamMapper.INSTANCE.toDto(footballTeam);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+
     }
 
     @Override
@@ -63,15 +60,11 @@ public class FootballTeamImpl implements FootBallTeamService {
         if (!isAlphanumeric(footballTeamDto.getLeague())) {
             throw ProjectException.badRequest("LeagueFormatError", "League format should contain only letters or numbers");
         }
-        try {
             footballTeam.setName(footballTeamDto.getName());
             footballTeam.setLeague(footballTeamDto.getLeague());
             footballTeam.setManager(footballTeamDto.getManager());
             footballTeam = footballTeamRepository.save(footballTeam);
             return FootballTeamMapper.INSTANCE.toDto(footballTeam);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
     }
 
     @Override

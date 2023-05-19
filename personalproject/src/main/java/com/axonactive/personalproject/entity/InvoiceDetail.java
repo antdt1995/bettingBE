@@ -17,7 +17,7 @@ public class InvoiceDetail {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "bill_id",nullable = false)
+    @JoinColumn(name = "invoice_id",nullable = false)
     private Invoice invoice;
 
     @ManyToOne

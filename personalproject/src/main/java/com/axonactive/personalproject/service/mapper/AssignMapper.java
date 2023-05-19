@@ -1,5 +1,5 @@
 package com.axonactive.personalproject.service.mapper;
-import com.axonactive.personalproject.entity.Assign;
+import com.axonactive.personalproject.entity.AccountRoleAssignment;
 import com.axonactive.personalproject.service.customDto.AssignCustomDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AssignMapper {
     AssignMapper INSTANCE= Mappers.getMapper(AssignMapper.class);
-    @Mapping(source = "authority.name",target = "roleType")
-    @Mapping(source = "customer.lastName", target = "userName")
-    AssignCustomDto toDto(Assign assign);
-    List<AssignCustomDto> toDtos(List<Assign> assigns);
+
+    @Mapping(source = "account.userName", target = "userName")
+    AssignCustomDto toDto(AccountRoleAssignment accountRoleAssignment);
+    List<AssignCustomDto> toDtos(List<AccountRoleAssignment> accountRoleAssignments);
 }
