@@ -7,15 +7,15 @@ import com.axonactive.personalproject.service.implement.AccountServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/project/accounts")
+@RequestMapping("/auth/accounts")
 public class AccountResources {
     private final AccountServiceImpl accountService;
 

@@ -54,7 +54,7 @@ public class AccountDetailImpl implements UserDetails {
     public Long getId(){
         return id;
     }
-
+    @Override
     public String getPassword(){
         return password;
     }
@@ -77,6 +77,7 @@ public class AccountDetailImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+    @Override
     public boolean equals(Object o){
         if(this == o)
             return true;
