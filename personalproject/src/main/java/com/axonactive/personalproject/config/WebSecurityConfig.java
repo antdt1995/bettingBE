@@ -1,6 +1,6 @@
-package com.axonactive.personalproject.security.config;
+package com.axonactive.personalproject.config;
 
-import com.axonactive.personalproject.security.impl.AccountDetailServiceImpl;
+import com.axonactive.personalproject.service.implement.AccountDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

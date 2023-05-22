@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.security.jwt;
+package com.axonactive.personalproject.jwt;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JwtRequest implements Serializable {
+public class LoginRequest implements Serializable {
     private String userName;
     private String password;
 }

@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project/odd")
+@RequestMapping("/auth/odd")
 public class OddResources {
 }

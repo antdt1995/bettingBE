@@ -1,75 +1,51 @@
 package com.axonactive.personalproject.rest;
 
-import com.axonactive.personalproject.exception.ProjectException;
-import com.axonactive.personalproject.exception.ResponseException;
+import com.axonactive.personalproject.rest.admin.AccountApi;
 import com.axonactive.personalproject.service.dto.AccountDto;
 import com.axonactive.personalproject.service.implement.AccountServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/auth/accounts")
-public class AccountResources {
+
+public class AccountResources implements AccountApi {
     private final AccountServiceImpl accountService;
 
-    @GetMapping
+    @Override
+
     public ResponseEntity<List<AccountDto>> getAllAccount() {
         log.info("Get all account info");
         return ResponseEntity.ok().body(accountService.getAllAccount());
     }
 
-    @GetMapping("/{id}")
+    @Override
+
     public ResponseEntity<AccountDto> getAccountById(@PathVariable("id") Long id) {
         log.info("Get account by Id ");
         AccountDto accountDto = accountService.getAccountById(id);
-        try {
-            return ResponseEntity.ok().body(accountDto);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        return ResponseEntity.ok().body(accountDto);
     }
 
-    @DeleteMapping("/{id}")
+    @Override
     public ResponseEntity<Void> deleteAccount(@PathVariable("id") Long id) {
         log.info("Delete account by Id ");
         accountService.deleteAccount(id);
-        try {
+        String message = "Account with ID " + id + " has been successfully deleted.";
+        return ResponseEntity.noContent().header("Success", message).build();
 
-            String message = "Account with ID " + id + " has been successfully deleted.";
-            return ResponseEntity.noContent().header("Success", message).build();
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
     }
 
-    @PutMapping("/{accountId}")
+    @Override
     public ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto accountDto, @PathVariable("accountId") Long accountId) {
         log.info("Update account ");
         AccountDto account = accountService.updateAccount(accountDto, accountId);
-        try {
-
-            return ResponseEntity.ok().body(account);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        return ResponseEntity.ok().body(account);
     }
 
-    @PostMapping("/{customerId}")
-    public ResponseEntity<AccountDto> createAccount(@RequestBody AccountDto accountDto, @PathVariable("customerId") Long customerId) {
-        log.info("Create account on customer ");
-        AccountDto account = accountService.createAccount(accountDto, customerId);
-        try {
-
-            return ResponseEntity.created(URI.create("/project/accounts/" + account.getId())).body(account);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
-    }
 }

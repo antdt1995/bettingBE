@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/project/footballmatchs")
+@RequestMapping("/auth/footballmatchs")
 public class FootballMatchResources {
     private final FootBallMatchService footBallMatchService;
 
@@ -25,34 +25,22 @@ public class FootballMatchResources {
     public ResponseEntity<List<FootballMatchCustomDto>> getAllFootballMatch() {
         log.info("Get all football match info");
         List<FootballMatchCustomDto> footballMatchCustomDto = footBallMatchService.findAllFootballMatch();
-        try {
-            return ResponseEntity.ok(footballMatchCustomDto);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        return ResponseEntity.ok(footballMatchCustomDto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FootballMatchCustomDto> getFootballMatchById(@PathVariable("id") Long id) {
         log.info("Get football match by Id ");
         FootballMatchCustomDto footballMatchCustomDto = footBallMatchService.findFootballMatchById(id);
-        try {
-            return ResponseEntity.ok(footballMatchCustomDto);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        return ResponseEntity.ok(footballMatchCustomDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFootballMatchById(@PathVariable("id") Long id) {
         log.info("Delete account by Id ");
         footBallMatchService.deleteFootballMatchById(id);
-        try {
-            String message = "Football Match with ID " + id + " has been successfully deleted.";
-            return ResponseEntity.noContent().header("Success", message).build();
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        String message = "Football Match with ID " + id + " has been successfully deleted.";
+        return ResponseEntity.noContent().header("Success", message).build();
     }
 
     @PostMapping("/{homeId}/{awayId}")
@@ -61,22 +49,14 @@ public class FootballMatchResources {
                                                                 @PathVariable("awayId") Long awayId) {
         log.info("create football match base on home team ");
         FootballMatchDto footballMatchDtos = footBallMatchService.createFootballMatch(footballMatchDto, homeId, awayId);
-        try {
-            return ResponseEntity.created(URI.create("/project/footballmatchs/" + footballMatchDtos.getId())).body(footballMatchDtos);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        return ResponseEntity.created(URI.create("/project/footballmatchs/" + footballMatchDtos.getId())).body(footballMatchDtos);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<FootballMatchDto> updateFootballMatch(@RequestBody FootballMatchDto footballMatchDto, @PathVariable("id") Long id) {
         log.info("update football match id{}", id);
         FootballMatchDto footballMatchDto1 = footBallMatchService.updateFootballMatch(footballMatchDto, id);
-        try {
-            return ResponseEntity.ok().body(footballMatchDto1);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        return ResponseEntity.ok().body(footballMatchDto1);
     }
 
 

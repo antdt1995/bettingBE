@@ -1,7 +1,7 @@
-package com.axonactive.personalproject.security.config;
+package com.axonactive.personalproject.config;
 
-import com.axonactive.personalproject.security.impl.AccountDetailServiceImpl;
-import com.axonactive.personalproject.security.jwt.JwtUtils;
+import com.axonactive.personalproject.service.implement.AccountDetailServiceImpl;
+import com.axonactive.personalproject.jwt.JwtUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

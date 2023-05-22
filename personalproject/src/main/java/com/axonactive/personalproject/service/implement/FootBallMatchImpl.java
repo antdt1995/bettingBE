@@ -38,22 +38,14 @@ public class FootBallMatchImpl implements FootBallMatchService {
 
     @Override
     public FootballMatchCustomDto findFootballMatchById(Long id) {
-        try{
         FootballMatch footballMatch=footballMatchRepository.findById(id).orElseThrow(ProjectException::footballMatchNotFound);
         return FootballMatchMapper.INSTANCE.toDto(footballMatch);
-        }catch (ResponseException e){
-            throw new ResponseException("ErrorOccur","Error has been occur, Please comeback later.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @Override
     public void deleteFootballMatchById(Long id) {
-        try{
         FootballMatch footballMatch=footballMatchRepository.findById(id).orElseThrow(ProjectException::footballMatchNotFound);
         footballMatchRepository.delete(footballMatch);
-        }catch (ResponseException e){
-            throw new ResponseException("ErrorOccur","Error has been occur, Please comeback later.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @Override

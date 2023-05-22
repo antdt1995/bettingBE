@@ -1,6 +1,5 @@
 package com.axonactive.personalproject.service.dto;
 
-import com.axonactive.personalproject.entity.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssignDto {
+public class AccountRoleAssignDto {
     private Long id;
 }

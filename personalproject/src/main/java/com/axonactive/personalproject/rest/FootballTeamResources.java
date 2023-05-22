@@ -17,7 +17,7 @@ import static com.axonactive.personalproject.exception.BooleanMethod.isAlphanume
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project/footballteams")
+@RequestMapping("/auth/footballteams")
 @Slf4j
 public class FootballTeamResources {
     private final FootBallTeamService footBallTeamService;
@@ -32,11 +32,7 @@ public class FootballTeamResources {
     public ResponseEntity<FootballTeamDto> getFootballTeamById(@PathVariable("id") Long id) {
         log.info("Get football team by id {}", id);
         FootballTeamDto footballTeamDto = footBallTeamService.getFootballTeamById(id);
-        try {
-            return ResponseEntity.ok(footballTeamDto);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        return ResponseEntity.ok(footballTeamDto);
     }
 
     @DeleteMapping("/{id}")
@@ -44,33 +40,22 @@ public class FootballTeamResources {
         log.info("delete football team by id{}", id);
         String message = "Football team with ID " + id + " has been successfully deleted.";
         footBallTeamService.deleteFootballTeam(id);
-        try {
 
-            return ResponseEntity.noContent().header("Success", message).build();
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        return ResponseEntity.noContent().header("Success", message).build();
+
     }
 
     @PostMapping
     public ResponseEntity<FootballTeamDto> createFootballTeam(@RequestBody FootballTeamDto footballTeamDto) {
         log.info("create football team");
-        try {
-            FootballTeamDto footballTeamDto1 = footBallTeamService.createFootballTeam(footballTeamDto);
-            return ResponseEntity.created(URI.create("/project/footballteams/" + footballTeamDto1.getId())).body(footballTeamDto1);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        FootballTeamDto footballTeamDto1 = footBallTeamService.createFootballTeam(footballTeamDto);
+        return ResponseEntity.created(URI.create("/project/footballteams/" + footballTeamDto1.getId())).body(footballTeamDto1);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<FootballTeamDto> updateFootballTeam(@RequestBody FootballTeamDto footballTeamDto, @PathVariable("id") Long id) {
         log.info("update football team by id");
         FootballTeamDto footballTeamDto1 = footBallTeamService.updateFootballTeam(footballTeamDto, id);
-        try {
-            return ResponseEntity.ok().body(footballTeamDto1);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
-        }
+        return ResponseEntity.ok().body(footballTeamDto1);
     }
 }

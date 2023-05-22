@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.security.impl;
+package com.axonactive.personalproject.service.implement;
 
 import com.axonactive.personalproject.entity.Account;
 import com.axonactive.personalproject.entity.AccountRoleAssignment;
@@ -22,7 +22,6 @@ public class AccountDetailImpl implements UserDetails {
     private String userName;
     @JsonIgnore
     private String password;
-
     private Collection<? extends GrantedAuthority> authorities;
 
     public static AccountDetailImpl build(Account account) {

@@ -21,7 +21,7 @@ public class AccountRoleAssignment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "account_id",nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
 
@@ -35,4 +35,12 @@ public class AccountRoleAssignment {
     @UpdateTimestamp
     @Column(name = "modified_date")
     private LocalDateTime updatedDate;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setName(Role role) {
+        this.role = role;
+    }
 }

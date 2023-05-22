@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.security.jwt;
+package com.axonactive.personalproject.jwt;
 
 import lombok.Data;
 

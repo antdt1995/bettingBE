@@ -1,12 +1,9 @@
 package com.axonactive.personalproject.authenticate;
 
-import com.axonactive.personalproject.security.jwt.JwtRequest;
+import com.axonactive.personalproject.jwt.LoginRequest;
+import com.axonactive.personalproject.service.dto.AccountDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -15,6 +12,9 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 public interface AuthController {
     @PostMapping("/signin")
-    ResponseEntity<?> authenticateUser(@Valid @RequestBody JwtRequest loginRequest);
+    ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest);
+
+    @PostMapping("/signup/{customerId}")
+    ResponseEntity<AccountDto> registerAccount(@Valid @RequestBody AccountDto accountDto, @PathVariable("customerId") Long customerId);
 
 }

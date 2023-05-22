@@ -43,7 +43,6 @@ public class CustomerImpl implements CustomerService {
             throw ProjectException.badRequest("WrongFormatName", "Name contain only letters");
         }
         Customer customer = new Customer();
-        customer.setEmail(customerDto.getEmail());
         customer.setPhone(customerDto.getPhone());
         customer.setFirstName(customerDto.getFirstName());
         customer.setFirstName(customerDto.getLastName());
@@ -59,7 +58,6 @@ public class CustomerImpl implements CustomerService {
         }
         customer.setLastName(customerDto.getLastName());
         customer.setFirstName(customerDto.getFirstName());
-        customer.setEmail(customerDto.getEmail());
         customer.setPhone(customerDto.getPhone());
         customer=customerRepository.save(customer);
         return CustomerMapper.INSTANCE.toDto(customer);

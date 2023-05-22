@@ -1,6 +1,6 @@
-package com.axonactive.personalproject.security.jwt;
+package com.axonactive.personalproject.jwt;
 
-import com.axonactive.personalproject.security.impl.AccountDetailImpl;
+import com.axonactive.personalproject.service.implement.AccountDetailImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

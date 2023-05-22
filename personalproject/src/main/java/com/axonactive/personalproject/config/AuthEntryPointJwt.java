@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.security.config;
+package com.axonactive.personalproject.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

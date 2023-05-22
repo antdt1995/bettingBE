@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project/assign")
-public class AssignResources {
+@RequestMapping("/auth/assign")
+public class AccountRoleAssignResources {
 }
