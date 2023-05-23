@@ -5,6 +5,12 @@ import org.springframework.http.HttpStatus;
 public class ProjectException {
     private static final String ACCOUNT_NOT_FOUND_MSG_KEY = "AccountNotExisted";
     private static final String ACCOUNT_NOT_FOUND_MSG = "Account Not Found";
+    private static final String HOUSE_NOT_FOUND_MSG_KEY = "HouseNotExisted";
+    private static final String HOUSE_NOT_FOUND_MSG = "House Not Found";
+    private static final String ODD_NOT_FOUND_MSG_KEY = "OddNotExisted";
+    private static final String ODD_NOT_FOUND_MSG = "Odd Not Found";
+    private static final String ODD_TYPE_NOT_FOUND_MSG_KEY = "OddTypeNotExisted";
+    private static final String ODD_TYPE_NOT_FOUND_MSG = "Odd Type Not Found";
     private static final String ASSIGN_NOT_FOUND_MSG_KEY = "AssignNotExisted";
     private static final String ASSIGN_NOT_FOUND_MSG = "Assign Not Found";
     private static final String INVOICE_NOT_FOUND_MSG_KEY = "InvoiceNotExisted";
@@ -48,5 +54,15 @@ public class ProjectException {
     }
     public static ResponseException footballMatchNotFound(){
         return notFound(FOOTBALL_MATCH_NOT_FOUND_MSG_KEY, FOOTBALL_MATCH_NOT_FOUND_MSG);
+    }
+    public static ResponseException houseNotFound(){
+        return notFound(HOUSE_NOT_FOUND_MSG_KEY,HOUSE_NOT_FOUND_MSG);
+    }
+    public static ResponseException OddNotFound(){
+        return notFound(ODD_NOT_FOUND_MSG_KEY,ODD_NOT_FOUND_MSG);
+    }
+
+    public static ResponseException OddTypeNotFound(){
+        return notFound(ODD_TYPE_NOT_FOUND_MSG_KEY,ODD_TYPE_NOT_FOUND_MSG);
     }
 }

@@ -71,7 +71,7 @@ public class AccountServiceImpl implements AccountService {
 
         //throw exceptions
         if (accountDto.getTotalBalance() < 0) {
-            throw ProjectException.badRequest("Balance Cannot Negative or 0", "Enter again");
+            throw ProjectException.badRequest("WrongValue", "Balance cannot equal or less than 0");
         }
         if (!isNumeric(accountDto.getTotalBalance())) {
             throw ProjectException.badRequest("WrongFormatType", "Balance should contain only numbers");
@@ -115,7 +115,7 @@ public class AccountServiceImpl implements AccountService {
 
         //Throw exceptions
         if (customRegisterDto.getTotalBalance() <= 0) {
-            throw ProjectException.badRequest("WrongBalance", "Balance cannot equal or less than 0");
+            throw ProjectException.badRequest("WrongValue", "Balance cannot equal or less than 0");
         }
         if (!isNumeric(customRegisterDto.getTotalBalance())) {
             throw ProjectException.badRequest("WrongFormatType", "Balance should contain only numbers");
