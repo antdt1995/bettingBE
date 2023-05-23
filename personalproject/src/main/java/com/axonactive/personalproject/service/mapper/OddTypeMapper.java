@@ -16,4 +16,6 @@ public interface OddTypeMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     OddTypeDto toDto(OddType oddType);
     List<OddTypeDto> toDtos(List<OddType>oddTypes);
+    OddType toEntity(OddTypeDto oddTypeDto);
+    List<OddType> toEntities(List<OddTypeDto>oddTypeDtos);
 }

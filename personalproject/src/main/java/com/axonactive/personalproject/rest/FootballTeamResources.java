@@ -46,7 +46,7 @@ public class FootballTeamResources implements FootballTeamApi, FootballTeamUserA
     public ResponseEntity<FootballTeamDto> createFootballTeam(FootballTeamDto footballTeamDto) {
         log.info("create football team");
         FootballTeamDto footballTeamDto1 = footBallTeamService.createFootballTeam(footballTeamDto);
-        return ResponseEntity.created(URI.create("/project/footballteams/" + footballTeamDto1.getId())).body(footballTeamDto1);
+        return ResponseEntity.created(URI.create("/bet/footballteams/" + footballTeamDto1.getId())).body(footballTeamDto1);
     }
 
     @Override

@@ -70,24 +70,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountRepository.findById(accountId).orElseThrow(ProjectException::AccountNotFound);
 
         //throw exceptions
-        if (accountDto.getTotalBalance() < 0) {
-            throw ProjectException.badRequest("WrongValue", "Balance cannot equal or less than 0");
-        }
-        if (!isNumeric(accountDto.getTotalBalance())) {
-            throw ProjectException.badRequest("WrongFormatType", "Balance should contain only numbers");
-        }
-        if (!isAlphanumeric(accountDto.getUserName())) {
-            throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
-        }
-        if (!isAlphanumericWithSpecial(accountDto.getUserPassword())) {
-            throw ProjectException.badRequest("WrongPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
-        }
-        if (accountRepository.existsByUserName(accountDto.getUserName())) {
-            throw ProjectException.badRequest("UserNameExisted", "User name is already taken");
-        }
-        if (accountRepository.existsByEmail(accountDto.getEmail())) {
-            throw ProjectException.badRequest("EmailExisted", "Email has been used, try different email");
-        }
+        exceptionDto(accountDto);
 
         //Update information
         account.setTotalBalance(accountDto.getTotalBalance());
@@ -97,16 +80,13 @@ public class AccountServiceImpl implements AccountService {
         return AccountMapper.INSTANCE.toDto(account);
     }
 
+
+
     @Override
     public CustomRegisterDto createAccount(CustomRegisterDto customRegisterDto) {
 
         // build customer
-        if (!isAlpha(customRegisterDto.getFirstName()) || !isAlpha(customRegisterDto.getLastName())) {
-            throw ProjectException.badRequest("WrongFormatName", "Name should contain only letters");
-        }
-        if (!isNumberOnly(customRegisterDto.getPhone())) {
-            throw ProjectException.badRequest("WrongFormatPhone", "Phone number should contain only number");
-        }
+        exceptionCustomer(customRegisterDto);
         Customer customer = new Customer();
         customer.setLastName(customRegisterDto.getLastName());
         customer.setFirstName(customRegisterDto.getFirstName());
@@ -114,24 +94,7 @@ public class AccountServiceImpl implements AccountService {
         Customer newCustomer = customerRepository.save(customer);
 
         //Throw exceptions
-        if (customRegisterDto.getTotalBalance() <= 0) {
-            throw ProjectException.badRequest("WrongValue", "Balance cannot equal or less than 0");
-        }
-        if (!isNumeric(customRegisterDto.getTotalBalance())) {
-            throw ProjectException.badRequest("WrongFormatType", "Balance should contain only numbers");
-        }
-        if (!isAlphanumeric(customRegisterDto.getUserName())) {
-            throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
-        }
-        if (!isAlphanumericWithSpecial(customRegisterDto.getUserPassword())) {
-            throw ProjectException.badRequest("WrongUserPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
-        }
-        if (accountRepository.existsByUserName(customRegisterDto.getUserName())) {
-            throw ProjectException.badRequest("UserNameExisted", "User name is already taken");
-        }
-        if (accountRepository.existsByEmail(customRegisterDto.getEmail())) {
-            throw ProjectException.badRequest("EmailExisted", "Email has been used, try different email");
-        }
+        exception(customRegisterDto);
         Boolean active = true;
 
         //Build account
@@ -151,8 +114,58 @@ public class AccountServiceImpl implements AccountService {
         assignment.setAccount(account);
         assignRepository.save(assignment);
 
-
         return CustomRegisterMapper.INSTANCE.toDto(account, customer);
+    }
+
+    private static void exceptionCustomer(CustomRegisterDto customRegisterDto) {
+        if (!isAlpha(customRegisterDto.getFirstName()) || !isAlpha(customRegisterDto.getLastName())) {
+            throw ProjectException.badRequest("WrongFormatName", "Name should contain only letters");
+        }
+        if (!isNumberOnly(customRegisterDto.getPhone())) {
+            throw ProjectException.badRequest("WrongFormatPhone", "Phone number should contain only number");
+        }
+    }
+
+    private void exceptionDto(AccountDto accountDto) {
+        if (accountDto.getTotalBalance() < 0) {
+            throw ProjectException.badRequest("WrongValue", "Balance cannot equal or less than 0");
+        }
+        if (!isNumeric(accountDto.getTotalBalance())) {
+            throw ProjectException.badRequest("WrongFormatType", "Balance should contain only numbers");
+        }
+        if (!isAlphanumeric(accountDto.getUserName())) {
+            throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
+        }
+        if (!isAlphanumericWithSpecial(accountDto.getUserPassword())) {
+            throw ProjectException.badRequest("WrongPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
+        }
+        if (accountRepository.existsByUserName(accountDto.getUserName())) {
+            throw ProjectException.badRequest("UserNameExisted", "User name is already taken");
+        }
+        if (accountRepository.existsByEmail(accountDto.getEmail())) {
+            throw ProjectException.badRequest("EmailExisted", "Email has been used, try different email");
+        }
+    }
+
+    private void exception(CustomRegisterDto customRegisterDto) {
+        if (customRegisterDto.getTotalBalance() <= 0) {
+            throw ProjectException.badRequest("WrongValue", "Balance cannot equal or less than 0");
+        }
+        if (!isNumeric(customRegisterDto.getTotalBalance())) {
+            throw ProjectException.badRequest("WrongFormatType", "Balance should contain only numbers");
+        }
+        if (!isAlphanumeric(customRegisterDto.getUserName())) {
+            throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
+        }
+        if (!isAlphanumericWithSpecial(customRegisterDto.getUserPassword())) {
+            throw ProjectException.badRequest("WrongUserPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
+        }
+        if (accountRepository.existsByUserName(customRegisterDto.getUserName())) {
+            throw ProjectException.badRequest("UserNameExisted", "User name is already taken");
+        }
+        if (accountRepository.existsByEmail(customRegisterDto.getEmail())) {
+            throw ProjectException.badRequest("EmailExisted", "Email has been used, try different email");
+        }
     }
 
 }

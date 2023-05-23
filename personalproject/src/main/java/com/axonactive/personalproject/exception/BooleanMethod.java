@@ -14,7 +14,11 @@ public class BooleanMethod {
         return input.matches(pattern);
     }
     public static boolean isAlphaOrNumberOrSpecial(String input){
-        String pattern = "^[a-zA-Z0-9!@#$%^&*()_+=\\-\\[\\]{}|\\\\:;\"'<>,.?/]+)$";
+        String pattern = "^[a-zA-Z0-9!@#$%^&*()_+=\\-\\[\\]{}|\\\\:;\"'<>,.?/]+$";
+        return input.matches(pattern);
+    }
+    public static boolean isNumbericOrSpecial(String input){
+        String pattern = "[\\d\\p{Punct}]+";
         return input.matches(pattern);
     }
     public static boolean isAlphanumericWithSpecial(String input) {

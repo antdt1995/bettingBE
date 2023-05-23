@@ -51,13 +51,7 @@ public class FootBallMatchImpl implements FootBallMatchService {
     @Override
     public FootballMatchDto createFootballMatch(FootballMatchDto footballMatchDto, Long homeTeamId,Long awayTeamId) {
 
-        if (footballMatchDto.getAwayScore() < 0 || footballMatchDto.getHomeScore() < 0 || footballMatchDto.getTotalScore() < 0) {
-            throw ProjectException.badRequest("EnterScoreError", "Enter score cannot be negative");
-        }
-        if (footballMatchDto.getStartDate().compareTo(LocalDate.now()) > 7) {
-            throw ProjectException.badRequest("StartDateTooFar", "Start date too far from now");
-        }
-        try{
+        exception(footballMatchDto);
         //get home team
         FootballTeamDto footballTeamDto=footBallTeamService.getFootballTeamById(homeTeamId);
         FootballTeam homeTeam= FootballTeamMapper.INSTANCE.toEntity(footballTeamDto);
@@ -74,29 +68,27 @@ public class FootBallMatchImpl implements FootBallMatchService {
         .build();
         footballMatch= footballMatchRepository.save(footballMatch);
         return FootballMatchMapper.INSTANCE.toXDto(footballMatch);
-        }catch (ResponseException e){
-            throw new ResponseException("ErrorOccur","Error has been occur, Please comeback later.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @Override
     public FootballMatchDto updateFootballMatch(FootballMatchDto footballMatchDto, Long id) {
-        if (footballMatchDto.getAwayScore() < 0 || footballMatchDto.getHomeScore() < 0 || footballMatchDto.getTotalScore() < 0) {
-            throw ProjectException.badRequest("EnterScoreError", "Enter score cannot be negative");
-        }
-        if (footballMatchDto.getStartDate().compareTo(LocalDate.now()) > 7) {
-            throw ProjectException.badRequest("StartDateTooFar", "Start date too far from now");
-        }
-        try {
-            FootballMatch footballMatch = footballMatchRepository.findById(id).orElseThrow(ProjectException::footballMatchNotFound);
+        exception(footballMatchDto);
+        FootballMatch footballMatch = footballMatchRepository.findById(id).orElseThrow(ProjectException::footballMatchNotFound);
             footballMatch.setAwayScore(footballMatchDto.getAwayScore());
             footballMatch.setHomeScore(footballMatchDto.getHomeScore());
             footballMatch.setStartDate(footballMatchDto.getStartDate());
             footballMatch.setTotalScore(footballMatchDto.getTotalScore());
             footballMatch = footballMatchRepository.save(footballMatch);
             return FootballMatchMapper.INSTANCE.toXDto(footballMatch);
-        }catch (ResponseException e){
-            throw new ResponseException("ErrorOccur","Error has been occur, Please comeback later.", HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+
+    private static void exception(FootballMatchDto footballMatchDto) {
+        if (footballMatchDto.getAwayScore() < 0 || footballMatchDto.getHomeScore() < 0 || footballMatchDto.getTotalScore() < 0) {
+            throw ProjectException.badRequest("EnterScoreError", "Enter score cannot be negative");
+        }
+        if (footballMatchDto.getStartDate().compareTo(LocalDate.now()) > 7) {
+            throw ProjectException.badRequest("StartDateTooFar", "Start date too far from now");
         }
     }
 }

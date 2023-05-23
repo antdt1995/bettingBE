@@ -46,15 +46,7 @@ public class HouseImpl implements HouseService {
 
     @Override
     public HouseDto createHouse(HouseDto houseDto) {
-        if(!isAlphanumeric(houseDto.getName())){
-            throw ProjectException.badRequest("WrongFormat","House name should contain only letters and numbers");
-        }
-        if(!isNumeric(houseDto.getBalance())){
-            throw ProjectException.badRequest("WrongFormat","Balance should contain only numbers");
-        }
-        if(houseDto.getBalance()<=0){
-            throw ProjectException.badRequest("WrongValue","Balance cannot equal or less than 0");
-        }
+        exception(houseDto);
         House house=new House();
         house.setName(houseDto.getName());
         house.setAddress(houseDto.getAddress());
@@ -62,9 +54,18 @@ public class HouseImpl implements HouseService {
         houseRepository.save(house);
         return HouseMapper.INSTANCE.toDto(house);
     }
-
     @Override
     public HouseDto updateHouse(HouseDto houseDto, Long id) {
+        exception(houseDto);
+        House house=houseRepository.findById(id).orElseThrow(ProjectException::houseNotFound);
+        house.setName(houseDto.getName());
+        house.setAddress(houseDto.getAddress());
+        house.setBalance(houseDto.getBalance());
+        houseRepository.save(house);
+        return HouseMapper.INSTANCE.toDto(house);
+    }
+
+    private static void exception(HouseDto houseDto) {
         if(!isAlphanumeric(houseDto.getName())){
             throw ProjectException.badRequest("WrongFormat","House name should contain only letters and numbers");
         }
@@ -74,11 +75,5 @@ public class HouseImpl implements HouseService {
         if(houseDto.getBalance()<=0){
             throw ProjectException.badRequest("WrongValue","Balance cannot equal or less than 0");
         }
-        House house=houseRepository.findById(id).orElseThrow(ProjectException::houseNotFound);
-        house.setName(houseDto.getName());
-        house.setAddress(houseDto.getAddress());
-        house.setBalance(houseDto.getBalance());
-        houseRepository.save(house);
-        return HouseMapper.INSTANCE.toDto(house);
     }
 }

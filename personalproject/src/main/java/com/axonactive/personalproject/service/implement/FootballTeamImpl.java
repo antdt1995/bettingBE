@@ -35,13 +35,8 @@ public class FootballTeamImpl implements FootBallTeamService {
 
     @Override
     public FootballTeamDto createFootballTeam(FootballTeamDto footballTeamDto) {
-        if (!isAlpha(footballTeamDto.getManager())) {
-            throw ProjectException.badRequest("ManagerFormatError", "Manager format should contain only letters");
-        }
-        if (!isAlphanumeric(footballTeamDto.getLeague())) {
-            throw ProjectException.badRequest("LeagueFormatError", "League format should contain only letters or numbers");
-        }
-            FootballTeam footballTeam = FootballTeam.builder()
+        exception(footballTeamDto);
+        FootballTeam footballTeam = FootballTeam.builder()
                     .name(footballTeamDto.getName())
                     .league(footballTeamDto.getLeague())
                     .manager(footballTeamDto.getManager())
@@ -54,13 +49,8 @@ public class FootballTeamImpl implements FootBallTeamService {
     @Override
     public FootballTeamDto updateFootballTeam(FootballTeamDto footballTeamDto, Long id) {
         FootballTeam footballTeam = footballTeamRepository.findById(id).orElseThrow(ProjectException::footballTeamNotFound);
-        if (!isAlpha(footballTeamDto.getManager())) {
-            throw ProjectException.badRequest("ManagerFormatError", "Manager format should contain only letters");
-        }
-        if (!isAlphanumeric(footballTeamDto.getLeague())) {
-            throw ProjectException.badRequest("LeagueFormatError", "League format should contain only letters or numbers");
-        }
-            footballTeam.setName(footballTeamDto.getName());
+        exception(footballTeamDto);
+        footballTeam.setName(footballTeamDto.getName());
             footballTeam.setLeague(footballTeamDto.getLeague());
             footballTeam.setManager(footballTeamDto.getManager());
             footballTeam = footballTeamRepository.save(footballTeam);
@@ -70,10 +60,15 @@ public class FootballTeamImpl implements FootBallTeamService {
     @Override
     public void deleteFootballTeam(Long id) {
         FootballTeam footballTeam = footballTeamRepository.findById(id).orElseThrow(ProjectException::footballTeamNotFound);
-        try {
             footballTeamRepository.delete(footballTeam);
-        } catch (ResponseException e) {
-            throw ProjectException.internalServerError("ErrorHasBeenOccurred", "Error has been occurred. Please try later");
+    }
+
+    private static void exception(FootballTeamDto footballTeamDto) {
+        if (!isAlpha(footballTeamDto.getManager())) {
+            throw ProjectException.badRequest("ManagerFormatError", "Manager format should contain only letters");
+        }
+        if (!isAlphanumeric(footballTeamDto.getLeague())) {
+            throw ProjectException.badRequest("LeagueFormatError", "League format should contain only letters or numbers");
         }
     }
 }

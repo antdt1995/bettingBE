@@ -51,7 +51,7 @@ public class FootballMatchResources implements FootballMatchApi , FootballMatchU
                                                                 Long awayId) {
         log.info("create football match base on home team ");
         FootballMatchDto footballMatchDtos = footBallMatchService.createFootballMatch(footballMatchDto, homeId, awayId);
-        return ResponseEntity.created(URI.create("/project/footballmatchs/" + footballMatchDtos.getId())).body(footballMatchDtos);
+        return ResponseEntity.created(URI.create("/bet/footballmatchs/" + footballMatchDtos.getId())).body(footballMatchDtos);
     }
 
 

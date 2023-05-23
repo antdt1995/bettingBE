@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.axonactive.personalproject.exception.BooleanMethod.isAlpha;
+import static com.axonactive.personalproject.exception.BooleanMethod.isNumberOnly;
 import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
 
 @Service
@@ -43,6 +44,9 @@ public class CustomerImpl implements CustomerService {
         Customer customer = customerRepository.findById(customerId).orElseThrow(ProjectException::CustomerNotFound);
         if (!isAlpha(customerDto.getFirstName()) || !isAlpha(customerDto.getLastName())) {
             throw ProjectException.badRequest("WrongFormatName", "Name should contain only letters");
+        }
+        if (!isNumberOnly(customerDto.getPhone())) {
+            throw ProjectException.badRequest("WrongFormatPhone", "Phone number should contain only number");
         }
         customer.setLastName(customerDto.getLastName());
         customer.setFirstName(customerDto.getFirstName());

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -38,7 +39,8 @@ public class HouseResources implements HouseApi {
 
     @Override
     public ResponseEntity<HouseDto> createHouse(HouseDto houseDto) {
-        return ResponseEntity.ok().body(houseService.createHouse(houseDto));
+        HouseDto houseDto1=houseService.createHouse(houseDto);
+        return ResponseEntity.created(URI.create("/bet/houses/"+houseDto.getId())).body(houseDto1);
     }
 
     @Override
