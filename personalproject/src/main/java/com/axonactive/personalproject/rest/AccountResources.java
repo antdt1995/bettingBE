@@ -1,6 +1,8 @@
 package com.axonactive.personalproject.rest;
 
 import com.axonactive.personalproject.rest.admin.AccountApi;
+import com.axonactive.personalproject.rest.user.AccountUserApi;
+import com.axonactive.personalproject.service.AccountService;
 import com.axonactive.personalproject.service.dto.AccountDto;
 import com.axonactive.personalproject.service.implement.AccountServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -14,26 +16,24 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 
-public class AccountResources implements AccountApi {
-    private final AccountServiceImpl accountService;
+public class AccountResources implements AccountApi, AccountUserApi {
+    private final AccountService accountService;
 
     @Override
-
     public ResponseEntity<List<AccountDto>> getAllAccount() {
         log.info("Get all account info");
         return ResponseEntity.ok().body(accountService.getAllAccount());
     }
 
     @Override
-
-    public ResponseEntity<AccountDto> getAccountById(@PathVariable("id") Long id) {
+    public ResponseEntity<AccountDto> getAccountById( Long id) {
         log.info("Get account by Id ");
         AccountDto accountDto = accountService.getAccountById(id);
         return ResponseEntity.ok().body(accountDto);
     }
 
     @Override
-    public ResponseEntity<Void> deleteAccount(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteAccount( Long id) {
         log.info("Delete account by Id ");
         accountService.deleteAccount(id);
         String message = "Account with ID " + id + " has been successfully deleted.";
@@ -42,7 +42,7 @@ public class AccountResources implements AccountApi {
     }
 
     @Override
-    public ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto accountDto, @PathVariable("accountId") Long accountId) {
+    public ResponseEntity<AccountDto> updateAccount( AccountDto accountDto, Long accountId) {
         log.info("Update account ");
         AccountDto account = accountService.updateAccount(accountDto, accountId);
         return ResponseEntity.ok().body(account);

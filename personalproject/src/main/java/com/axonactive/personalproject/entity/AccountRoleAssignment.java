@@ -1,6 +1,7 @@
 package com.axonactive.personalproject.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "assign_authority")
-
+@Builder
 public class AccountRoleAssignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

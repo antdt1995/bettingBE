@@ -13,7 +13,7 @@ public class BooleanMethod {
         String pattern = "^[a-zA-Z0-9\\p{Punct}]{6,}$";
         return input.matches(pattern);
     }
-    public boolean isNumeric(String str) {
+    public static boolean isNumberOnly(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
     }
 

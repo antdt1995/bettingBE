@@ -1,11 +1,11 @@
 package com.axonactive.personalproject.rest;
 
+import com.axonactive.personalproject.rest.admin.InvoiceDetailApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth/invoicedetail")
-public class InvoiceDetailResources {
+public class InvoiceDetailResources implements InvoiceDetailApi {
 }

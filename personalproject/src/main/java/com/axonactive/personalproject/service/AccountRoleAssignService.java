@@ -1,14 +1,14 @@
 package com.axonactive.personalproject.service;
 
-import com.axonactive.personalproject.entity.AccountRoleAssignment;
-import com.axonactive.personalproject.service.dto.AccountRoleAssignDto;
+import com.axonactive.personalproject.service.customDto.AccountRoleAssignCustomDto;
+
 
 import java.util.List;
 
 public interface AccountRoleAssignService {
-    List<AccountRoleAssignDto> getAllAssign();
-    AccountRoleAssignDto findAssignById(Long id);
+    List<AccountRoleAssignCustomDto> getAllAssign();
+    AccountRoleAssignCustomDto findAssignById(Long id);
     void deleteAssignById(Long id);
-    AccountRoleAssignment updateAssign(AccountRoleAssignDto accountRoleAssignDto, Long id);
-    AccountRoleAssignment createAssign(AccountRoleAssignDto accountRoleAssignDto, Long customerId, Long roleId);
+    AccountRoleAssignCustomDto createRole(AccountRoleAssignCustomDto accountRoleAssignDto, Long accountId);
+    AccountRoleAssignCustomDto updateRole(AccountRoleAssignCustomDto accountRoleAssignDto, Long roleId);
 }

@@ -13,6 +13,8 @@ public interface AssignMapper {
     AssignMapper INSTANCE= Mappers.getMapper(AssignMapper.class);
 
     @Mapping(source = "account.userName", target = "userName")
+    @Mapping(source = "accountRoleAssignment.role", target = "role")
     AccountRoleAssignCustomDto toDto(AccountRoleAssignment accountRoleAssignment);
+
     List<AccountRoleAssignCustomDto> toDtos(List<AccountRoleAssignment> accountRoleAssignments);
 }

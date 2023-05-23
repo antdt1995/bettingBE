@@ -1,7 +1,7 @@
 package com.axonactive.personalproject.rest;
 
-import com.axonactive.personalproject.exception.ProjectException;
-import com.axonactive.personalproject.exception.ResponseException;
+import com.axonactive.personalproject.rest.admin.FootballTeamApi;
+import com.axonactive.personalproject.rest.user.FootballTeamUserApi;
 import com.axonactive.personalproject.service.FootBallTeamService;
 import com.axonactive.personalproject.service.dto.FootballTeamDto;
 import lombok.RequiredArgsConstructor;
@@ -12,31 +12,28 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-import static com.axonactive.personalproject.exception.BooleanMethod.isAlpha;
-import static com.axonactive.personalproject.exception.BooleanMethod.isAlphanumeric;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth/footballteams")
 @Slf4j
-public class FootballTeamResources {
+public class FootballTeamResources implements FootballTeamApi, FootballTeamUserApi {
     private final FootBallTeamService footBallTeamService;
 
-    @GetMapping
+    @Override
     public ResponseEntity<List<FootballTeamDto>> getAllFootballTeam() {
         log.info("Get all football team");
         return ResponseEntity.ok(footBallTeamService.getAllFootballTeam());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<FootballTeamDto> getFootballTeamById(@PathVariable("id") Long id) {
+    @Override
+    public ResponseEntity<FootballTeamDto> getFootballTeamById(Long id) {
         log.info("Get football team by id {}", id);
         FootballTeamDto footballTeamDto = footBallTeamService.getFootballTeamById(id);
         return ResponseEntity.ok(footballTeamDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFootballTeamById(@PathVariable("id") Long id) {
+    @Override
+    public ResponseEntity<Void> deleteFootballTeamById(Long id) {
         log.info("delete football team by id{}", id);
         String message = "Football team with ID " + id + " has been successfully deleted.";
         footBallTeamService.deleteFootballTeam(id);
@@ -45,15 +42,15 @@ public class FootballTeamResources {
 
     }
 
-    @PostMapping
-    public ResponseEntity<FootballTeamDto> createFootballTeam(@RequestBody FootballTeamDto footballTeamDto) {
+    @Override
+    public ResponseEntity<FootballTeamDto> createFootballTeam(FootballTeamDto footballTeamDto) {
         log.info("create football team");
         FootballTeamDto footballTeamDto1 = footBallTeamService.createFootballTeam(footballTeamDto);
         return ResponseEntity.created(URI.create("/project/footballteams/" + footballTeamDto1.getId())).body(footballTeamDto1);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<FootballTeamDto> updateFootballTeam(@RequestBody FootballTeamDto footballTeamDto, @PathVariable("id") Long id) {
+    @Override
+    public ResponseEntity<FootballTeamDto> updateFootballTeam(FootballTeamDto footballTeamDto, Long id) {
         log.info("update football team by id");
         FootballTeamDto footballTeamDto1 = footBallTeamService.updateFootballTeam(footballTeamDto, id);
         return ResponseEntity.ok().body(footballTeamDto1);

@@ -1,7 +1,9 @@
 package com.axonactive.personalproject.authenticate;
 
 import com.axonactive.personalproject.jwt.LoginRequest;
+import com.axonactive.personalproject.service.customDto.CustomRegisterDto;
 import com.axonactive.personalproject.service.dto.AccountDto;
+import com.axonactive.personalproject.service.dto.CustomerDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +15,7 @@ import javax.validation.Valid;
 public interface AuthController {
     @PostMapping("/signin")
     ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest);
-
-    @PostMapping("/signup/{customerId}")
-    ResponseEntity<AccountDto> registerAccount(@Valid @RequestBody AccountDto accountDto, @PathVariable("customerId") Long customerId);
+    @PostMapping("/signup")
+    ResponseEntity<CustomRegisterDto> registerAccount( @RequestBody CustomRegisterDto customRegisterDto);
 
 }

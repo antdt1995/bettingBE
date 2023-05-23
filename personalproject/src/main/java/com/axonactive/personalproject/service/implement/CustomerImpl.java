@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.axonactive.personalproject.exception.BooleanMethod.isAlpha;
+import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
 
 @Service
 @RequiredArgsConstructor
@@ -35,19 +36,6 @@ public class CustomerImpl implements CustomerService {
     public void deleteCustomer(Long id) {
         Customer customer = customerRepository.findById(id).orElseThrow(ProjectException::CustomerNotFound);
         customerRepository.delete(customer);
-    }
-
-    @Override
-    public CustomerDto createCustomer(CustomerDto customerDto) {
-        if (!isAlpha(customerDto.getFirstName()) || !isAlpha(customerDto.getLastName())) {
-            throw ProjectException.badRequest("WrongFormatName", "Name contain only letters");
-        }
-        Customer customer = new Customer();
-        customer.setPhone(customerDto.getPhone());
-        customer.setFirstName(customerDto.getFirstName());
-        customer.setFirstName(customerDto.getLastName());
-        customer = customerRepository.save(customer);
-        return CustomerMapper.INSTANCE.toDto(customer);
     }
 
     @Override
