@@ -1,7 +1,7 @@
 package com.axonactive.personalproject.service.mapper;
 
 import com.axonactive.personalproject.entity.Invoice;
-import com.axonactive.personalproject.service.customDto.InvoiceCustomDto;
+import com.axonactive.personalproject.service.dto.InvoiceDto;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -12,7 +12,7 @@ public interface InvoiceMapper {
     InvoiceMapper INSTANCE= Mappers.getMapper(InvoiceMapper.class);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(source = "account.id", target ="accountId" )
-    InvoiceCustomDto toDto(Invoice invoice);
+    InvoiceDto toDto(Invoice invoice);
 
-    List<InvoiceCustomDto> toDtos(List<Invoice> invoices);
+    List<InvoiceDto> toDtos(List<Invoice> invoices);
 }

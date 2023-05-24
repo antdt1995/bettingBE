@@ -21,7 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,63 +33,6 @@ public class OddImpl implements OddService {
     private final FootBallMatchService footBallMatchService;
     private final OddTypeService oddTypeService;
 
-    @Override
-    public List<OddCustomDto> getAllOdd() {
-        List<Odd> odds=oddRepository.findAll();
-        if(odds.isEmpty()){
-            throw ProjectException.OddNotFound();
-        }
-        return OddMapper.INSTANCE.toDtos(odds);
-    }
-
-    @Override
-    public OddCustomDto findOddById(Long id) {
-        Odd odd=oddRepository.findById(id).orElseThrow(ProjectException::OddNotFound);
-        return OddMapper.INSTANCE.toDto(odd);
-    }
-
-    @Override
-    public void deleteOddById(Long id) {
-        if(id==null){
-            throw ProjectException.badRequest("IdInvalid","Id cannot be null");
-        }
-        Odd odd=oddRepository.findById(id).orElseThrow(ProjectException::OddNotFound);
-        oddRepository.delete(odd);
-
-    }
-
-    @Override
-    public OddCustomDto createOdd(OddDto oddDto, Long matchId, Long typeId) {
-        //get football match
-        FootballMatchCustomDto footballMatchCustomDto=footBallMatchService.findFootballMatchById(matchId);
-        FootballMatch footballMatch= FootballMatchMapper.INSTANCE.toEntity(footballMatchCustomDto);
-        //get odd type
-        OddTypeDto oddTypeDto= oddTypeService.findOddTypeById(typeId);
-        OddType oddType= OddTypeMapper.INSTANCE.toEntity(oddTypeDto);
-        //exception
-        exception(oddDto, footballMatch.getStartDate());
-        //create odd
-        Odd odd=new Odd();
-        odd.setOddRate(oddDto.getOddRate());
-        odd.setSetScore(oddDto.getSetScore());
-        odd.setFootballMatch(footballMatch);
-        odd.setEndDate(oddDto.getEndDate());
-        odd.setOddType(oddType);
-        odd=oddRepository.save(odd);
-        return OddMapper.INSTANCE.toDto(odd);
-    }
-
-    @Override
-    public OddCustomDto updateOdd(OddDto oddDto, Long id) {
-        Odd odd=new Odd();
-        LocalDate startDate=odd.getFootballMatch().getStartDate();
-        exception(oddDto, startDate);
-        odd.setOddRate(oddDto.getOddRate());
-        odd.setSetScore(oddDto.getSetScore());
-        odd.setEndDate(oddDto.getEndDate());
-        odd=oddRepository.save(odd);
-        return OddMapper.INSTANCE.toDto(odd);
-    }
     private static void exception(OddDto oddDto, LocalDate footballMatch) {
         if (oddDto.getOddRate() < 0) {
             throw ProjectException.badRequest("WrongValue", "Odd rate cannot negative");
@@ -98,5 +43,70 @@ public class OddImpl implements OddService {
         if (oddDto.getEndDate().isAfter(footballMatch)) {
             throw ProjectException.badRequest("WrongDate", "End date must be set before or equal football match start date");
         }
+    }
+
+    @Override
+    public List<OddCustomDto> getAllOdd() {
+        List<Odd> odds = oddRepository.findAll();
+        if (odds.isEmpty()) {
+            throw ProjectException.OddNotFound();
+        }
+        return OddMapper.INSTANCE.toDtos(odds);
+    }
+
+    @Override
+    public OddCustomDto findOddById(Long id) {
+        Odd odd = oddRepository.findById(id).orElseThrow(ProjectException::OddNotFound);
+        return OddMapper.INSTANCE.toDto(odd);
+    }
+
+    @Override
+    public void deleteOddById(Long id) {
+        if (id == null) {
+            throw ProjectException.badRequest("IdInvalid", "Id cannot be null");
+        }
+        Odd odd = oddRepository.findById(id).orElseThrow(ProjectException::OddNotFound);
+        oddRepository.delete(odd);
+
+    }
+
+    @Override
+    public OddCustomDto createOdd(OddDto oddDto, Long matchId, Long typeId) {
+        //get football match
+        FootballMatchCustomDto footballMatchCustomDto = footBallMatchService.findFootballMatchById(matchId);
+        FootballMatch footballMatch = FootballMatchMapper.INSTANCE.toEntity(footballMatchCustomDto);
+        //get odd type
+        OddTypeDto oddTypeDto = oddTypeService.findOddTypeById(typeId);
+        OddType oddType = OddTypeMapper.INSTANCE.toEntity(oddTypeDto);
+        //exception
+        exception(oddDto, footballMatch.getStartDate());
+        //create odd
+        Odd odd = new Odd();
+        odd.setOddRate(oddDto.getOddRate());
+        odd.setSetScore(oddDto.getSetScore());
+        odd.setFootballMatch(footballMatch);
+        odd.setEndDate(oddDto.getEndDate());
+        odd.setOddType(oddType);
+        odd = oddRepository.save(odd);
+        return OddMapper.INSTANCE.toDto(odd);
+    }
+
+    @Override
+    public OddCustomDto updateOdd(OddDto oddDto, Long id) {
+        Odd odd = new Odd();
+        LocalDate startDate = odd.getFootballMatch().getStartDate();
+        exception(oddDto, startDate);
+        odd.setOddRate(oddDto.getOddRate());
+        odd.setSetScore(oddDto.getSetScore());
+        odd.setEndDate(oddDto.getEndDate());
+        odd = oddRepository.save(odd);
+        return OddMapper.INSTANCE.toDto(odd);
+    }
+
+
+
+    @Override
+    public List<Long> findWinOdd(Long matchId) {
+        return oddRepository.findOddIds(matchId);
     }
 }

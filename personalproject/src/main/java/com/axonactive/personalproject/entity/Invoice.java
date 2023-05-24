@@ -23,12 +23,12 @@ public class Invoice {
     @JoinColumn(name = "account_id",nullable = false)
     private Account account;
 
-    @OneToMany(mappedBy = "invoice")
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.PERSIST)
     @JsonIgnore
     private List<InvoiceDetail>invoiceDetails;
 
     @Column(name = "total_bet")
-    private Double total_bet;
+    private Double totalBet;
 
     @Column(name ="bet_date")
     private LocalDate betDate;

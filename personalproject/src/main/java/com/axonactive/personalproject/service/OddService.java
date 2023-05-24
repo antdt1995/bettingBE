@@ -1,6 +1,7 @@
 package com.axonactive.personalproject.service;
 
 
+import com.axonactive.personalproject.entity.Odd;
 import com.axonactive.personalproject.service.customDto.OddCustomDto;
 import com.axonactive.personalproject.service.dto.OddDto;
 
@@ -12,4 +13,6 @@ public interface OddService {
     void deleteOddById(Long id);
     OddCustomDto createOdd(OddDto oddDto, Long matchId, Long typeId);
     OddCustomDto updateOdd(OddDto oddDto,Long id);
+
+    List<Long> findWinOdd(Long matchId);
 }

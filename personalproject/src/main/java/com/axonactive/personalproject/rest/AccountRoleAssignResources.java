@@ -41,7 +41,7 @@ public class AccountRoleAssignResources implements AccountRoleAssignmentApi {
     public ResponseEntity<AccountRoleAssignCustomDto> createRole(AccountRoleAssignCustomDto accountRoleAssignCustomDto, Long customerId) {
         log.info("Create role");
         AccountRoleAssignCustomDto accountRole=assignmentService.createRole(accountRoleAssignCustomDto,customerId);
-        return ResponseEntity.created(URI.create("auth/assign/" + accountRole.getId())).body(accountRole);
+        return ResponseEntity.created(URI.create("auth/assigns/" + accountRole.getId())).body(accountRole);
     }
 
     @Override

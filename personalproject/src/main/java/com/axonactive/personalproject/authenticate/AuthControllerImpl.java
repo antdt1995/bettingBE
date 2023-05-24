@@ -1,6 +1,8 @@
 package com.axonactive.personalproject.authenticate;
 
 
+import com.axonactive.personalproject.exception.ProjectException;
+import com.axonactive.personalproject.repository.AccountRepository;
 import com.axonactive.personalproject.service.customDto.CustomRegisterDto;
 import com.axonactive.personalproject.service.dto.CustomerDto;
 import com.axonactive.personalproject.service.implement.AccountDetailImpl;
@@ -18,11 +20,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 
 @RestController
@@ -31,11 +34,16 @@ import java.util.stream.Collectors;
 public class AuthControllerImpl implements AuthController {
     private final AuthenticationManager authenticationManager;
     private final AccountServiceImpl accountService;
+    private final AccountRepository accountRepository;
     private final JwtUtils jwtUtils;
+    private final PasswordEncoder encoder;
 
 
     @Override
     public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
+        if (!accountRepository.existsByUserName(loginRequest.getUserName())) {
+            throw ProjectException.badRequest("WrongValue", "User name or password is wrong");
+        }
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword())
         );

@@ -11,4 +11,5 @@ public interface FootBallMatchService {
     void deleteFootballMatchById(Long id);
     FootballMatchDto createFootballMatch(FootballMatchDto footballMatchDto, Long homeId,Long awayId);
     FootballMatchDto updateFootballMatch(FootballMatchDto footballMatchDto, Long id);
+
 }

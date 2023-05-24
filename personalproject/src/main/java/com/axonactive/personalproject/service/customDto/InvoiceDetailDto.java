@@ -1,17 +1,17 @@
 package com.axonactive.personalproject.service.customDto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InvoiceCustomDto {
+public class InvoiceDetailDto {
+    @JsonIgnore
     private Long id;
-    private Long accountId;
-    private Double totalBet;
-    private LocalDate betDate;
+    private Long oddId;
+    private Long invoiceId;
+    private Double betAmount;
 }

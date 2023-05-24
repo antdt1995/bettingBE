@@ -16,4 +16,6 @@ public interface OddMapper {
     OddCustomDto toDto(Odd odd);
 
     List<OddCustomDto> toDtos(List<Odd>odds);
+
+
 }
