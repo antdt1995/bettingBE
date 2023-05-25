@@ -32,24 +32,28 @@ public class OddResources implements OddApi {
 
     @Override
     public ResponseEntity<Void> deleteOddById(Long id) {
+        log.debug("--> Request delete odd {}",id);
         oddService.deleteOddById(id);
         return ResponseEntity.noContent().header("Odd has been deleted").build();
     }
 
     @Override
     public ResponseEntity<OddCustomDto> createOdd(OddDto oddDto, Long matchId, Long typeId) {
+        log.debug("--> Request create new odd");
         OddCustomDto oddCustomDto=oddService.createOdd(oddDto,matchId,typeId);
         return ResponseEntity.created(URI.create("/bet/odds/"+oddDto.getId())).body(oddCustomDto);
     }
 
     @Override
     public ResponseEntity<OddCustomDto> updateOdd(OddDto oddDto, Long id) {
+        log.debug("--> Request update odd id {}",id);
         OddCustomDto oddCustomDto=oddService.updateOdd(oddDto,id);
         return ResponseEntity.ok().body(oddCustomDto);
     }
 
     @Override
     public ResponseEntity<List<Long>> findWinOdd(Long matchId) {
+        log.debug("--> Request get win odd {}",matchId);
         return ResponseEntity.ok(oddService.findWinOdd(matchId));
     }
 }

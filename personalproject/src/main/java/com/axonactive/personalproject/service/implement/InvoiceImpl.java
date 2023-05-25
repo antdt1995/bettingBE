@@ -27,10 +27,8 @@ import java.util.List;
 @Transactional
 public class InvoiceImpl implements InvoiceService {
     private final InvoiceRepository invoiceRepository;
-    private final AccountService accountService;
     private final AccountRepository accountRepository;
-    private final OddService oddService;
-    private final InvoiceDetailService invoiceDetailService;
+
 
 
     @Override

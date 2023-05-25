@@ -24,14 +24,12 @@ public class FootballMatchResources implements FootballMatchApi , FootballMatchU
 
     @Override
     public ResponseEntity<List<FootballMatchCustomDto>> getAllFootballMatch() {
-        log.info("Get all football match info");
         List<FootballMatchCustomDto> footballMatchCustomDto = footBallMatchService.findAllFootballMatch();
         return ResponseEntity.ok(footballMatchCustomDto);
     }
 
     @Override
     public ResponseEntity<FootballMatchCustomDto> getFootballMatchById(Long id) {
-        log.info("Get football match by Id ");
         FootballMatchCustomDto footballMatchCustomDto = footBallMatchService.findFootballMatchById(id);
         return ResponseEntity.ok(footballMatchCustomDto);
     }
@@ -39,7 +37,7 @@ public class FootballMatchResources implements FootballMatchApi , FootballMatchU
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFootballMatchById(Long id) {
-        log.info("Delete account by Id ");
+        log.debug("--> Request Delete account by Id ");
         footBallMatchService.deleteFootballMatchById(id);
         String message = "Football Match with ID " + id + " has been successfully deleted.";
         return ResponseEntity.noContent().header("Success", message).build();
@@ -49,14 +47,14 @@ public class FootballMatchResources implements FootballMatchApi , FootballMatchU
     public ResponseEntity<FootballMatchDto> createFootballMatch(FootballMatchDto footballMatchDto,
                                                                 Long homeId,
                                                                 Long awayId) {
-        log.info("create football match base on home team ");
+        log.debug("--> Request create football match base on home team ");
         FootballMatchDto footballMatchDtos = footBallMatchService.createFootballMatch(footballMatchDto, homeId, awayId);
         return ResponseEntity.created(URI.create("/bet/footballmatchs/" + footballMatchDtos.getId())).body(footballMatchDtos);
     }
 
 
     public ResponseEntity<FootballMatchDto> updateFootballMatch(FootballMatchDto footballMatchDto, Long id) {
-        log.info("update football match id{}", id);
+        log.debug("--> Request update football match id{}", id);
         FootballMatchDto footballMatchDto1 = footBallMatchService.updateFootballMatch(footballMatchDto, id);
         return ResponseEntity.ok().body(footballMatchDto1);
     }

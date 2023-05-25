@@ -30,19 +30,21 @@ public class OddTypeResources implements OddTypeApi {
 
     @Override
     public ResponseEntity<Void> deleteOddTypeById(Long id) {
-        log.info("Delete odd type {}",id);
+        log.debug("--> Request Delete odd type {}",id);
         oddTypeService.deleteOddTypeById(id);
         return ResponseEntity.noContent().header("Odd Type has been delete").build();
     }
 
     @Override
     public ResponseEntity<OddTypeDto> createOddType(OddTypeDto oddTypeDto) {
+        log.debug("--> Request create odd type {}");
         OddTypeDto oddTypeDto1=oddTypeService.createOddType(oddTypeDto);
         return ResponseEntity.created(URI.create("/bet/oddtypes/"+oddTypeDto.getId())).body(oddTypeDto1);
     }
 
     @Override
     public ResponseEntity<OddTypeDto> updateOddType(OddTypeDto oddTypeDto, Long id) {
+        log.debug("--> Request update odd type {}",id);
         return ResponseEntity.ok().body(oddTypeService.updateOddType(oddTypeDto,id));
     }
 }

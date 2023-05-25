@@ -32,19 +32,21 @@ public class HouseResources implements HouseApi {
 
     @Override
     public ResponseEntity<Void> deleteHouseById(Long id) {
-        log.info("delete house id {}", id);
+        log.debug("--> Request delete house id {}", id);
         houseService.deleteHouseById(id);
         return ResponseEntity.noContent().header("DeleteSuccess","Delete house success").build();
     }
 
     @Override
     public ResponseEntity<HouseDto> createHouse(HouseDto houseDto) {
+        log.debug("--> Request create new house");
         HouseDto houseDto1=houseService.createHouse(houseDto);
         return ResponseEntity.created(URI.create("/bet/houses/"+houseDto.getId())).body(houseDto1);
     }
 
     @Override
     public ResponseEntity<HouseDto> updateHouse(HouseDto houseDto, Long id) {
+        log.debug("--> Request update house");
         return ResponseEntity.ok().body(houseService.updateHouse(houseDto,id));
     }
 }

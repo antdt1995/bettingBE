@@ -30,15 +30,15 @@ public class InvoiceDetailResources implements InvoiceDetailApi {
 
     @Override
     public ResponseEntity<Void> deleteInvoiceDetail(Long id) {
-        log.info("Delete invoice detail {}", id);
+        log.debug("--> Request Delete invoice detail {}", id);
         invoiceDetailService.deleteInvoiceDetail(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<InvoiceDetailDto> createInvoiceDetail(InvoiceDetailDto invoiceDetailDto, Long invoiceId, Long oddId) {
-        log.info("create invoice detail");
-        InvoiceDetailDto invoiceDetailDto1=invoiceDetailService.createInvoiceDetail(invoiceDetailDto,invoiceId,oddId);
+    public ResponseEntity<InvoiceDetailDto> createInvoiceDetail(InvoiceDetailDto invoiceDetailDto, Long invoiceId) {
+        log.debug("--> Request create invoice detail{}",invoiceId);
+        InvoiceDetailDto invoiceDetailDto1=invoiceDetailService.createInvoiceDetail(invoiceDetailDto,invoiceId);
         return ResponseEntity.created(URI.create("/bet/invoicedetails/"+invoiceDetailDto.getId())).body(invoiceDetailDto1 );
     }
 }

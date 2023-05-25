@@ -29,14 +29,14 @@ public class InvoiceResources implements InvoiceApi {
 
     @Override
     public ResponseEntity<Void> deleteInvoice(Long id) {
-        log.info("Delete invoice id{}",id);
+        log.debug("--> Request Delete invoice id{}",id);
         invoiceService.deleteInvoice(id);
         return ResponseEntity.noContent().header("Delete Invoice Success").build();
     }
 
     @Override
     public ResponseEntity<InvoiceDto> createInvoice(InvoiceDto invoiceDto, Long accountId) {
-        log.info("Create invoice by account id {}",accountId);
+        log.debug("--> Request Create invoice by account id {}",accountId);
         InvoiceDto invoiceDto1=invoiceService.createInvoice(invoiceDto,accountId);
         return ResponseEntity.created(URI.create("/bet/invoices/"+invoiceDto.getId())).body(invoiceDto1);
     }

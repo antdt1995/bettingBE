@@ -64,15 +64,11 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
     public Double totalBetAmount(Long invoiceId) {
         return invoiceDetailRepository.totalBetAmount(invoiceId);
     }
-    //calculate total bet
-    public Double calcTotalBet(Long id) {
-        Invoice invoice = invoiceRepository.findById(id).orElseThrow(ProjectException::InvoiceNotFound);
-        return totalBetAmount(invoice.getId());
-    }
+
     @Override
-    public InvoiceDetailDto createInvoiceDetail(InvoiceDetailDto invoiceDetailDto, Long invoiceId, Long oddId) {
+    public InvoiceDetailDto createInvoiceDetail(InvoiceDetailDto invoiceDetailDto, Long invoiceId) {
         Invoice invoice=invoiceRepository.findById(invoiceId).orElseThrow(ProjectException::InvoiceNotFound);
-        Odd odd=oddRepository.findById(oddId).orElseThrow(ProjectException::OddNotFound);
+        Odd odd=oddRepository.findById(invoiceDetailDto.getOddId()).orElseThrow(ProjectException::OddNotFound);
 
         if(invoiceDetailDto.getBetAmount()<=0){
             throw ProjectException.badRequest("InvalidValue","Bet cannot negative or equal to 0");
@@ -85,12 +81,15 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         invoiceDetailRepository.save(invoiceDetail);
 
         //save total bet into invoice
-        Double totalBet=calcTotalBet(invoiceId);
+        Double totalBet=totalBetAmount(invoiceId);
         invoice.setTotalBet(totalBet);
         invoiceRepository.save(invoice);
 
         //calc into account
         Account account=invoice.getAccount();
+        if(invoice.getTotalBet()>account.getTotalBalance()){
+            throw ProjectException.badRequest("InvalidValue","Balance not enough");
+        }
         Double balance=account.getTotalBalance()-invoice.getTotalBet();
         account.setTotalBalance(balance);
         accountRepository.save(account);

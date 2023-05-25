@@ -16,6 +16,5 @@ public interface InvoiceDetailApi {
     ResponseEntity<Void> deleteInvoiceDetail(@PathVariable("id") Long id);
     @PostMapping("/{invoiceId}")
     ResponseEntity<InvoiceDetailDto> createInvoiceDetail(@RequestBody InvoiceDetailDto invoiceDetailDto
-                                                        ,@PathVariable("invoiceId") Long invoiceId,
-                                                         @RequestParam("oddId") Long oddId);
+                                                        ,@PathVariable("invoiceId") Long invoiceId);
 }

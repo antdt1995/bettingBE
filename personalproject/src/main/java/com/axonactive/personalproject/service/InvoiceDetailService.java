@@ -10,5 +10,5 @@ public interface InvoiceDetailService {
     InvoiceDetailDto getInvoiceDetailById(Long id);
     void deleteInvoiceDetail(Long id);
     Double totalBetAmount(Long invoiceId);
-    InvoiceDetailDto createInvoiceDetail(InvoiceDetailDto invoiceDetailDto, Long invoiceId, Long oddId);
+    InvoiceDetailDto createInvoiceDetail(InvoiceDetailDto invoiceDetailDto, Long invoiceId);
 }

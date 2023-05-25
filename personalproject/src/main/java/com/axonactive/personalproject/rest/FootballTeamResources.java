@@ -21,20 +21,18 @@ public class FootballTeamResources implements FootballTeamApi, FootballTeamUserA
 
     @Override
     public ResponseEntity<List<FootballTeamDto>> getAllFootballTeam() {
-        log.info("Get all football team");
         return ResponseEntity.ok(footBallTeamService.getAllFootballTeam());
     }
 
     @Override
     public ResponseEntity<FootballTeamDto> getFootballTeamById(Long id) {
-        log.info("Get football team by id {}", id);
         FootballTeamDto footballTeamDto = footBallTeamService.getFootballTeamById(id);
         return ResponseEntity.ok(footballTeamDto);
     }
 
     @Override
     public ResponseEntity<Void> deleteFootballTeamById(Long id) {
-        log.info("delete football team by id{}", id);
+        log.debug("--> Request delete football team by id{}", id);
         String message = "Football team with ID " + id + " has been successfully deleted.";
         footBallTeamService.deleteFootballTeam(id);
 
@@ -44,14 +42,14 @@ public class FootballTeamResources implements FootballTeamApi, FootballTeamUserA
 
     @Override
     public ResponseEntity<FootballTeamDto> createFootballTeam(FootballTeamDto footballTeamDto) {
-        log.info("create football team");
+        log.debug("--> Request create football team");
         FootballTeamDto footballTeamDto1 = footBallTeamService.createFootballTeam(footballTeamDto);
         return ResponseEntity.created(URI.create("/bet/footballteams/" + footballTeamDto1.getId())).body(footballTeamDto1);
     }
 
     @Override
     public ResponseEntity<FootballTeamDto> updateFootballTeam(FootballTeamDto footballTeamDto, Long id) {
-        log.info("update football team by id");
+        log.debug("--> Request update football team by id");
         FootballTeamDto footballTeamDto1 = footBallTeamService.updateFootballTeam(footballTeamDto, id);
         return ResponseEntity.ok().body(footballTeamDto1);
     }

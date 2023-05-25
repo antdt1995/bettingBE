@@ -9,6 +9,7 @@ import com.axonactive.personalproject.repository.AccountRepository;
 import com.axonactive.personalproject.repository.AccountRoleAssignmentRepository;
 import com.axonactive.personalproject.repository.CustomerRepository;
 import com.axonactive.personalproject.service.AccountService;
+import com.axonactive.personalproject.service.OddService;
 import com.axonactive.personalproject.service.customDto.CustomRegisterDto;
 import com.axonactive.personalproject.service.dto.AccountDto;
 import com.axonactive.personalproject.service.mapper.AccountMapper;
@@ -79,8 +80,6 @@ public class AccountServiceImpl implements AccountService {
         account = accountRepository.save(account);
         return AccountMapper.INSTANCE.toDto(account);
     }
-
-
 
     @Override
     public CustomRegisterDto createAccount(CustomRegisterDto customRegisterDto) {
