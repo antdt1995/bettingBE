@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,14 +32,26 @@ public class InvoiceDetailResources implements InvoiceDetailApi {
     @Override
     public ResponseEntity<Void> deleteInvoiceDetail(Long id) {
         log.debug("--> Request Delete invoice detail {}", id);
+        log.info("delete invoice detail {}",id);
         invoiceDetailService.deleteInvoiceDetail(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<InvoiceDetailDto> createInvoiceDetail(InvoiceDetailDto invoiceDetailDto, Long invoiceId) {
-        log.debug("--> Request create invoice detail{}",invoiceId);
-        InvoiceDetailDto invoiceDetailDto1=invoiceDetailService.createInvoiceDetail(invoiceDetailDto,invoiceId);
-        return ResponseEntity.created(URI.create("/bet/invoicedetails/"+invoiceDetailDto.getId())).body(invoiceDetailDto1 );
+    public ResponseEntity<List<InvoiceDetailDto>> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto, Long invoiceId) {
+        log.debug("--> Request create invoice detail{}", invoiceId);
+        log.info("Create invoice detail");
+        List<InvoiceDetailDto> invoiceDetailDtoList = invoiceDetailService.createInvoiceDetail(invoiceDetailDto, invoiceId);
+        List<URI> uris = new ArrayList<>();
+        for (InvoiceDetailDto detailDto : invoiceDetailDto) {
+            URI uri = URI.create("/bet/invoicedetails/" + detailDto.getId());
+            uris.add(uri);
+        }
+        return ResponseEntity.created(uris.get(0)).body(invoiceDetailDtoList);
+    }
+
+    @Override
+    public ResponseEntity<Long> findOverUnderOdd(Long matchId) {
+        return null;
     }
 }

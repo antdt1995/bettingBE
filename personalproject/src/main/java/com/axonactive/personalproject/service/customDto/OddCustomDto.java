@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OddCustomDto {
+    private Long id;
     private String oddType;
     private String homeTeamName;
     private Double oddRate;

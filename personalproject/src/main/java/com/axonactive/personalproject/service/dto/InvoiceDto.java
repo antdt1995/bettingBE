@@ -19,5 +19,4 @@ public class InvoiceDto {
     private Double totalBet;
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate betDate;
-    private InvoiceDetail invoiceDetail;
 }

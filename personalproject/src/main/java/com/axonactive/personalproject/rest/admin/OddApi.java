@@ -19,12 +19,12 @@ public interface OddApi {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteOddById(@PathVariable("id") Long id);
 
-    @PostMapping("/{matchId}/{typeId}")
-    ResponseEntity<OddCustomDto> createOdd(@RequestBody OddDto oddDto, @PathVariable("matchId") Long matchId, @PathVariable("typeId") Long typeId);
+    @PostMapping("/{houseId}/{matchId}/{typeId}")
+    ResponseEntity<OddCustomDto> createOdd(@RequestBody OddDto oddDto,@PathVariable("houseId") Long houseId, @PathVariable("matchId") Long matchId, @PathVariable("typeId") Long typeId);
 
     @PutMapping("/{id}")
     ResponseEntity<OddCustomDto> updateOdd(@RequestBody OddDto oddDto, @PathVariable("id") Long id);
 
-    @GetMapping("/win")
-    ResponseEntity<List<Long>> findWinOdd(@RequestParam("matchId") Long matchId);
+    @GetMapping("/match/{matchId}")
+    ResponseEntity<List<Object[]>> findOddByMatchId(@PathVariable("matchId") Long matchId);
 }

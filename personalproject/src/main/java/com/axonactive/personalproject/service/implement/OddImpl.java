@@ -1,19 +1,18 @@
 package com.axonactive.personalproject.service.implement;
 
 import com.axonactive.personalproject.entity.FootballMatch;
+import com.axonactive.personalproject.entity.House;
 import com.axonactive.personalproject.entity.Odd;
 import com.axonactive.personalproject.entity.OddType;
 import com.axonactive.personalproject.exception.ProjectException;
 import com.axonactive.personalproject.repository.FootballMatchRepository;
+import com.axonactive.personalproject.repository.HouseRepository;
 import com.axonactive.personalproject.repository.OddRepository;
-import com.axonactive.personalproject.service.FootBallMatchService;
 import com.axonactive.personalproject.service.OddService;
 import com.axonactive.personalproject.service.OddTypeService;
-import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
 import com.axonactive.personalproject.service.customDto.OddCustomDto;
 import com.axonactive.personalproject.service.dto.OddDto;
 import com.axonactive.personalproject.service.dto.OddTypeDto;
-import com.axonactive.personalproject.service.mapper.FootballMatchMapper;
 import com.axonactive.personalproject.service.mapper.OddMapper;
 import com.axonactive.personalproject.service.mapper.OddTypeMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,29 +20,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class OddImpl implements OddService {
     private final OddRepository oddRepository;
-    private final FootBallMatchService footBallMatchService;
+    private final FootballMatchRepository footballMatchRepository;
+    private final HouseRepository houseRepository;
     private final OddTypeService oddTypeService;
 
-    private static void exception(OddDto oddDto, LocalDate footballMatch) {
-        if (oddDto.getOddRate() < 0) {
-            throw ProjectException.badRequest("WrongValue", "Odd rate cannot negative");
-        }
-        if (oddDto.getSetScore() < 0) {
-            throw ProjectException.badRequest("WrongValue", "Set score cannot negative");
-        }
-        if (oddDto.getEndDate().isAfter(footballMatch)) {
-            throw ProjectException.badRequest("WrongDate", "End date must be set before or equal football match start date");
-        }
-    }
+
 
     @Override
     public List<OddCustomDto> getAllOdd() {
@@ -71,10 +60,11 @@ public class OddImpl implements OddService {
     }
 
     @Override
-    public OddCustomDto createOdd(OddDto oddDto, Long matchId, Long typeId) {
+    public OddCustomDto createOdd(OddDto oddDto,Long houseId, Long matchId, Long typeId) {
         //get football match
-        FootballMatchCustomDto footballMatchCustomDto = footBallMatchService.findFootballMatchById(matchId);
-        FootballMatch footballMatch = FootballMatchMapper.INSTANCE.toEntity(footballMatchCustomDto);
+        FootballMatch footballMatch=footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
+        //get house
+        House house=houseRepository.findById(houseId).orElseThrow(ProjectException::houseNotFound);
         //get odd type
         OddTypeDto oddTypeDto = oddTypeService.findOddTypeById(typeId);
         OddType oddType = OddTypeMapper.INSTANCE.toEntity(oddTypeDto);
@@ -87,6 +77,7 @@ public class OddImpl implements OddService {
         odd.setFootballMatch(footballMatch);
         odd.setEndDate(oddDto.getEndDate());
         odd.setOddType(oddType);
+        odd.setHouse(house);
         odd = oddRepository.save(odd);
         return OddMapper.INSTANCE.toDto(odd);
     }
@@ -103,10 +94,39 @@ public class OddImpl implements OddService {
         return OddMapper.INSTANCE.toDto(odd);
     }
 
-
+    @Override
+    public Long findWinLoseOddIds(Long matchId) {
+        return oddRepository.findWinLoseOddIds(matchId);
+    }
 
     @Override
-    public List<Long> findWinOdd(Long matchId) {
-        return oddRepository.findOddIds(matchId);
+    public Long findOverOddId(Long matchId) {
+        return oddRepository.findOverOddId(matchId);
+    }
+
+    @Override
+    public Long findUnderOddId(Long matchId) {
+        return oddRepository.findUnderOddId(matchId);
+    }
+
+    @Override
+    public List<Object[]> findOddByMatchId(Long matchId) {
+        FootballMatch footballMatch=footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
+        if (matchId == null) {
+            throw ProjectException.badRequest("IdInvalid", "Id cannot be null");
+        }
+        return oddRepository.findOddByMatchId(footballMatch.getId());
+    }
+
+    private static void exception(OddDto oddDto, LocalDate footballMatch) {
+        if (oddDto.getOddRate() < 0) {
+            throw ProjectException.badRequest("WrongValue", "Odd rate cannot negative");
+        }
+        if (oddDto.getSetScore() < 0) {
+            throw ProjectException.badRequest("WrongValue", "Set score cannot negative");
+        }
+        if (oddDto.getEndDate().isAfter(footballMatch)) {
+            throw ProjectException.badRequest("WrongDate", "End date must be set before or equal football match start date");
+        }
     }
 }

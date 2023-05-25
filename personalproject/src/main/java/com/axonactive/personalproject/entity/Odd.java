@@ -35,7 +35,7 @@ public class Odd {
     private Double oddRate;
 
     @Column(name = "set_score")
-    private Long setScore;
+    private Double setScore;
 
     @Column(name = "end_date")
     private LocalDate endDate;

@@ -40,7 +40,7 @@ public class FootballMatch {
     @Column(name = "start_date")
     private LocalDate startDate;
 
-    @OneToMany(mappedBy = "footballMatch")
+    @OneToMany(mappedBy = "footballMatch", cascade = CascadeType.PERSIST)
     private List<Odd> odds;
 
 }

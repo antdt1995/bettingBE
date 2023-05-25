@@ -9,6 +9,7 @@ import com.axonactive.personalproject.repository.AccountRepository;
 import com.axonactive.personalproject.repository.AccountRoleAssignmentRepository;
 import com.axonactive.personalproject.repository.CustomerRepository;
 import com.axonactive.personalproject.service.AccountService;
+import com.axonactive.personalproject.service.InvoiceDetailService;
 import com.axonactive.personalproject.service.OddService;
 import com.axonactive.personalproject.service.customDto.CustomRegisterDto;
 import com.axonactive.personalproject.service.dto.AccountDto;
@@ -35,6 +36,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
     private final AccountRoleAssignmentRepository assignRepository;
+    private final InvoiceDetailService invoiceDetailService;
     @Autowired
     PasswordEncoder encoder;
 
@@ -115,7 +117,6 @@ public class AccountServiceImpl implements AccountService {
 
         return CustomRegisterMapper.INSTANCE.toDto(account, customer);
     }
-
     private static void exceptionCustomer(CustomRegisterDto customRegisterDto) {
         if (!isAlpha(customRegisterDto.getFirstName()) || !isAlpha(customRegisterDto.getLastName())) {
             throw ProjectException.badRequest("WrongFormatName", "Name should contain only letters");

@@ -8,7 +8,6 @@ import com.axonactive.personalproject.service.dto.OddDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
@@ -38,9 +37,9 @@ public class OddResources implements OddApi {
     }
 
     @Override
-    public ResponseEntity<OddCustomDto> createOdd(OddDto oddDto, Long matchId, Long typeId) {
+    public ResponseEntity<OddCustomDto> createOdd(OddDto oddDto,Long houseId, Long matchId, Long typeId) {
         log.debug("--> Request create new odd");
-        OddCustomDto oddCustomDto=oddService.createOdd(oddDto,matchId,typeId);
+        OddCustomDto oddCustomDto=oddService.createOdd(oddDto,houseId,matchId,typeId);
         return ResponseEntity.created(URI.create("/bet/odds/"+oddDto.getId())).body(oddCustomDto);
     }
 
@@ -52,8 +51,8 @@ public class OddResources implements OddApi {
     }
 
     @Override
-    public ResponseEntity<List<Long>> findWinOdd(Long matchId) {
-        log.debug("--> Request get win odd {}",matchId);
-        return ResponseEntity.ok(oddService.findWinOdd(matchId));
+    public ResponseEntity<List<Object[]>> findOddByMatchId(Long matchId) {
+        log.info("Create odd");
+        return ResponseEntity.ok(oddService.findOddByMatchId(matchId));
     }
 }

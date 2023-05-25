@@ -15,6 +15,8 @@ public interface InvoiceDetailApi {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteInvoiceDetail(@PathVariable("id") Long id);
     @PostMapping("/{invoiceId}")
-    ResponseEntity<InvoiceDetailDto> createInvoiceDetail(@RequestBody InvoiceDetailDto invoiceDetailDto
+    ResponseEntity<List<InvoiceDetailDto>> createInvoiceDetail(@RequestBody List<InvoiceDetailDto> invoiceDetailDto
                                                         ,@PathVariable("invoiceId") Long invoiceId);
+    @GetMapping("/win")
+    ResponseEntity<Long> findOverUnderOdd(@RequestParam Long matchId);
 }

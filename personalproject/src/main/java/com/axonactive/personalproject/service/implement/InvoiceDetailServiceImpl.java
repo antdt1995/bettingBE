@@ -10,7 +10,7 @@ import com.axonactive.personalproject.repository.InvoiceDetailRepository;
 import com.axonactive.personalproject.repository.InvoiceRepository;
 import com.axonactive.personalproject.repository.OddRepository;
 import com.axonactive.personalproject.service.InvoiceDetailService;
-import com.axonactive.personalproject.service.InvoiceService;
+import com.axonactive.personalproject.service.OddService;
 import com.axonactive.personalproject.service.customDto.InvoiceDetailDto;
 import com.axonactive.personalproject.service.mapper.InvoiceDetailMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -31,10 +33,11 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
     private final AccountRepository accountRepository;
     private final OddRepository oddRepository;
 
+
     @Override
     public List<InvoiceDetailDto> getAllInvoiceDetail() {
-        List<InvoiceDetail>invoiceDetails=invoiceDetailRepository.findAll();
-        if(invoiceDetails.isEmpty()){
+        List<InvoiceDetail> invoiceDetails = invoiceDetailRepository.findAll();
+        if (invoiceDetails.isEmpty()) {
             throw ProjectException.InvoiceDetailNotFound();
         }
         return InvoiceDetailMapper.INSTANCE.toDtos(invoiceDetails);
@@ -42,20 +45,29 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
 
     @Override
     public InvoiceDetailDto getInvoiceDetailById(Long id) {
-        InvoiceDetail invoiceDetail=invoiceDetailRepository.findById(id).orElseThrow(ProjectException::InvoiceDetailNotFound);
+        InvoiceDetail invoiceDetail = invoiceDetailRepository.findById(id).orElseThrow(ProjectException::InvoiceDetailNotFound);
         return InvoiceDetailMapper.INSTANCE.toDto(invoiceDetail);
     }
-//TODO
+
+    //TODO
     @Override
     public void deleteInvoiceDetail(Long id) {
-        if(id==null){
-            throw ProjectException.badRequest("IdInvalid","Id cannot be null");
+        if (id == null) {
+            throw ProjectException.badRequest("IdInvalid", "Id cannot be null");
         }
-        InvoiceDetail invoiceDetail=invoiceDetailRepository.findById(id).orElseThrow(ProjectException::InvoiceDetailNotFound);
-        Invoice invoice=invoiceDetail.getInvoice();
-        Double balance=invoice.getTotalBet()-invoiceDetail.getBetAmount();
-        invoice.setTotalBet(balance);
+        InvoiceDetail invoiceDetail = invoiceDetailRepository.findById(id).orElseThrow(ProjectException::InvoiceDetailNotFound);
+        Invoice invoice = invoiceDetail.getInvoice();
+        Account account=invoice.getAccount();
+
+        //minus invoice total bet
+        Double bet = invoice.getTotalBet() - invoiceDetail.getBetAmount();
+        invoice.setTotalBet(bet);
         invoiceRepository.save(invoice);
+
+        //add into account balance
+        Double balance=invoiceDetail.getBetAmount()+account.getTotalBalance();
+        account.setTotalBalance(balance);
+        accountRepository.save(account);
         invoiceDetailRepository.delete(invoiceDetail);
     }
 
@@ -66,35 +78,41 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
     }
 
     @Override
-    public InvoiceDetailDto createInvoiceDetail(InvoiceDetailDto invoiceDetailDto, Long invoiceId) {
-        Invoice invoice=invoiceRepository.findById(invoiceId).orElseThrow(ProjectException::InvoiceNotFound);
-        Odd odd=oddRepository.findById(invoiceDetailDto.getOddId()).orElseThrow(ProjectException::OddNotFound);
+    public List<InvoiceDetailDto> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto, Long invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(ProjectException::InvoiceNotFound);
 
-        if(invoiceDetailDto.getBetAmount()<=0){
-            throw ProjectException.badRequest("InvalidValue","Bet cannot negative or equal to 0");
-        }
         //build invoice detail
-        InvoiceDetail invoiceDetail=new InvoiceDetail();
-        invoiceDetail.setBetAmount(invoiceDetailDto.getBetAmount());
-        invoiceDetail.setInvoice(invoice);
-        invoiceDetail.setOdd(odd);
-        invoiceDetailRepository.save(invoiceDetail);
+        List<InvoiceDetail> invoiceDetailList = new ArrayList<>();
+        for (InvoiceDetailDto detailDto : invoiceDetailDto) {
+            if (detailDto.getBetAmount() <= 0) {
+                throw ProjectException.badRequest("InvalidValue", "Bet cannot negative or equal to 0");
+            }
+            Odd odd = oddRepository.findById(detailDto.getOddId()).orElseThrow(ProjectException::OddNotFound);
+            InvoiceDetail invoiceDetail = new InvoiceDetail();
+            invoiceDetail.setBetAmount(detailDto.getBetAmount());
+            invoiceDetail.setInvoice(invoice);
+            invoiceDetail.setOdd(odd);
+            invoiceDetailList.add(invoiceDetail);
+        }
+        invoiceDetailRepository.saveAll(invoiceDetailList);
+
 
         //save total bet into invoice
-        Double totalBet=totalBetAmount(invoiceId);
+        Double totalBet = totalBetAmount(invoiceId);
         invoice.setTotalBet(totalBet);
         invoiceRepository.save(invoice);
 
         //calc into account
-        Account account=invoice.getAccount();
-        if(invoice.getTotalBet()>account.getTotalBalance()){
-            throw ProjectException.badRequest("InvalidValue","Balance not enough");
+        Account account = invoice.getAccount();
+        if (invoice.getTotalBet() > account.getTotalBalance()) {
+            throw ProjectException.badRequest("InvalidValue", "Balance not enough");
         }
-        Double balance=account.getTotalBalance()-invoice.getTotalBet();
+        Double balance = account.getTotalBalance() - invoice.getTotalBet();
         account.setTotalBalance(balance);
         accountRepository.save(account);
 
-        return InvoiceDetailMapper.INSTANCE.toDto(invoiceDetail);
+        return InvoiceDetailMapper.INSTANCE.toDtos(invoiceDetailList);
 
     }
+
 }
