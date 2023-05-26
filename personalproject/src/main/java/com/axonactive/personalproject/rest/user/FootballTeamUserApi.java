@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@RequestMapping("/auth/footballteams")
+@RequestMapping("/bet/user/footballteams")
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+
 public interface FootballTeamUserApi {
     @GetMapping
     ResponseEntity<List<FootballTeamDto>> getAllFootballTeam();

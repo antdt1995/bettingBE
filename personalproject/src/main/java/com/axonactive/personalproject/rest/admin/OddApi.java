@@ -1,14 +1,14 @@
 package com.axonactive.personalproject.rest.admin;
-
-import com.axonactive.personalproject.entity.Odd;
 import com.axonactive.personalproject.service.customDto.OddCustomDto;
 import com.axonactive.personalproject.service.dto.OddDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/auth/odds")
+@RequestMapping("/bet/odds")
+@PreAuthorize("hasRole('ADMIN')")
 public interface OddApi {
     @GetMapping
     ResponseEntity<List<OddCustomDto>> getAllOdd();

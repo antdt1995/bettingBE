@@ -95,7 +95,7 @@ public class OddImpl implements OddService {
     }
 
     @Override
-    public Long findWinLoseOddIds(Long matchId) {
+    public Long findWinOddIds(Long matchId) {
         return oddRepository.findWinLoseOddIds(matchId);
     }
 

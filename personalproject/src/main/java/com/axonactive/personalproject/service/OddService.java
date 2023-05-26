@@ -1,7 +1,6 @@
 package com.axonactive.personalproject.service;
 
 
-import com.axonactive.personalproject.entity.Odd;
 import com.axonactive.personalproject.service.customDto.OddCustomDto;
 import com.axonactive.personalproject.service.dto.OddDto;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +16,7 @@ public interface OddService {
     List<Object[]> findOddByMatchId(@Param("matchId") Long matchId);
 
     //for back end only
-    Long findWinLoseOddIds(@Param("matchId")Long matchId);
+    Long findWinOddIds(@Param("matchId")Long matchId);
     Long findOverOddId(@Param("matchId") Long matchId);
     Long findUnderOddId(@Param("matchId") Long matchId);
 }

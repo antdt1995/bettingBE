@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 //@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-@RequestMapping("/auth/footballmatchs/")
+@RequestMapping("/bet/user/footballmatchs/")
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+
 public interface FootballMatchUserApi {
     @GetMapping
     ResponseEntity<List<FootballMatchCustomDto>> getAllFootballMatch();

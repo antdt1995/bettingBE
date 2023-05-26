@@ -70,15 +70,6 @@ public class InvoiceImpl implements InvoiceService {
         invoice.setBetDate(invoiceDto.getBetDate());
         invoice = invoiceRepository.save(invoice);
 
-
-//        Double totalBet= invoiceDetailService.totalBetAmount(invoice.getId());
-//        invoice.setTotalBet(totalBet);
-//        invoice = invoiceRepository.save(invoice);
-//
-//        Double balance=account.getTotalBalance()-invoice.getTotalBet();
-//        account.setTotalBalance(balance);
-//        accountRepository.save(account);
-
         return InvoiceMapper.INSTANCE.toDto(invoice);
 
     }

@@ -87,12 +87,8 @@ public class AccountServiceImpl implements AccountService {
     public CustomRegisterDto createAccount(CustomRegisterDto customRegisterDto) {
 
         // build customer
-        exceptionCustomer(customRegisterDto);
-        Customer customer = new Customer();
-        customer.setLastName(customRegisterDto.getLastName());
-        customer.setFirstName(customRegisterDto.getFirstName());
-        customer.setPhone(customRegisterDto.getPhone());
-        Customer newCustomer = customerRepository.save(customer);
+        Customer customer = getCustomer(customRegisterDto);
+        customer = customerRepository.save(customer);
 
         //Throw exceptions
         exception(customRegisterDto);
@@ -102,7 +98,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = Account.builder()
                 .userName(customRegisterDto.getUserName())
                 .totalBalance(customRegisterDto.getTotalBalance())
-                .customer(newCustomer)
+                .customer(customer)
                 .email(customRegisterDto.getEmail())
                 .userPassword(encoder.encode(customRegisterDto.getUserPassword()))
                 .active(active)
@@ -117,14 +113,21 @@ public class AccountServiceImpl implements AccountService {
 
         return CustomRegisterMapper.INSTANCE.toDto(account, customer);
     }
-    private static void exceptionCustomer(CustomRegisterDto customRegisterDto) {
+
+    private static Customer getCustomer(CustomRegisterDto customRegisterDto) {
         if (!isAlpha(customRegisterDto.getFirstName()) || !isAlpha(customRegisterDto.getLastName())) {
             throw ProjectException.badRequest("WrongFormatName", "Name should contain only letters");
         }
         if (!isNumberOnly(customRegisterDto.getPhone())) {
             throw ProjectException.badRequest("WrongFormatPhone", "Phone number should contain only number");
         }
+        Customer customer = new Customer();
+        customer.setLastName(customRegisterDto.getLastName());
+        customer.setFirstName(customRegisterDto.getFirstName());
+        customer.setPhone(customRegisterDto.getPhone());
+        return customer;
     }
+
 
     private void exceptionDto(AccountDto accountDto) {
         if (accountDto.getTotalBalance() < 0) {

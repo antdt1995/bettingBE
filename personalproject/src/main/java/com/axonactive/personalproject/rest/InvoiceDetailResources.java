@@ -1,6 +1,7 @@
 package com.axonactive.personalproject.rest;
 
 import com.axonactive.personalproject.rest.admin.InvoiceDetailApi;
+import com.axonactive.personalproject.rest.user.InvoiceDetailUserApi;
 import com.axonactive.personalproject.service.InvoiceDetailService;
 import com.axonactive.personalproject.service.customDto.InvoiceDetailDto;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class InvoiceDetailResources implements InvoiceDetailApi {
+public class InvoiceDetailResources implements InvoiceDetailApi, InvoiceDetailUserApi {
     private final InvoiceDetailService invoiceDetailService;
 
     @Override

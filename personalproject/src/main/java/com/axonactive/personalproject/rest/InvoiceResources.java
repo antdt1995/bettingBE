@@ -1,6 +1,7 @@
 package com.axonactive.personalproject.rest;
 
 import com.axonactive.personalproject.rest.admin.InvoiceApi;
+import com.axonactive.personalproject.rest.user.InvoiceUserApi;
 import com.axonactive.personalproject.service.InvoiceService;
 import com.axonactive.personalproject.service.dto.InvoiceDto;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class InvoiceResources implements InvoiceApi {
+public class InvoiceResources implements InvoiceApi, InvoiceUserApi {
     private final InvoiceService invoiceService;
     @Override
     public ResponseEntity<List<InvoiceDto>> getAllInvoice() {

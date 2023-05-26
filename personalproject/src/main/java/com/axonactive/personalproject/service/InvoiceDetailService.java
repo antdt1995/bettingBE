@@ -1,5 +1,8 @@
 package com.axonactive.personalproject.service;
 
+import com.axonactive.personalproject.entity.House;
+
+import com.axonactive.personalproject.entity.InvoiceDetail;
 import com.axonactive.personalproject.service.customDto.InvoiceDetailDto;
 
 
@@ -11,5 +14,6 @@ public interface InvoiceDetailService {
     void deleteInvoiceDetail(Long id);
     Double totalBetAmount(Long invoiceId);
     List<InvoiceDetailDto> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto, Long invoiceId);
-
+    House findHouseByInvoiceid(Long invoiceId);
+    List<InvoiceDetail> getInvoiceByMatchId(Long matchId);
 }

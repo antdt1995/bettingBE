@@ -2,6 +2,7 @@ package com.axonactive.personalproject.rest;
 
 import com.axonactive.personalproject.rest.admin.HouseApi;
 import com.axonactive.personalproject.service.HouseService;
+import com.axonactive.personalproject.service.customDto.AccountAndTotalBet;
 import com.axonactive.personalproject.service.dto.HouseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,5 +49,15 @@ public class HouseResources implements HouseApi {
     public ResponseEntity<HouseDto> updateHouse(HouseDto houseDto, Long id) {
         log.debug("--> Request update house");
         return ResponseEntity.ok().body(houseService.updateHouse(houseDto,id));
+    }
+
+    @Override
+    public ResponseEntity<List<AccountAndTotalBet>> findWinAccountByMatchId(Long matchId) {
+        return ResponseEntity.ok(houseService.findWinAccountByMatchId(matchId));
+    }
+
+    @Override
+    public ResponseEntity<List<AccountAndTotalBet>> findLoseAccountByMatchId(Long matchId) {
+        return ResponseEntity.ok(houseService.findLoseAccountByMatchId(matchId));
     }
 }

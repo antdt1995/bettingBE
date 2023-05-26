@@ -24,13 +24,7 @@ import java.util.List;
 public class FootBallMatchImpl implements FootBallMatchService {
     private final FootballMatchRepository footballMatchRepository;
     private final FootBallTeamService footBallTeamService;
-    private final HouseImpl house;
-
-    private static void exception(FootballMatchDto footballMatchDto) {
-        if (footballMatchDto.getAwayScore() < 0 || footballMatchDto.getHomeScore() < 0 || footballMatchDto.getTotalScore() < 0) {
-            throw ProjectException.badRequest("EnterScoreError", "Enter score cannot be negative");
-        }
-    }
+    private final HouseServiceImpl houseServiceImpl;
 
     @Override
     public List<FootballMatchCustomDto> findAllFootballMatch() {
@@ -89,23 +83,46 @@ public class FootBallMatchImpl implements FootBallMatchService {
     public FootballMatchDto updateFootballMatch(FootballMatchDto footballMatchDto, Long id) {
         exception(footballMatchDto);
         FootballMatch footballMatch = footballMatchRepository.findById(id).orElseThrow(ProjectException::footballMatchNotFound);
+        setFieldIntoFootballMatch(footballMatchDto, footballMatch);
+        footballMatch = footballMatchRepository.save(footballMatch);
+
+        List<Long> invoiceIds=findInvoiceByMatchId(id);
+        List<Long> houseIds=findHouseByMatchId(id);
+        houseServiceImpl.findWinOverUnderOddId(id);
+
+        for (Long invoiceId : invoiceIds) {
+            houseServiceImpl.calcWin(invoiceId);
+            for (Long houseId : houseIds) {
+                houseServiceImpl.paidInterest(invoiceId, houseId);
+            }
+        }
+        return FootballMatchMapper.INSTANCE.toXDto(footballMatch);
+    }
+
+    @Override
+    public List<Object[]> getAllMatchWithTotalBetBetweenDate(LocalDate fromDate, LocalDate endDate) {
+        return footballMatchRepository.getAllMatchWithTotalBetBetweenDate(fromDate,endDate);
+    }
+
+    @Override
+    public List<Object[]> getAllMatchByTotalBet(LocalDate fromDate, LocalDate endDate, Long input) {
+        return footballMatchRepository.getAllMatchByTotalBet(fromDate,endDate,input);
+    }
+
+    @Override
+    public List<Object[]> getAllMatchByCountTotalBet(LocalDate fromDate, LocalDate endDate, Long input) {
+        return footballMatchRepository.getAllMatchByCountTotalBet(fromDate,endDate,input);
+    }
+
+    private static void setFieldIntoFootballMatch(FootballMatchDto footballMatchDto, FootballMatch footballMatch) {
         footballMatch.setAwayScore(footballMatchDto.getAwayScore());
         footballMatch.setHomeScore(footballMatchDto.getHomeScore());
         footballMatch.setStartDate(footballMatchDto.getStartDate());
         footballMatch.setTotalScore(footballMatchDto.getTotalScore());
-        footballMatch = footballMatchRepository.save(footballMatch);
-        List<Long> invoiceIds=findInvoiceByMatchId(id);
-        List<Long> houseIds=findHouseByMatchId(id);
-        house.findOverUnderOdd(id);
-
-        for (Long invoiceId : invoiceIds) {
-            house.calcWin(invoiceId);
-            for (Long houseId : houseIds) {
-                house.getInterest(invoiceId, houseId);
-            }
-        }
-        return FootballMatchMapper.INSTANCE.toXDto(footballMatch);
-
     }
-
+    private static void exception(FootballMatchDto footballMatchDto) {
+        if (footballMatchDto.getAwayScore() < 0 || footballMatchDto.getHomeScore() < 0 || footballMatchDto.getTotalScore() < 0) {
+            throw ProjectException.badRequest("EnterScoreError", "Enter score cannot be negative");
+        }
+    }
 }

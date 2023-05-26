@@ -1,16 +1,9 @@
 package com.axonactive.personalproject.service.implement;
 
-import com.axonactive.personalproject.entity.Account;
-import com.axonactive.personalproject.entity.Invoice;
-import com.axonactive.personalproject.entity.InvoiceDetail;
-import com.axonactive.personalproject.entity.Odd;
+import com.axonactive.personalproject.entity.*;
 import com.axonactive.personalproject.exception.ProjectException;
-import com.axonactive.personalproject.repository.AccountRepository;
-import com.axonactive.personalproject.repository.InvoiceDetailRepository;
-import com.axonactive.personalproject.repository.InvoiceRepository;
-import com.axonactive.personalproject.repository.OddRepository;
+import com.axonactive.personalproject.repository.*;
 import com.axonactive.personalproject.service.InvoiceDetailService;
-import com.axonactive.personalproject.service.OddService;
 import com.axonactive.personalproject.service.customDto.InvoiceDetailDto;
 import com.axonactive.personalproject.service.mapper.InvoiceDetailMapper;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +25,7 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
     private final InvoiceRepository invoiceRepository;
     private final AccountRepository accountRepository;
     private final OddRepository oddRepository;
+    private final HouseRepository houseRepository;
 
 
     @Override
@@ -49,7 +43,6 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         return InvoiceDetailMapper.INSTANCE.toDto(invoiceDetail);
     }
 
-    //TODO
     @Override
     public void deleteInvoiceDetail(Long id) {
         if (id == null) {
@@ -57,24 +50,34 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         }
         InvoiceDetail invoiceDetail = invoiceDetailRepository.findById(id).orElseThrow(ProjectException::InvoiceDetailNotFound);
         Invoice invoice = invoiceDetail.getInvoice();
-        Account account=invoice.getAccount();
+        Account account = invoice.getAccount();
 
-        //minus invoice total bet
-        Double bet = invoice.getTotalBet() - invoiceDetail.getBetAmount();
-        invoice.setTotalBet(bet);
-        invoiceRepository.save(invoice);
+        //deduct invoice total bet
+        deductInvoiceTotalBet(invoiceDetail, invoice);
 
         //add into account balance
-        Double balance=invoiceDetail.getBetAmount()+account.getTotalBalance();
-        account.setTotalBalance(balance);
-        accountRepository.save(account);
+        addInAccountBalance(invoiceDetail, account);
+
+        //deduct house balance
+        deductHouseBalance(invoiceDetail, invoice);
+
         invoiceDetailRepository.delete(invoiceDetail);
+    }
+
+    @Override
+    public List<InvoiceDetail> getInvoiceByMatchId(Long matchId) {
+        return invoiceDetailRepository.getInvoiceByMatchId(matchId);
     }
 
     //sum bet amount
     @Override
     public Double totalBetAmount(Long invoiceId) {
         return invoiceDetailRepository.totalBetAmount(invoiceId);
+    }
+
+    @Override
+    public House findHouseByInvoiceid(Long invoiceId) {
+        return invoiceDetailRepository.findHouseByInvoiceid(invoiceId);
     }
 
     @Override
@@ -96,13 +99,34 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         }
         invoiceDetailRepository.saveAll(invoiceDetailList);
 
-
         //save total bet into invoice
         Double totalBet = totalBetAmount(invoiceId);
-        invoice.setTotalBet(totalBet);
-        invoiceRepository.save(invoice);
+        calcIntoInvoice(invoice, totalBet);
 
         //calc into account
+        calcIntoAccount(invoice);
+
+        //get and save into house balance
+        calcIntoHouse(invoiceId, totalBet);
+
+        return InvoiceDetailMapper.INSTANCE.toDtos(invoiceDetailList);
+    }
+
+    private void calcIntoInvoice(Invoice invoice, Double totalBet) {
+        if (invoice.getTotalBet() > 0) {
+            throw ProjectException.badRequest("InvalidTransaction", "Transaction not allow");
+        }
+        invoice.setTotalBet(totalBet);
+        invoiceRepository.save(invoice);
+    }
+
+    private void calcIntoHouse(Long invoiceId, Double totalBet) {
+        House house = findHouseByInvoiceid(invoiceId);
+        house.setBalance(house.getBalance() + totalBet);
+        houseRepository.save(house);
+    }
+
+    private void calcIntoAccount(Invoice invoice) {
         Account account = invoice.getAccount();
         if (invoice.getTotalBet() > account.getTotalBalance()) {
             throw ProjectException.badRequest("InvalidValue", "Balance not enough");
@@ -110,9 +134,24 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         Double balance = account.getTotalBalance() - invoice.getTotalBet();
         account.setTotalBalance(balance);
         accountRepository.save(account);
+    }
 
-        return InvoiceDetailMapper.INSTANCE.toDtos(invoiceDetailList);
+    private void deductHouseBalance(InvoiceDetail invoiceDetail, Invoice invoice) {
+        House house = findHouseByInvoiceid(invoice.getId());
+        house.setBalance(house.getBalance() - invoiceDetail.getBetAmount());
+        houseRepository.save(house);
+    }
+
+    private void addInAccountBalance(InvoiceDetail invoiceDetail, Account account) {
+        Double balance = invoiceDetail.getBetAmount() + account.getTotalBalance();
+        account.setTotalBalance(balance);
+        accountRepository.save(account);
 
     }
 
+    private void deductInvoiceTotalBet(InvoiceDetail invoiceDetail, Invoice invoice) {
+        Double bet = invoice.getTotalBet() - invoiceDetail.getBetAmount();
+        invoice.setTotalBet(bet);
+        invoiceRepository.save(invoice);
+    }
 }

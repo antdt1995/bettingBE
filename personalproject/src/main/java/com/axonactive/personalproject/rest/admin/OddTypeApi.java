@@ -2,10 +2,12 @@ package com.axonactive.personalproject.rest.admin;
 
 import com.axonactive.personalproject.service.dto.OddTypeDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RequestMapping("/auth/oddtypes")
+@RequestMapping("/bet/oddtypes")
+@PreAuthorize("hasRole('ADMIN')")
 public interface OddTypeApi {
     @GetMapping
     ResponseEntity<List<OddTypeDto>> getAllOddType();
