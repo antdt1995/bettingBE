@@ -2,6 +2,7 @@ package com.axonactive.personalproject.rest;
 
 import com.axonactive.personalproject.rest.admin.HouseApi;
 import com.axonactive.personalproject.service.HouseService;
+import com.axonactive.personalproject.service.customDto.AccountAndMaxWinInYear;
 import com.axonactive.personalproject.service.customDto.AccountAndTotalBet;
 import com.axonactive.personalproject.service.dto.HouseDto;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -59,5 +61,10 @@ public class HouseResources implements HouseApi {
     @Override
     public ResponseEntity<List<AccountAndTotalBet>> findLoseAccountByMatchId(Long matchId) {
         return ResponseEntity.ok(houseService.findLoseAccountByMatchId(matchId));
+    }
+
+    @Override
+    public ResponseEntity<List<AccountAndMaxWinInYear>> findAccountWinMostMoneyInYear(LocalDate inputYear, Long input, Long matchId) {
+        return ResponseEntity.ok().body(houseService.findAccountWinMostMoneyInYear(inputYear,input,matchId));
     }
 }

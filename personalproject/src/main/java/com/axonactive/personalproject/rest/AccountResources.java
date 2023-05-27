@@ -46,4 +46,13 @@ public class AccountResources implements AccountApi, AccountUserApi {
         return ResponseEntity.ok().body(account);
     }
 
+    @Override
+    public ResponseEntity<List<Object[]>> accountWithMaxBet(Long input) {
+        return ResponseEntity.ok().body(accountService.accountWithMaxBet(input));
+    }
+
+    @Override
+    public ResponseEntity<List<Object[]>> accountWithCountBet(Long input) {
+        return ResponseEntity.ok().body(accountService.accountWithCountBet(input));
+    }
 }

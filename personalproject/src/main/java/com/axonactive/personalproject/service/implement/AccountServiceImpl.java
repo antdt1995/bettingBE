@@ -114,6 +114,16 @@ public class AccountServiceImpl implements AccountService {
         return CustomRegisterMapper.INSTANCE.toDto(account, customer);
     }
 
+    @Override
+    public List<Object[]> accountWithMaxBet(Long input) {
+        return accountRepository.accountWithMaxBet(input);
+    }
+
+    @Override
+    public List<Object[]> accountWithCountBet(Long input) {
+        return accountRepository.accountWithCountBet(input);
+    }
+
     private static Customer getCustomer(CustomRegisterDto customRegisterDto) {
         if (!isAlpha(customRegisterDto.getFirstName()) || !isAlpha(customRegisterDto.getLastName())) {
             throw ProjectException.badRequest("WrongFormatName", "Name should contain only letters");
@@ -127,7 +137,6 @@ public class AccountServiceImpl implements AccountService {
         customer.setPhone(customRegisterDto.getPhone());
         return customer;
     }
-
 
     private void exceptionDto(AccountDto accountDto) {
         if (accountDto.getTotalBalance() < 0) {

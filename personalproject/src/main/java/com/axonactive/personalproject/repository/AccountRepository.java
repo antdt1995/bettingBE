@@ -14,13 +14,20 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     Boolean existsByUserName(String userName);
     Boolean existsByEmail(String email);
 
-    @Query(value = "SELECT a.user_name AS matchId, max(i.id) AS totalBet " +
+    @Query(value = "SELECT a.user_name , max(i.total_bet)  " +
             "FROM account a, invoice i " +
-            "WHERE fm.id = o.match_id " +
-            "AND o.id = id.odd_id " +
+            "WHERE a.id = i.account_id " +
             "GROUP BY a.user_name " +
-            "ORDER BY totalBet DESC " +
+            "ORDER BY max(i.total_bet) DESC " +
             "LIMIT :input", nativeQuery = true)
     List<Object[]> accountWithMaxBet(Long input);
+
+    @Query(value = "SELECT a.user_name , count(i.id)  " +
+            "FROM account a, invoice i " +
+            "WHERE a.id = i.account_id " +
+            "GROUP BY a.user_name " +
+            "ORDER BY count(i.id) DESC " +
+            "LIMIT :input", nativeQuery = true)
+    List<Object[]> accountWithCountBet(Long input);
 
 }

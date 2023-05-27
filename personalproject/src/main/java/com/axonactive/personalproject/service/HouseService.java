@@ -1,8 +1,10 @@
 package com.axonactive.personalproject.service;
 
+import com.axonactive.personalproject.service.customDto.AccountAndMaxWinInYear;
 import com.axonactive.personalproject.service.customDto.AccountAndTotalBet;
 import com.axonactive.personalproject.service.dto.HouseDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface HouseService {
@@ -17,4 +19,5 @@ public interface HouseService {
     void paidInterest(Long invoiceId, Long houseId);
     Double calcWin(Long invoiceId);
     Long findWinOverUnderOddId(Long matchId);
+    List<AccountAndMaxWinInYear> findAccountWinMostMoneyInYear(LocalDate inputYear, Long input, Long matchId);
 }

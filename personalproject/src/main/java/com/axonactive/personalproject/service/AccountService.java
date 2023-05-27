@@ -13,4 +13,6 @@ public interface AccountService {
     void deleteAccount(Long id);
     AccountDto updateAccount(AccountDto accountDto, Long accountId);
     CustomRegisterDto createAccount(CustomRegisterDto customRegisterDto);
+    List<Object[]> accountWithMaxBet(Long input);
+    List<Object[]> accountWithCountBet(Long input);
 }

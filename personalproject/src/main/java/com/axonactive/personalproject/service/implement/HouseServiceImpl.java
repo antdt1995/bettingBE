@@ -7,6 +7,7 @@ import com.axonactive.personalproject.repository.FootballMatchRepository;
 import com.axonactive.personalproject.repository.HouseRepository;
 import com.axonactive.personalproject.repository.InvoiceRepository;
 import com.axonactive.personalproject.service.*;
+import com.axonactive.personalproject.service.customDto.AccountAndMaxWinInYear;
 import com.axonactive.personalproject.service.customDto.AccountAndTotalBet;
 import com.axonactive.personalproject.service.dto.HouseDto;
 import com.axonactive.personalproject.service.mapper.HouseMapper;
@@ -17,9 +18,12 @@ import org.springframework.stereotype.Service;
 import static com.axonactive.personalproject.exception.BooleanMethod.*;
 import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -165,7 +169,6 @@ public class HouseServiceImpl implements HouseService {
 
         }return accountAndTotalBets;
     }
-    //TODO sai logic
     @Override
     public List<AccountAndTotalBet> findLoseAccountByMatchId(Long matchId) {
         List<AccountAndTotalBet> accountAndTotalBets=new ArrayList<>();
@@ -190,6 +193,26 @@ public class HouseServiceImpl implements HouseService {
             }accountAndTotalBets.add(accountAndTotalBet);
 
         }return accountAndTotalBets;
+    }
+
+    @Override
+    public List<AccountAndMaxWinInYear> findAccountWinMostMoneyInYear(LocalDate inputYear, Long input, Long matchId) {
+
+        FootballMatch footballMatch = footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
+        List<InvoiceDetail> invoicesDetail = invoiceDetailService.getInvoiceByMatchId(footballMatch.getId());
+        List<AccountAndMaxWinInYear> accountAndMaxWinInYears = invoicesDetail.stream()
+                .filter(detail -> detail.getInvoice().getBetDate().getYear()== inputYear.getYear())
+                .map(detail -> {
+                    AccountAndMaxWinInYear accountAndMaxWinInYear = new AccountAndMaxWinInYear();
+                    accountAndMaxWinInYear.setAccountId(detail.getInvoice().getAccount().getId());
+                    accountAndMaxWinInYear.setMaxWin(calcWin(detail.getInvoice().getId()));
+                    return accountAndMaxWinInYear;
+                })
+                .distinct()
+                .sorted(Comparator.comparingDouble(AccountAndMaxWinInYear::getMaxWin).reversed())
+                .limit(input)
+                .collect(Collectors.toList());
+        return accountAndMaxWinInYears;
     }
 
     @Override

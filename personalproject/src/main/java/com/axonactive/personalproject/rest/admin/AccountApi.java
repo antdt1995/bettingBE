@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/bet/accounts")
 public interface AccountApi {
@@ -15,6 +16,9 @@ public interface AccountApi {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteAccount(@PathVariable("id") Long id);
 
+    @GetMapping("/maxbet")
+    ResponseEntity<List<Object[]>> accountWithMaxBet(@RequestParam Long input);
 
-
+    @GetMapping("/countbet")
+    ResponseEntity<List<Object[]>> accountWithCountBet(@RequestParam Long input);
 }
