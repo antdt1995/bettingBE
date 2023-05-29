@@ -6,7 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RequestMapping("/bet/users/invoicedetails")
+@RequestMapping("/bet/user/invoicedetails")
 @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 
 public interface InvoiceDetailUserApi {
