@@ -13,7 +13,7 @@ public interface OddService {
     void deleteOddById(Long id);
     OddCustomDto createOdd(OddDto oddDto,Long houseId, Long matchId, Long typeId);
     OddCustomDto updateOdd(OddDto oddDto,Long id);
-    List<Object[]> findOddByMatchId(@Param("matchId") Long matchId);
+    List<OddCustomDto> findOddByMatchId(@Param("matchId") Long matchId);
 
     //for back end only
     Long findWinOddIds(@Param("matchId")Long matchId);

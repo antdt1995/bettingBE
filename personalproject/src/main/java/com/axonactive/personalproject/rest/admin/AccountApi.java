@@ -1,6 +1,9 @@
 package com.axonactive.personalproject.rest.admin;
 
+import com.axonactive.personalproject.service.customDto.AccountWithCountBet;
+import com.axonactive.personalproject.service.customDto.AccountWithMaxBet;
 import com.axonactive.personalproject.service.dto.AccountDto;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +20,8 @@ public interface AccountApi {
     ResponseEntity<Void> deleteAccount(@PathVariable("id") Long id);
 
     @GetMapping("/maxbet")
-    ResponseEntity<List<Object[]>> accountWithMaxBet(@RequestParam Long input);
+    ResponseEntity<List<AccountWithMaxBet>> accountWithMaxBet(@RequestParam int limit, Pageable pageable);
 
     @GetMapping("/countbet")
-    ResponseEntity<List<Object[]>> accountWithCountBet(@RequestParam Long input);
+    ResponseEntity<List<AccountWithCountBet>> accountWithCountBet(@RequestParam int input, Pageable pageable);
 }

@@ -1,6 +1,7 @@
 package com.axonactive.personalproject.repository;
 
 import com.axonactive.personalproject.entity.Odd;
+import com.axonactive.personalproject.service.customDto.OddCustomDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,15 +35,9 @@ public interface OddRepository extends JpaRepository<Odd, Long> {
             "WHERE o.match_id = fm.id AND o.odd_type = ot.id AND fm.id = :matchId AND ot.id = 5 ", nativeQuery = true)
     Long findUnderOddId(@Param("matchId") Long matchId);
 
-    @Query(value = "SELECT o.id  , o.odd_rate , o.set_score , o.end_date , ft.team_name , ot.odd_type " +
-            " FROM football_match fm, odd o , odd_type ot, football_team ft " +
-            "WHERE ft.id=fm.home_team_id and o.odd_type=ot.id and o.match_id = fm.id  AND fm.id = :matchId  ", nativeQuery = true)
-    List<Object[]> findOddByMatchId(@Param("matchId") Long matchId);
+    @Query("SELECT  new com.axonactive.personalproject.service.customDto.OddCustomDto(o.id, ot.name, ft.name, o.oddRate, o.setScore, o.endDate)  " +
+            " FROM FootballMatch fm , FootballTeam ft, Odd o, OddType ot " +
+            "WHERE fm.homeTeam.id = ft.id AND o.footballMatch.id = fm.id AND o.oddType.id = ot.id" +
+            " and fm.id = :matchId  ")
+    List<OddCustomDto> findOddByMatchId(@Param("matchId") Long matchId);
 }
-
-//   "UNION " +
-//            "SELECT o.id FROM football_match fm, odd o, odd_type ot " +
-//            "WHERE o.match_id = fm.id AND o.odd_type = ot.id AND fm.total_score < o.set_score AND ot.id = 4 " +
-//            "UNION " +
-//            "SELECT o.id FROM football_match fm, odd o, odd_type ot " +
-//            "WHERE o.match_id = fm.id AND o.odd_type = ot.id AND fm.total_score > o.set_score AND ot.id = 5)"

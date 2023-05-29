@@ -26,5 +26,5 @@ public interface OddApi {
     ResponseEntity<OddCustomDto> updateOdd(@RequestBody OddDto oddDto, @PathVariable("id") Long id);
 
     @GetMapping("/match/{matchId}")
-    ResponseEntity<List<Object[]>> findOddByMatchId(@PathVariable("matchId") Long matchId);
+    ResponseEntity<List<OddCustomDto>> findOddByMatchId(@PathVariable("matchId") Long matchId);
 }

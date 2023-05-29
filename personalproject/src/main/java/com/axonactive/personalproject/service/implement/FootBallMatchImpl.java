@@ -7,12 +7,16 @@ import com.axonactive.personalproject.service.FootBallMatchService;
 import com.axonactive.personalproject.service.FootBallTeamService;
 
 import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
+import com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet;
+import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
 import com.axonactive.personalproject.service.dto.FootballMatchDto;
 import com.axonactive.personalproject.service.dto.FootballTeamDto;
 import com.axonactive.personalproject.service.mapper.FootballMatchMapper;
 import com.axonactive.personalproject.service.mapper.FootballTeamMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -100,18 +104,18 @@ public class FootBallMatchImpl implements FootBallMatchService {
     }
 
     @Override
-    public List<Object[]> getAllMatchWithTotalBetBetweenDate(LocalDate fromDate, LocalDate endDate) {
+    public List<FootballMatchWithTotalBet> getAllMatchWithTotalBetBetweenDate(LocalDate fromDate, LocalDate endDate) {
         return footballMatchRepository.getAllMatchWithTotalBetBetweenDate(fromDate,endDate);
     }
 
     @Override
-    public List<Object[]> getAllMatchByTotalBet(LocalDate fromDate, LocalDate endDate, Long input) {
-        return footballMatchRepository.getAllMatchByTotalBet(fromDate,endDate,input);
+    public List<FootballMatchWithCountTotalBet> getAllMatchByCountTotalBet(LocalDate fromDate, LocalDate endDate, Pageable pageable) {
+        return footballMatchRepository.getAllMatchByCountTotalBet(fromDate,endDate,pageable);
     }
 
     @Override
-    public List<Object[]> getAllMatchByCountTotalBet(LocalDate fromDate, LocalDate endDate, Long input) {
-        return footballMatchRepository.getAllMatchByCountTotalBet(fromDate,endDate,input);
+    public List<FootballMatchWithTotalBet> getAllMatchByTotalBet(LocalDate fromDate, LocalDate endDate, Pageable pageable) {
+        return footballMatchRepository.getAllMatchByTotalBet(fromDate,endDate,pageable);
     }
 
     private static void setFieldIntoFootballMatch(FootballMatchDto footballMatchDto, FootballMatch footballMatch) {

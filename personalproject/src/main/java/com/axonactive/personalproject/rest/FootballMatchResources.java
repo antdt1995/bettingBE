@@ -5,10 +5,14 @@ import com.axonactive.personalproject.rest.user.FootballMatchUserApi;
 import com.axonactive.personalproject.service.FootBallMatchService;
 import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
 
+import com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet;
+import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
 import com.axonactive.personalproject.service.dto.FootballMatchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,17 +64,19 @@ public class FootballMatchResources implements FootballMatchApi , FootballMatchU
     }
 
     @Override
-    public ResponseEntity<List<Object[]>> getAllMatchWithTotalBetBetweenDate(LocalDate fromDate, LocalDate endDate) {
+    public ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchWithTotalBetBetweenDate(LocalDate fromDate, LocalDate endDate) {
         return ResponseEntity.ok(footBallMatchService.getAllMatchWithTotalBetBetweenDate(fromDate,endDate));
     }
 
     @Override
-    public ResponseEntity<List<Object[]>> getAllMatchByTotalBet(LocalDate fromDate, LocalDate endDate, Long input) {
-        return ResponseEntity.ok(footBallMatchService.getAllMatchByTotalBet(fromDate,endDate,input));
+    public ResponseEntity<List<FootballMatchWithCountTotalBet>> getAllMatchByCountTotalBet(LocalDate fromDate, LocalDate endDate, int limit, Pageable pageable) {
+        pageable = PageRequest.of(0, limit);
+        return ResponseEntity.ok().body(footBallMatchService.getAllMatchByCountTotalBet(fromDate,endDate,pageable));
     }
 
     @Override
-    public ResponseEntity<List<Object[]>> getAllMatchByCountTotalBet(LocalDate fromDate, LocalDate endDate, Long input) {
-        return ResponseEntity.ok(footBallMatchService.getAllMatchByCountTotalBet(fromDate,endDate,input));
+    public ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchByTotalBet(LocalDate fromDate, LocalDate endDate, int limit, Pageable pageable) {
+        pageable = PageRequest.of(0, limit);
+        return ResponseEntity.ok().body(footBallMatchService.getAllMatchByTotalBet(fromDate,endDate,pageable));
     }
 }

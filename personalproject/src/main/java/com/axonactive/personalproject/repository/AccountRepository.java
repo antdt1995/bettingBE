@@ -1,6 +1,9 @@
 package com.axonactive.personalproject.repository;
 
 import com.axonactive.personalproject.entity.Account;
+import com.axonactive.personalproject.service.customDto.AccountWithCountBet;
+import com.axonactive.personalproject.service.customDto.AccountWithMaxBet;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,20 +17,17 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     Boolean existsByUserName(String userName);
     Boolean existsByEmail(String email);
 
-    @Query(value = "SELECT a.user_name , max(i.total_bet)  " +
-            "FROM account a, invoice i " +
-            "WHERE a.id = i.account_id " +
-            "GROUP BY a.user_name " +
-            "ORDER BY max(i.total_bet) DESC " +
-            "LIMIT :input", nativeQuery = true)
-    List<Object[]> accountWithMaxBet(Long input);
+    @Query("SELECT new com.axonactive.personalproject.service.customDto.AccountWithMaxBet (a.userName, MAX(i.totalBet)) " +
+            "FROM Account a ,Invoice i where a.id=i.account.id " +
+            "GROUP BY a.userName " +
+            "ORDER BY MAX(i.totalBet) DESC")
+    List<AccountWithMaxBet> accountWithMaxBet(int limit, Pageable pageable);
 
-    @Query(value = "SELECT a.user_name , count(i.id)  " +
-            "FROM account a, invoice i " +
-            "WHERE a.id = i.account_id " +
-            "GROUP BY a.user_name " +
-            "ORDER BY count(i.id) DESC " +
-            "LIMIT :input", nativeQuery = true)
-    List<Object[]> accountWithCountBet(Long input);
+    @Query("SELECT new com.axonactive.personalproject.service.customDto.AccountWithCountBet (a.userName, count(i.id))  " +
+            "FROM Account a, Invoice i " +
+            "WHERE a.id=i.account.id " +
+            "GROUP BY a.userName " +
+            "ORDER BY count(i.id) DESC ")
+    List<AccountWithCountBet> accountWithCountBet(int limit, Pageable pageable);
 
 }

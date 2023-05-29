@@ -2,6 +2,9 @@ package com.axonactive.personalproject.repository;
 
 
 import com.axonactive.personalproject.entity.FootballMatch;
+import com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet;
+import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,29 +23,34 @@ public interface FootballMatchRepository extends JpaRepository<FootballMatch,Lon
             "WHERE o.match_id = fm.id AND h.id=o.house_id AND fm.id = :matchId ", nativeQuery = true)
     List<Long> findHouseByMatchId(@Param("matchId") Long matchId);
 
-    @Query(value = "select fm.id, ft.team_name , sum(id.bet_amount) " +
-            "from football_match fm  ,odd o ,invoice_detail id, football_team ft " +
-            "where fm.home_team_id =ft.id   and fm.id =o.match_id and o.id =id.odd_id and fm.start_date between :fromDate and :endDate " +
-            "group by fm.id ,ft.team_name ", nativeQuery = true)
-    List<Object[]> getAllMatchWithTotalBetBetweenDate(@Param("fromDate") LocalDate fromDate, @Param("endDate") LocalDate endDate);
+    @Query("select new com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet(fm.id, ft.name , sum(id.betAmount)) " +
+            "from FootballMatch fm  ,Odd o ,InvoiceDetail id, FootballTeam ft " +
+            "where fm.homeTeam.id =ft.id   and fm.id =o.footballMatch.id and o.id =id.odd.id and fm.startDate between :fromDate and :endDate " +
+            "group by fm.id ,ft.name ")
+    List<FootballMatchWithTotalBet> getAllMatchWithTotalBetBetweenDate(@Param("fromDate") LocalDate fromDate, @Param("endDate") LocalDate endDate);
 
-    @Query(value = "SELECT fm.id AS matchId, SUM(id.bet_amount) AS totalBet " +
-            "FROM football_match fm, odd o, invoice_detail id " +
-            "WHERE fm.id = o.match_id " +
-            "AND o.id = id.odd_id " +
-            "AND fm.start_date BETWEEN :fromDate AND :endDate " +
-            "GROUP BY fm.id " +
-            "ORDER BY totalBet DESC " +
-            "LIMIT :input", nativeQuery = true)
-    List<Object[]> getAllMatchByTotalBet(@Param("fromDate") LocalDate fromDate, @Param("endDate") LocalDate endDate,@Param("input") Long input);
+    @Query("SELECT new com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet(fm.id, ft.name, count(id.betAmount)) " +
+            "FROM FootballMatch fm, Odd o, InvoiceDetail id, FootballTeam ft " +
+            " where  fm.homeTeam.id = ft.id AND fm.id = o.footballMatch.id AND o.id = id.odd.id " +
+            "AND fm.startDate BETWEEN :fromDate AND :endDate " +
+            "GROUP BY fm.id, ft.name " +
+            "ORDER BY count(id.betAmount) DESC")
+    List<FootballMatchWithCountTotalBet> getAllMatchByCountTotalBet(
+            @Param("fromDate") LocalDate fromDate,
+            @Param("endDate") LocalDate endDate,
+            Pageable pageable
+    );
+    @Query("SELECT new com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet(fm.id, ft.name, sum(id.betAmount)) " +
+            "FROM FootballMatch fm, Odd o, InvoiceDetail id, FootballTeam ft " +
+            " where  fm.homeTeam.id = ft.id AND fm.id = o.footballMatch.id AND o.id = id.odd.id " +
+            "AND fm.startDate BETWEEN :fromDate AND :endDate " +
+            "GROUP BY fm.id, ft.name " +
+            "ORDER BY sum(id.betAmount) DESC")
+    List<FootballMatchWithTotalBet> getAllMatchByTotalBet(
+            @Param("fromDate") LocalDate fromDate,
+            @Param("endDate") LocalDate endDate,
+            Pageable pageable
+    );
 
-    @Query(value = "SELECT fm.id AS matchId, count(id.id) AS totalBet " +
-            "FROM football_match fm, odd o, invoice_detail id " +
-            "WHERE fm.id = o.match_id " +
-            "AND o.id = id.odd_id " +
-            "AND fm.start_date BETWEEN :fromDate AND :endDate " +
-            "GROUP BY fm.id " +
-            "ORDER BY totalBet DESC " +
-            "LIMIT :input", nativeQuery = true)
-    List<Object[]> getAllMatchByCountTotalBet(@Param("fromDate") LocalDate fromDate, @Param("endDate") LocalDate endDate,@Param("input") Long input);
+
 }

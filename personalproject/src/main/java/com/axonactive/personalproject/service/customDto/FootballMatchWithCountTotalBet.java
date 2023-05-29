@@ -4,15 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OddCustomDto {
+public class FootballMatchWithCountTotalBet {
     private Long id;
-    private String oddType;
-    private String homeTeamName;
-    private Double oddRate;
-    private Double setScore;
-    private LocalDate endDate;
+    private String teamName;
+    private Long numberOfBet;
 }

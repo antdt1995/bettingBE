@@ -10,7 +10,8 @@ import com.axonactive.personalproject.repository.AccountRoleAssignmentRepository
 import com.axonactive.personalproject.repository.CustomerRepository;
 import com.axonactive.personalproject.service.AccountService;
 import com.axonactive.personalproject.service.InvoiceDetailService;
-import com.axonactive.personalproject.service.OddService;
+import com.axonactive.personalproject.service.customDto.AccountWithCountBet;
+import com.axonactive.personalproject.service.customDto.AccountWithMaxBet;
 import com.axonactive.personalproject.service.customDto.CustomRegisterDto;
 import com.axonactive.personalproject.service.dto.AccountDto;
 import com.axonactive.personalproject.service.mapper.AccountMapper;
@@ -18,6 +19,8 @@ import com.axonactive.personalproject.service.mapper.CustomRegisterMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -115,13 +118,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Object[]> accountWithMaxBet(Long input) {
-        return accountRepository.accountWithMaxBet(input);
+    public List<AccountWithMaxBet> accountWithMaxBet(int limit, Pageable pageable) {
+        pageable = PageRequest.of(0, limit);
+        return accountRepository.accountWithMaxBet(limit,pageable);
     }
 
     @Override
-    public List<Object[]> accountWithCountBet(Long input) {
-        return accountRepository.accountWithCountBet(input);
+    public List<AccountWithCountBet> accountWithCountBet(int limit, Pageable pageable) {
+        pageable = PageRequest.of(0, limit);
+        return accountRepository.accountWithCountBet(limit,pageable);
     }
 
     private static Customer getCustomer(CustomRegisterDto customRegisterDto) {

@@ -3,10 +3,12 @@ package com.axonactive.personalproject.rest;
 import com.axonactive.personalproject.rest.admin.AccountApi;
 import com.axonactive.personalproject.rest.user.AccountUserApi;
 import com.axonactive.personalproject.service.AccountService;
+import com.axonactive.personalproject.service.customDto.AccountWithCountBet;
+import com.axonactive.personalproject.service.customDto.AccountWithMaxBet;
 import com.axonactive.personalproject.service.dto.AccountDto;
-import com.axonactive.personalproject.service.implement.AccountServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,12 +49,13 @@ public class AccountResources implements AccountApi, AccountUserApi {
     }
 
     @Override
-    public ResponseEntity<List<Object[]>> accountWithMaxBet(Long input) {
-        return ResponseEntity.ok().body(accountService.accountWithMaxBet(input));
+    public ResponseEntity<List<AccountWithMaxBet>> accountWithMaxBet(int limit, Pageable pageable) {
+        return ResponseEntity.ok().body(accountService.accountWithMaxBet(limit, pageable));
     }
 
     @Override
-    public ResponseEntity<List<Object[]>> accountWithCountBet(Long input) {
-        return ResponseEntity.ok().body(accountService.accountWithCountBet(input));
+    public ResponseEntity<List<AccountWithCountBet>> accountWithCountBet(int input, Pageable pageable) {
+        return ResponseEntity.ok().body(accountService.accountWithCountBet(input, pageable));
     }
+
 }

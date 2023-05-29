@@ -110,7 +110,7 @@ public class OddImpl implements OddService {
     }
 
     @Override
-    public List<Object[]> findOddByMatchId(Long matchId) {
+    public List<OddCustomDto> findOddByMatchId(Long matchId) {
         FootballMatch footballMatch=footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
         if (matchId == null) {
             throw ProjectException.badRequest("IdInvalid", "Id cannot be null");

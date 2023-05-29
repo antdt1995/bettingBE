@@ -42,11 +42,4 @@ private FootBallMatchService footBallMatchService;
 
     }
 
-    @Test
-    void getAllMatchWithTotalBetBetweenDate() {
-        LocalDate date1= LocalDate.parse("2023-02-02");
-        LocalDate date2=LocalDate.parse("2023-08-02");
-        List<Object[]> i=footBallMatchService.getAllMatchWithTotalBetBetweenDate(date1,date2);
-        i.forEach(out::println);
-    }
 }

@@ -51,7 +51,7 @@ public class OddResources implements OddApi {
     }
 
     @Override
-    public ResponseEntity<List<Object[]>> findOddByMatchId(Long matchId) {
+    public ResponseEntity<List<OddCustomDto>> findOddByMatchId(Long matchId) {
         log.info("Create odd");
         return ResponseEntity.ok(oddService.findOddByMatchId(matchId));
     }
