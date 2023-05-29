@@ -38,13 +38,13 @@ public class Account {
 
     private Boolean active;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
 
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     private String email;
 
-    @Column(name = "user_password")
+    @Column(name = "user_password",nullable = false)
     private String userPassword;
 
     @Column(name = "total_balance")

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@RequestMapping("/bet/houses")
+@RequestMapping("/bet/admin/houses")
 @PreAuthorize("hasRole('ADMIN')")
 public interface HouseApi {
     @GetMapping

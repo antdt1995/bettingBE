@@ -4,14 +4,13 @@ package com.axonactive.personalproject.authenticate;
 import com.axonactive.personalproject.exception.ProjectException;
 import com.axonactive.personalproject.repository.AccountRepository;
 import com.axonactive.personalproject.service.customDto.CustomRegisterDto;
-import com.axonactive.personalproject.service.dto.CustomerDto;
 import com.axonactive.personalproject.service.implement.AccountDetailImpl;
 import com.axonactive.personalproject.jwt.LoginRequest;
 import com.axonactive.personalproject.jwt.JwtResponse;
 import com.axonactive.personalproject.jwt.JwtUtils;
-import com.axonactive.personalproject.service.dto.AccountDto;
+
 import com.axonactive.personalproject.service.implement.AccountServiceImpl;
-import com.axonactive.personalproject.service.implement.CustomerImpl;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
@@ -36,7 +34,6 @@ public class AuthControllerImpl implements AuthController {
     private final AccountServiceImpl accountService;
     private final AccountRepository accountRepository;
     private final JwtUtils jwtUtils;
-    private final PasswordEncoder encoder;
 
 
     @Override

@@ -15,7 +15,7 @@ public class FootballTeam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "team_name",nullable = false)
+    @Column(name = "team_name",nullable = false,unique = true)
     private String name;
     @Column(name = "league")
     private String league;

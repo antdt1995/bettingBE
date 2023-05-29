@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/bet/odds")
+@RequestMapping("/bet/admin/odds")
 @PreAuthorize("hasRole('ADMIN')")
 public interface OddApi {
     @GetMapping

@@ -6,7 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RequestMapping("/bet/oddtypes")
+@RequestMapping("/bet/admin/oddtypes")
 @PreAuthorize("hasRole('ADMIN')")
 public interface OddTypeApi {
     @GetMapping

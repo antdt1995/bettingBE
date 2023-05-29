@@ -5,7 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @PreAuthorize("hasRole('ADMIN')")
-@RequestMapping("/bet/footballteams")
+@RequestMapping("/bet/admin/footballteams")
 public interface FootballTeamApi {
 
     @DeleteMapping("/{id}")

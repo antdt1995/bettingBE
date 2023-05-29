@@ -24,7 +24,7 @@ public class InvoiceDetail {
     @JoinColumn(name = "odd_id",nullable = false)
     private Odd odd;
 
-    @Column(name = "bet_amount")
+    @Column(name = "bet_amount",nullable = false)
     private Double betAmount;
 
 }

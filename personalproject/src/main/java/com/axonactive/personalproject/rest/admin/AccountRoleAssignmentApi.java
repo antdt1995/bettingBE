@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/bet/assign")
+@RequestMapping("/bet/admin/assign")
 @PreAuthorize("hasRole('ADMIN')")
 public interface AccountRoleAssignmentApi {
     @GetMapping

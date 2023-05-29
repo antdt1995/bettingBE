@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @PreAuthorize("hasRole('ADMIN')")
-@RequestMapping("/bet/footballmatchs")
+@RequestMapping("/bet/admin/footballmatchs")
 public interface FootballMatchApi {
 
 

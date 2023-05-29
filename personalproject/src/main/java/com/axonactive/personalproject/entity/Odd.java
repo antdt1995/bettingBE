@@ -31,17 +31,17 @@ public class Odd {
     @JsonIgnore
     private List<InvoiceDetail> invoiceDetails;
 
-    @Column(name = "odd_rate")
+    @Column(name = "odd_rate",nullable = false)
     private Double oddRate;
 
-    @Column(name = "set_score")
+    @Column(name = "set_score",nullable = false)
     private Double setScore;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date",nullable = false)
     private LocalDate endDate;
 
     @ManyToOne
-    @JoinColumn(name = "house_id")
+    @JoinColumn(name = "house_id",nullable = false)
     private House house;
 
 

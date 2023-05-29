@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @PreAuthorize("hasRole('ADMIN')")
-@RequestMapping("/bet/accounts")
+@RequestMapping("/bet/admin/accounts")
 public interface AccountApi {
     @GetMapping
     ResponseEntity<List<AccountDto>> getAllAccount();
