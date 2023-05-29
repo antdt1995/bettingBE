@@ -1,9 +1,7 @@
-package com.axonactive.personalproject.rest;
+package com.axonactive.personalproject.rest.admin;
 
-import com.axonactive.personalproject.rest.admin.FootballMatchApi;
-import com.axonactive.personalproject.rest.user.FootballMatchUserApi;
+import com.axonactive.personalproject.rest.admin.api.FootballMatchApi;
 import com.axonactive.personalproject.service.FootBallMatchService;
-import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
 
 import com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
@@ -23,20 +21,9 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class FootballMatchResources implements FootballMatchApi , FootballMatchUserApi {
+public class FootballMatchResources implements FootballMatchApi {
     private final FootBallMatchService footBallMatchService;
 
-    @Override
-    public ResponseEntity<List<FootballMatchCustomDto>> getAllFootballMatch() {
-        List<FootballMatchCustomDto> footballMatchCustomDto = footBallMatchService.findAllFootballMatch();
-        return ResponseEntity.ok(footballMatchCustomDto);
-    }
-
-    @Override
-    public ResponseEntity<FootballMatchCustomDto> getFootballMatchById(Long id) {
-        FootballMatchCustomDto footballMatchCustomDto = footBallMatchService.findFootballMatchById(id);
-        return ResponseEntity.ok(footballMatchCustomDto);
-    }
 
     @Override
     @DeleteMapping("/{id}")
@@ -56,7 +43,7 @@ public class FootballMatchResources implements FootballMatchApi , FootballMatchU
         return ResponseEntity.created(URI.create("/bet/footballmatchs/" + footballMatchDtos.getId())).body(footballMatchDtos);
     }
 
-
+    @Override
     public ResponseEntity<FootballMatchDto> updateFootballMatch(FootballMatchDto footballMatchDto, Long id) {
         log.debug("--> Request update football match id{}", id);
         FootballMatchDto footballMatchDto1 = footBallMatchService.updateFootballMatch(footballMatchDto, id);
@@ -64,19 +51,14 @@ public class FootballMatchResources implements FootballMatchApi , FootballMatchU
     }
 
     @Override
-    public ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchWithTotalBetBetweenDate(LocalDate fromDate, LocalDate endDate) {
-        return ResponseEntity.ok(footBallMatchService.getAllMatchWithTotalBetBetweenDate(fromDate,endDate));
-    }
-
-    @Override
     public ResponseEntity<List<FootballMatchWithCountTotalBet>> getAllMatchByCountTotalBet(LocalDate fromDate, LocalDate endDate, int limit, Pageable pageable) {
         pageable = PageRequest.of(0, limit);
-        return ResponseEntity.ok().body(footBallMatchService.getAllMatchByCountTotalBet(fromDate,endDate,pageable));
+        return ResponseEntity.ok().body(footBallMatchService.getAllMatchByCountTotalBet(fromDate, endDate, pageable));
     }
 
     @Override
     public ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchByTotalBet(LocalDate fromDate, LocalDate endDate, int limit, Pageable pageable) {
         pageable = PageRequest.of(0, limit);
-        return ResponseEntity.ok().body(footBallMatchService.getAllMatchByTotalBet(fromDate,endDate,pageable));
+        return ResponseEntity.ok().body(footBallMatchService.getAllMatchByTotalBet(fromDate, endDate, pageable));
     }
 }

@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.rest.admin;
+package com.axonactive.personalproject.rest.admin.api;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
 import com.axonactive.personalproject.service.dto.FootballMatchDto;
@@ -26,8 +26,7 @@ public interface FootballMatchApi {
                                                          @PathVariable("awayId") Long awayId);
     @PutMapping("/{id}")
     ResponseEntity<FootballMatchDto> updateFootballMatch(@RequestBody FootballMatchDto footballMatchDto, @PathVariable("id") Long id);
-    @GetMapping("/matchlistbydate")
-    ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchWithTotalBetBetweenDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate);
+
     @GetMapping("/matchlistbycountbet")
     ResponseEntity<List<FootballMatchWithCountTotalBet>> getAllMatchByCountTotalBet(@RequestParam ("fromDate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                                           @RequestParam ("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,

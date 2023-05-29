@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  betting-project:
+    container_name: docker-betting-yml
+    build:
+      dockerfile: Dockerfile
+    volumes:
+      - .m2:/root/.m2
+    ports:
+      - 8099:8080
+    restart: unless-stopped
+    image: betting:latest
+    stdin_open: true
+    tty: true

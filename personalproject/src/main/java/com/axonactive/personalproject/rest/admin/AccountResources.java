@@ -1,7 +1,6 @@
-package com.axonactive.personalproject.rest;
+package com.axonactive.personalproject.rest.admin;
 
-import com.axonactive.personalproject.rest.admin.AccountApi;
-import com.axonactive.personalproject.rest.user.AccountUserApi;
+import com.axonactive.personalproject.rest.admin.api.AccountApi;
 import com.axonactive.personalproject.service.AccountService;
 import com.axonactive.personalproject.service.customDto.AccountWithCountBet;
 import com.axonactive.personalproject.service.customDto.AccountWithMaxBet;
@@ -18,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 
-public class AccountResources implements AccountApi, AccountUserApi {
+public class AccountResources implements AccountApi {
     private final AccountService accountService;
 
     @Override
@@ -26,26 +25,14 @@ public class AccountResources implements AccountApi, AccountUserApi {
         return ResponseEntity.ok().body(accountService.getAllAccount());
     }
 
-    @Override
-    public ResponseEntity<AccountDto> getAccountById( Long id) {
-        AccountDto accountDto = accountService.getAccountById(id);
-        return ResponseEntity.ok().body(accountDto);
-    }
 
     @Override
-    public ResponseEntity<Void> deleteAccount( Long id) {
+    public ResponseEntity<Void> deleteAccount(Long id) {
         log.debug("--> Request Delete account by Id ");
         accountService.deleteAccount(id);
         String message = "Account with ID " + id + " has been successfully deleted.";
         return ResponseEntity.noContent().header("Success", message).build();
 
-    }
-
-    @Override
-    public ResponseEntity<AccountDto> updateAccount( AccountDto accountDto, Long accountId) {
-        log.debug("--> Request Update account ");
-        AccountDto account = accountService.updateAccount(accountDto, accountId);
-        return ResponseEntity.ok().body(account);
     }
 
     @Override

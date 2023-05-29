@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.rest.admin;
+package com.axonactive.personalproject.rest.admin.api;
 import com.axonactive.personalproject.service.dto.FootballTeamDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

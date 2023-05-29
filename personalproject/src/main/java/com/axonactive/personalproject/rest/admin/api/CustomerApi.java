@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.rest.admin;
+package com.axonactive.personalproject.rest.admin.api;
 
 import com.axonactive.personalproject.service.dto.CustomerDto;
 import org.springframework.http.ResponseEntity;

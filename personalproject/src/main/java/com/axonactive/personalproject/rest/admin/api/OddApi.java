@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.rest.admin;
+package com.axonactive.personalproject.rest.admin.api;
 import com.axonactive.personalproject.service.customDto.OddCustomDto;
 import com.axonactive.personalproject.service.dto.OddDto;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/bet/admin/odds")
+@RequestMapping("/bet/admin/odds/")
 @PreAuthorize("hasRole('ADMIN')")
 public interface OddApi {
     @GetMapping
@@ -25,6 +25,5 @@ public interface OddApi {
     @PutMapping("/{id}")
     ResponseEntity<OddCustomDto> updateOdd(@RequestBody OddDto oddDto, @PathVariable("id") Long id);
 
-    @GetMapping("/match/{matchId}")
-    ResponseEntity<List<OddCustomDto>> findOddByMatchId(@PathVariable("matchId") Long matchId);
+
 }

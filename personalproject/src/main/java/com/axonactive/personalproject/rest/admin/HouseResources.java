@@ -1,6 +1,6 @@
-package com.axonactive.personalproject.rest;
+package com.axonactive.personalproject.rest.admin;
 
-import com.axonactive.personalproject.rest.admin.HouseApi;
+import com.axonactive.personalproject.rest.admin.api.HouseApi;
 import com.axonactive.personalproject.service.HouseService;
 import com.axonactive.personalproject.service.customDto.AccountAndMaxWinInYear;
 import com.axonactive.personalproject.service.customDto.AccountAndTotalBet;
@@ -8,7 +8,6 @@ import com.axonactive.personalproject.service.dto.HouseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;

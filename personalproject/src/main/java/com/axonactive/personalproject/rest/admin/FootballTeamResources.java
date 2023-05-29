@@ -1,7 +1,6 @@
-package com.axonactive.personalproject.rest;
+package com.axonactive.personalproject.rest.admin;
 
-import com.axonactive.personalproject.rest.admin.FootballTeamApi;
-import com.axonactive.personalproject.rest.user.FootballTeamUserApi;
+import com.axonactive.personalproject.rest.admin.api.FootballTeamApi;
 import com.axonactive.personalproject.service.FootBallTeamService;
 import com.axonactive.personalproject.service.dto.FootballTeamDto;
 import lombok.RequiredArgsConstructor;
@@ -10,25 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class FootballTeamResources implements FootballTeamApi, FootballTeamUserApi {
+public class FootballTeamResources implements FootballTeamApi {
     private final FootBallTeamService footBallTeamService;
 
-    @Override
-    public ResponseEntity<List<FootballTeamDto>> getAllFootballTeam() {
-        return ResponseEntity.ok(footBallTeamService.getAllFootballTeam());
-    }
-
-    @Override
-    public ResponseEntity<FootballTeamDto> getFootballTeamById(Long id) {
-        FootballTeamDto footballTeamDto = footBallTeamService.getFootballTeamById(id);
-        return ResponseEntity.ok(footballTeamDto);
-    }
 
     @Override
     public ResponseEntity<Void> deleteFootballTeamById(Long id) {

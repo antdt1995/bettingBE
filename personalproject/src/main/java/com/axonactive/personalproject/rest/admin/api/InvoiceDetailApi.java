@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.rest.admin;
+package com.axonactive.personalproject.rest.admin.api;
 
 import com.axonactive.personalproject.service.customDto.InvoiceDetailDto;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/bet/admin/invoicedetail")
+@RequestMapping("/bet/admin/invoicedetails")
 @PreAuthorize("hasRole('ADMIN')")
 public interface InvoiceDetailApi {
     @GetMapping
@@ -16,6 +16,4 @@ public interface InvoiceDetailApi {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteInvoiceDetail(@PathVariable("id") Long id);
 
-    @GetMapping("/win")
-    ResponseEntity<Long> findOverUnderOdd(@RequestParam Long matchId);
 }

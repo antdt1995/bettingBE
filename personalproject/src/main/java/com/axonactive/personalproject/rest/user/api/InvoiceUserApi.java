@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.rest.user;
+package com.axonactive.personalproject.rest.user.api;
 
 import com.axonactive.personalproject.service.dto.InvoiceDto;
 import org.springframework.format.annotation.DateTimeFormat;

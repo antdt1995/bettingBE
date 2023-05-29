@@ -1,12 +1,12 @@
-package com.axonactive.personalproject.rest.user;
+package com.axonactive.personalproject.rest.user.api;
 
 import com.axonactive.personalproject.service.dto.CustomerDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/bet/user/customers/user")
-@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+@RequestMapping("/bet/user/customers")
+@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 
 public interface CustomerUserApi {
     @GetMapping("/{id}")

@@ -1,12 +1,11 @@
-package com.axonactive.personalproject.rest;
+package com.axonactive.personalproject.rest.admin;
 
-import com.axonactive.personalproject.rest.admin.AccountRoleAssignmentApi;
+import com.axonactive.personalproject.rest.admin.api.AccountRoleAssignmentApi;
 import com.axonactive.personalproject.service.customDto.AccountRoleAssignCustomDto;
 import com.axonactive.personalproject.service.implement.AccountRoleAssignmentServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;

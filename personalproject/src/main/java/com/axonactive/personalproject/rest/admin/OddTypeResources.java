@@ -1,12 +1,11 @@
-package com.axonactive.personalproject.rest;
+package com.axonactive.personalproject.rest.admin;
 
-import com.axonactive.personalproject.rest.admin.OddTypeApi;
+import com.axonactive.personalproject.rest.admin.api.OddTypeApi;
 import com.axonactive.personalproject.service.OddTypeService;
 import com.axonactive.personalproject.service.dto.OddTypeDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;

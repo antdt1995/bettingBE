@@ -1,4 +1,4 @@
-package com.axonactive.personalproject.rest.user;
+package com.axonactive.personalproject.rest.user.api;
 
 import com.axonactive.personalproject.service.dto.FootballTeamDto;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RequestMapping("/bet/user/footballteams")
-@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 
 public interface FootballTeamUserApi {
     @GetMapping

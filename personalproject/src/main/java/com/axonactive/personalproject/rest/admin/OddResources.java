@@ -1,7 +1,6 @@
-package com.axonactive.personalproject.rest;
+package com.axonactive.personalproject.rest.admin;
 
-import com.axonactive.personalproject.entity.Odd;
-import com.axonactive.personalproject.rest.admin.OddApi;
+import com.axonactive.personalproject.rest.admin.api.OddApi;
 import com.axonactive.personalproject.service.OddService;
 import com.axonactive.personalproject.service.customDto.OddCustomDto;
 import com.axonactive.personalproject.service.dto.OddDto;
@@ -48,11 +47,5 @@ public class OddResources implements OddApi {
         log.debug("--> Request update odd id {}",id);
         OddCustomDto oddCustomDto=oddService.updateOdd(oddDto,id);
         return ResponseEntity.ok().body(oddCustomDto);
-    }
-
-    @Override
-    public ResponseEntity<List<OddCustomDto>> findOddByMatchId(Long matchId) {
-        log.info("Create odd");
-        return ResponseEntity.ok(oddService.findOddByMatchId(matchId));
     }
 }

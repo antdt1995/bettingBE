@@ -1,38 +1,24 @@
-package com.axonactive.personalproject.rest;
+package com.axonactive.personalproject.rest.user;
 
-import com.axonactive.personalproject.rest.admin.CustomerApi;
-import com.axonactive.personalproject.rest.user.CustomerUserApi;
+import com.axonactive.personalproject.rest.user.api.CustomerUserApi;
 import com.axonactive.personalproject.service.CustomerService;
 import com.axonactive.personalproject.service.dto.CustomerDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 
-public class CustomerResources implements CustomerApi, CustomerUserApi {
+public class CustomerUserResources implements CustomerUserApi {
     private final CustomerService customerService;
-    @Override
-    public ResponseEntity<List<CustomerDto>> getAllCustomer() {
-        return ResponseEntity.ok(customerService.getAllCustomer());
-    }
+
     @Override
     public ResponseEntity<CustomerDto> getCustomerById( Long id) {
         CustomerDto customerDto = customerService.getCustomerById(id);
         return ResponseEntity.ok().body(customerDto);
-    }
-    @Override
-    public ResponseEntity<Void> deleteCustomerById( Long id) {
-        log.debug("--> Request delete customer by id ");
-        customerService.deleteCustomer(id);
-        String message = "Customer with ID " + id + " has been successfully deleted.";
-        return ResponseEntity.noContent().header("Success", message).build();
     }
 
     @Override

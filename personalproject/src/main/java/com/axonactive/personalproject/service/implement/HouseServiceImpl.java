@@ -37,35 +37,7 @@ public class HouseServiceImpl implements HouseService {
     private final InvoiceDetailService invoiceDetailService;
     private final Double HOUSE_WIN = 0.02;
 
-    private static Long getWinUnderOverId(Long totalScore, Long overId, Long underId, Double setScore, Long oddId) {
-        if (setScore == 0.5 || setScore == 1.5 || setScore == 2.5 || setScore == 3.5) {
-            if (totalScore < setScore) {
-                oddId = underId;
-            } else {
-                oddId = overId;
-            }
-        }
-        if (setScore == 1 || setScore == 2 || setScore == 3) {
-            if (totalScore < setScore) {
-                oddId = underId;
-            } else {
-                oddId = overId;
-            }
-        }
-        return oddId;
-    }
 
-    private static void exception(HouseDto houseDto) {
-        if (!isAlphanumeric(houseDto.getName())) {
-            throw ProjectException.badRequest("WrongFormat", "House name should contain only letters and numbers");
-        }
-        if (!isNumeric(houseDto.getBalance())) {
-            throw ProjectException.badRequest("WrongFormat", "Balance should contain only numbers");
-        }
-        if (houseDto.getBalance() <= 0) {
-            throw ProjectException.badRequest("WrongValue", "Balance cannot equal or less than 0");
-        }
-    }
 
     @Override
     public List<HouseDto> getAllHouse() {
@@ -283,6 +255,38 @@ public class HouseServiceImpl implements HouseService {
             account.setTotalBalance(sumWinning);
             accountRepository.save(account);
 
+        }
+    }
+    private static Long getWinUnderOverId(Long totalScore, Long overId, Long underId, Double setScore, Long oddId) {
+        if (setScore == 0.5 || setScore == 1.5 || setScore == 2.5 || setScore == 3.5) {
+            if (totalScore < setScore) {
+                oddId = underId;
+            } else {
+                oddId = overId;
+            }
+        }
+        if (setScore == 1 || setScore == 2 || setScore == 3) {
+            if (totalScore < setScore) {
+                oddId = underId;
+            } else {
+                oddId = overId;
+            }
+        }
+        if(setScore>3.5)    {
+            oddId=null;
+        }
+        return oddId;
+    }
+
+    private static void exception(HouseDto houseDto) {
+        if (!isAlphanumeric(houseDto.getName())) {
+            throw ProjectException.badRequest("WrongFormat", "House name should contain only letters and numbers");
+        }
+        if (!isNumeric(houseDto.getBalance())) {
+            throw ProjectException.badRequest("WrongFormat", "Balance should contain only numbers");
+        }
+        if (houseDto.getBalance() <= 0) {
+            throw ProjectException.badRequest("WrongValue", "Balance cannot equal or less than 0");
         }
     }
 }

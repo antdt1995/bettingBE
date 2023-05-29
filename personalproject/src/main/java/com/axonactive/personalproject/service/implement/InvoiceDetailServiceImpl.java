@@ -87,14 +87,7 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         //build invoice detail
         List<InvoiceDetail> invoiceDetailList = new ArrayList<>();
         for (InvoiceDetailDto detailDto : invoiceDetailDto) {
-            if (detailDto.getBetAmount() <= 0) {
-                throw ProjectException.badRequest("InvalidValue", "Bet cannot negative or equal to 0");
-            }
-            Odd odd = oddRepository.findById(detailDto.getOddId()).orElseThrow(ProjectException::OddNotFound);
-            InvoiceDetail invoiceDetail = new InvoiceDetail();
-            invoiceDetail.setBetAmount(detailDto.getBetAmount());
-            invoiceDetail.setInvoice(invoice);
-            invoiceDetail.setOdd(odd);
+            InvoiceDetail invoiceDetail = getInvoiceDetail(invoice, detailDto);
             invoiceDetailList.add(invoiceDetail);
         }
         invoiceDetailRepository.saveAll(invoiceDetailList);
@@ -110,6 +103,18 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         calcIntoHouse(invoiceId, totalBet);
 
         return InvoiceDetailMapper.INSTANCE.toDtos(invoiceDetailList);
+    }
+
+    private InvoiceDetail getInvoiceDetail(Invoice invoice, InvoiceDetailDto detailDto) {
+        if (detailDto.getBetAmount() <= 0) {
+            throw ProjectException.badRequest("InvalidValue", "Bet cannot negative or equal to 0");
+        }
+        Odd odd = oddRepository.findById(detailDto.getOddId()).orElseThrow(ProjectException::OddNotFound);
+        InvoiceDetail invoiceDetail = new InvoiceDetail();
+        invoiceDetail.setBetAmount(detailDto.getBetAmount());
+        invoiceDetail.setInvoice(invoice);
+        invoiceDetail.setOdd(odd);
+        return invoiceDetail;
     }
 
     private void calcIntoInvoice(Invoice invoice, Double totalBet) {
