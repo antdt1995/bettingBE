@@ -87,20 +87,32 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         //build invoice detail
         List<InvoiceDetail> invoiceDetailList = new ArrayList<>();
         for (InvoiceDetailDto detailDto : invoiceDetailDto) {
-            InvoiceDetail invoiceDetail = getInvoiceDetail(invoice, detailDto);
+            if (detailDto.getBetAmount() <= 0) {
+                throw ProjectException.badRequest("InvalidValue", "Bet cannot negative or equal to 0");
+            }
+            Odd odd = oddRepository.findById(detailDto.getOddId()).orElseThrow(ProjectException::OddNotFound);
+            InvoiceDetail invoiceDetail = new InvoiceDetail();
+            invoiceDetail.setBetAmount(detailDto.getBetAmount());
+            invoiceDetail.setInvoice(invoice);
+            invoiceDetail.setOdd(odd);
             invoiceDetailList.add(invoiceDetail);
         }
         invoiceDetailRepository.saveAll(invoiceDetailList);
 
+
         //save total bet into invoice
         Double totalBet = totalBetAmount(invoiceId);
-        calcIntoInvoice(invoice, totalBet);
+        invoice.setTotalBet(totalBet);
+        invoiceRepository.save(invoice);
 
         //calc into account
-        calcIntoAccount(invoice);
-
-        //get and save into house balance
-        calcIntoHouse(invoiceId, totalBet);
+        Account account = invoice.getAccount();
+        if (invoice.getTotalBet() > account.getTotalBalance()) {
+            throw ProjectException.badRequest("InvalidValue", "Balance not enough");
+        }
+        Double balance = account.getTotalBalance() - invoice.getTotalBet();
+        account.setTotalBalance(balance);
+        accountRepository.save(account);
 
         return InvoiceDetailMapper.INSTANCE.toDtos(invoiceDetailList);
     }

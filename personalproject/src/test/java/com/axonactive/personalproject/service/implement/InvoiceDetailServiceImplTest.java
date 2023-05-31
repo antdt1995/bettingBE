@@ -55,4 +55,5 @@ class InvoiceDetailServiceImplTest {
         assertTrue(createdInvoiceDetailDto.size()==1);
 
     }
+
 }
