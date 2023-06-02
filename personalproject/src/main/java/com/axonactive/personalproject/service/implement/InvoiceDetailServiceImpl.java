@@ -99,13 +99,12 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         }
         invoiceDetailRepository.saveAll(invoiceDetailList);
 
-
         //save total bet into invoice
         Double totalBet = totalBetAmount(invoiceId);
         invoice.setTotalBet(totalBet);
         invoiceRepository.save(invoice);
 
-        //calc into account
+        //save into account
         Account account = invoice.getAccount();
         if (invoice.getTotalBet() > account.getTotalBalance()) {
             throw ProjectException.badRequest("InvalidValue", "Balance not enough");
@@ -113,6 +112,12 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         Double balance = account.getTotalBalance() - invoice.getTotalBet();
         account.setTotalBalance(balance);
         accountRepository.save(account);
+
+        //save into house
+        House house = findHouseByInvoiceid(invoiceId);
+        house.setBalance(house.getBalance() + totalBet);
+        houseRepository.save(house);
+
 
         return InvoiceDetailMapper.INSTANCE.toDtos(invoiceDetailList);
     }
@@ -129,29 +134,7 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         return invoiceDetail;
     }
 
-    private void calcIntoInvoice(Invoice invoice, Double totalBet) {
-        if (invoice.getTotalBet() > 0) {
-            throw ProjectException.badRequest("InvalidTransaction", "Transaction not allow");
-        }
-        invoice.setTotalBet(totalBet);
-        invoiceRepository.save(invoice);
-    }
 
-    private void calcIntoHouse(Long invoiceId, Double totalBet) {
-        House house = findHouseByInvoiceid(invoiceId);
-        house.setBalance(house.getBalance() + totalBet);
-        houseRepository.save(house);
-    }
-
-    private void calcIntoAccount(Invoice invoice) {
-        Account account = invoice.getAccount();
-        if (invoice.getTotalBet() > account.getTotalBalance()) {
-            throw ProjectException.badRequest("InvalidValue", "Balance not enough");
-        }
-        Double balance = account.getTotalBalance() - invoice.getTotalBet();
-        account.setTotalBalance(balance);
-        accountRepository.save(account);
-    }
 
     private void deductHouseBalance(InvoiceDetail invoiceDetail, Invoice invoice) {
         House house = findHouseByInvoiceid(invoice.getId());
