@@ -13,7 +13,7 @@ public interface InvoiceDetailService {
     InvoiceDetailDto getInvoiceDetailById(Long id);
     void deleteInvoiceDetail(Long id);
     Double totalBetAmount(Long invoiceId);
-    List<InvoiceDetailDto> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto, Long invoiceId);
+    List<InvoiceDetailDto> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto, Long accountId);
     House findHouseByInvoiceid(Long invoiceId);
     List<InvoiceDetail> getInvoiceByMatchId(Long matchId);
 }

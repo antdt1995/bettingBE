@@ -11,9 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 
 @Service
@@ -53,13 +54,19 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         Account account = invoice.getAccount();
 
         //deduct invoice total bet
-        deductInvoiceTotalBet(invoiceDetail, invoice);
+        Double bet = invoice.getTotalBet() - invoiceDetail.getBetAmount();
+        invoice.setTotalBet(bet);
+        invoiceRepository.save(invoice);
 
         //add into account balance
-        addInAccountBalance(invoiceDetail, account);
+        Double balance = invoiceDetail.getBetAmount() + account.getTotalBalance();
+        account.setTotalBalance(balance);
+        accountRepository.save(account);
 
         //deduct house balance
-        deductHouseBalance(invoiceDetail, invoice);
+        House house = findHouseByInvoiceid(invoice.getId());
+        house.setBalance(house.getBalance() - invoiceDetail.getBetAmount());
+        houseRepository.save(house);
 
         invoiceDetailRepository.delete(invoiceDetail);
     }
@@ -81,8 +88,13 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
     }
 
     @Override
-    public List<InvoiceDetailDto> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto, Long invoiceId) {
-        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(ProjectException::InvoiceNotFound);
+    public List<InvoiceDetailDto> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto, Long accountId) {
+
+        //create new invoice
+        Invoice invoice=new Invoice();
+        Account account=accountRepository.findById(accountId).orElseThrow(ProjectException::AccountNotFound);
+        invoice.setAccount(account);
+        invoiceRepository.save(invoice);
 
         //build invoice detail
         List<InvoiceDetail> invoiceDetailList = new ArrayList<>();
@@ -91,21 +103,25 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
                 throw ProjectException.badRequest("InvalidValue", "Bet cannot negative or equal to 0");
             }
             Odd odd = oddRepository.findById(detailDto.getOddId()).orElseThrow(ProjectException::OddNotFound);
+            //make sure bet before match start
+            if(odd.getFootballMatch().getStartDate().isBefore(LocalDate.now()))   {
+                throw ProjectException.badRequest("InvalidValue", "Match already occur, cannot be bet");
+            }
             InvoiceDetail invoiceDetail = new InvoiceDetail();
             invoiceDetail.setBetAmount(detailDto.getBetAmount());
             invoiceDetail.setInvoice(invoice);
             invoiceDetail.setOdd(odd);
+            invoiceDetailRepository.save(invoiceDetail);
             invoiceDetailList.add(invoiceDetail);
         }
-        invoiceDetailRepository.saveAll(invoiceDetailList);
+        invoice.setInvoiceDetails(invoiceDetailList);
 
         //save total bet into invoice
-        Double totalBet = totalBetAmount(invoiceId);
+        Double totalBet = totalBetAmount(invoice.getId());
         invoice.setTotalBet(totalBet);
         invoiceRepository.save(invoice);
 
         //save into account
-        Account account = invoice.getAccount();
         if (invoice.getTotalBet() > account.getTotalBalance()) {
             throw ProjectException.badRequest("InvalidValue", "Balance not enough");
         }
@@ -114,44 +130,13 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         accountRepository.save(account);
 
         //save into house
-        House house = findHouseByInvoiceid(invoiceId);
+        House house = findHouseByInvoiceid(invoice.getId());
         house.setBalance(house.getBalance() + totalBet);
         houseRepository.save(house);
-
 
         return InvoiceDetailMapper.INSTANCE.toDtos(invoiceDetailList);
     }
 
-    private InvoiceDetail getInvoiceDetail(Invoice invoice, InvoiceDetailDto detailDto) {
-        if (detailDto.getBetAmount() <= 0) {
-            throw ProjectException.badRequest("InvalidValue", "Bet cannot negative or equal to 0");
-        }
-        Odd odd = oddRepository.findById(detailDto.getOddId()).orElseThrow(ProjectException::OddNotFound);
-        InvoiceDetail invoiceDetail = new InvoiceDetail();
-        invoiceDetail.setBetAmount(detailDto.getBetAmount());
-        invoiceDetail.setInvoice(invoice);
-        invoiceDetail.setOdd(odd);
-        return invoiceDetail;
-    }
 
 
-
-    private void deductHouseBalance(InvoiceDetail invoiceDetail, Invoice invoice) {
-        House house = findHouseByInvoiceid(invoice.getId());
-        house.setBalance(house.getBalance() - invoiceDetail.getBetAmount());
-        houseRepository.save(house);
-    }
-
-    private void addInAccountBalance(InvoiceDetail invoiceDetail, Account account) {
-        Double balance = invoiceDetail.getBetAmount() + account.getTotalBalance();
-        account.setTotalBalance(balance);
-        accountRepository.save(account);
-
-    }
-
-    private void deductInvoiceTotalBet(InvoiceDetail invoiceDetail, Invoice invoice) {
-        Double bet = invoice.getTotalBet() - invoiceDetail.getBetAmount();
-        invoice.setTotalBet(bet);
-        invoiceRepository.save(invoice);
-    }
 }

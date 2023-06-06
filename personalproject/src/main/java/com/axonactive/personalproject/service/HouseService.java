@@ -17,7 +17,7 @@ public interface HouseService {
     List<AccountAndTotalBet> findLoseAccountByMatchId(Long matchId);
 
     void paidInterest(Long invoiceId, Long houseId);
-    Double calcWin(Long invoiceId);
+    Double calcWinAmount(Long invoiceId);
     Long findWinOverUnderOddId(Long matchId);
     List<AccountAndMaxWinInYear> findAccountWinMostMoneyInYear(LocalDate inputYear, Long input, Long matchId);
 }

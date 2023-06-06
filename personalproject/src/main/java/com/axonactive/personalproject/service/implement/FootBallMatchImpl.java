@@ -15,7 +15,6 @@ import com.axonactive.personalproject.service.mapper.FootballMatchMapper;
 import com.axonactive.personalproject.service.mapper.FootballTeamMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -95,7 +94,7 @@ public class FootBallMatchImpl implements FootBallMatchService {
         houseServiceImpl.findWinOverUnderOddId(id);
 
         for (Long invoiceId : invoiceIds) {
-            houseServiceImpl.calcWin(invoiceId);
+            houseServiceImpl.calcWinAmount(invoiceId);
             for (Long houseId : houseIds) {
                 houseServiceImpl.paidInterest(invoiceId, houseId);
             }

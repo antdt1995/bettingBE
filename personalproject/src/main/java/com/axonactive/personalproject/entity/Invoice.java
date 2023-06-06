@@ -30,7 +30,7 @@ public class Invoice {
 
     @Column(name = "total_bet")
     private Double totalBet;
-
+    @CreationTimestamp
     @Column(name ="bet_date",nullable = false)
     private LocalDate betDate;
 }

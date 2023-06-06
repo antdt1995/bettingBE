@@ -37,7 +37,7 @@ public class FootballMatch {
     @Column(name = "total_score")
     private Long totalScore;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
     @OneToMany(mappedBy = "footballMatch", cascade = CascadeType.PERSIST)

@@ -25,10 +25,10 @@ public class InvoiceDetailUserResources implements InvoiceDetailUserApi {
     }
 
     @Override
-    public ResponseEntity<List<InvoiceDetailDto>> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto, Long invoiceId) {
-        log.debug("--> Request create invoice detail{}", invoiceId);
+    public ResponseEntity<List<InvoiceDetailDto>> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto, Long accountId) {
+        log.debug("--> Request create invoice detail{}", accountId);
         log.info("Create invoice detail");
-        List<InvoiceDetailDto> invoiceDetailDtoList = invoiceDetailService.createInvoiceDetail(invoiceDetailDto, invoiceId);
+        List<InvoiceDetailDto> invoiceDetailDtoList = invoiceDetailService.createInvoiceDetail(invoiceDetailDto, accountId);
         List<URI> uris = new ArrayList<>();
         for (InvoiceDetailDto detailDto : invoiceDetailDto) {
             URI uri = URI.create("/bet/invoicedetails/" + detailDto.getId());
