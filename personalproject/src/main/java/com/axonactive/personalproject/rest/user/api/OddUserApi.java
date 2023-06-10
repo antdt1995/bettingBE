@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@RequestMapping("/bet/user/odds")
-@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+@RequestMapping("/public/odds")
 public interface OddUserApi {
     @GetMapping("/match/{matchId}")
     ResponseEntity<List<OddCustomDto>> findOddByMatchId(@PathVariable("matchId") Long matchId);

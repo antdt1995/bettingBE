@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
-@RequestMapping("/bet/user/footballmatchs/")
-@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-
+@RequestMapping("/public/footballmatchs/")
 public interface FootballMatchUserApi {
     @GetMapping
     ResponseEntity<List<FootballMatchCustomDto>> getAllFootballMatch();
