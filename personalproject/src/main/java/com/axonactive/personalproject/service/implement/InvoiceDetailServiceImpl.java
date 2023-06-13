@@ -8,6 +8,8 @@ import com.axonactive.personalproject.service.customDto.InvoiceDetailDto;
 import com.axonactive.personalproject.service.mapper.InvoiceDetailMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -86,13 +88,15 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
     public House findHouseByInvoiceid(Long invoiceId) {
         return invoiceDetailRepository.findHouseByInvoiceid(invoiceId);
     }
-
+    public String getCurrentUsername(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
     @Override
-    public List<InvoiceDetailDto> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto, Long accountId) {
-
+    public List<InvoiceDetailDto> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto) {
         //create new invoice
         Invoice invoice=new Invoice();
-        Account account=accountRepository.findById(accountId).orElseThrow(ProjectException::AccountNotFound);
+        Account account=accountRepository.findByUserName(getCurrentUsername()).orElseThrow(ProjectException::AccountNotFound);
         invoice.setAccount(account);
         invoiceRepository.save(invoice);
 

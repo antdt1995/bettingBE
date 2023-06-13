@@ -12,7 +12,7 @@ public interface AccountService {
     List<AccountDto> getAllAccount();
     AccountDto getAccountById(Long id);
     void deleteAccount(Long id);
-    AccountDto updateAccount(AccountDto accountDto, Long accountId);
+    AccountDto updateAccount(AccountDto accountDto);
     CustomRegisterDto createAccount(CustomRegisterDto customRegisterDto);
     List<AccountWithMaxBet> accountWithMaxBet(int limit, Pageable pageable);
     List<AccountWithCountBet> accountWithCountBet(int limit, Pageable pageable);

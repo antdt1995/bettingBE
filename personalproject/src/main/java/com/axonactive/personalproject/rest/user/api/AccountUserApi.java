@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.*;
 public interface AccountUserApi {
     @GetMapping("/{id}")
     ResponseEntity<AccountDto> getAccountById(@PathVariable("id") Long id);
-    @PutMapping("/{accountId}")
-    ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto accountDto, @PathVariable("accountId") Long accountId);
+    @PutMapping
+    ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto accountDto);
 }

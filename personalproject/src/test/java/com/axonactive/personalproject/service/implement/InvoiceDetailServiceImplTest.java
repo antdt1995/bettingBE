@@ -50,7 +50,7 @@ class InvoiceDetailServiceImplTest {
 
         invoiceDetailDtoList.add(invoiceDetailDto);
 
-        List<InvoiceDetailDto> createdInvoiceDetailDto = invoiceDetailService.createInvoiceDetail(invoiceDetailDtoList, id);
+        List<InvoiceDetailDto> createdInvoiceDetailDto = invoiceDetailService.createInvoiceDetail(invoiceDetailDtoList);
         createdInvoiceDetailDto.forEach(System.out::println);
         assertTrue(createdInvoiceDetailDto.size()==1);
 

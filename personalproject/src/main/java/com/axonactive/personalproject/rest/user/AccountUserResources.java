@@ -24,9 +24,9 @@ public class AccountUserResources implements AccountUserApi {
 
 
     @Override
-    public ResponseEntity<AccountDto> updateAccount( AccountDto accountDto, Long accountId) {
+    public ResponseEntity<AccountDto> updateAccount( AccountDto accountDto) {
         log.debug("--> Request Update account ");
-        AccountDto account = accountService.updateAccount(accountDto, accountId);
+        AccountDto account = accountService.updateAccount(accountDto);
         return ResponseEntity.ok().body(account);
     }
 

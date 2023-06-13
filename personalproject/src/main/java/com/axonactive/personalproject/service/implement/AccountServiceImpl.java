@@ -21,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -70,10 +72,13 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.delete(accounts);
 
     }
-
+    public String getCurrentUsername(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
     @Override
-    public AccountDto updateAccount(AccountDto accountDto, Long accountId) {
-        Account account = accountRepository.findById(accountId).orElseThrow(ProjectException::AccountNotFound);
+    public AccountDto updateAccount(AccountDto accountDto) {
+        Account account = accountRepository.findByUserName(getCurrentUsername()).orElseThrow(ProjectException::AccountNotFound);
 
         //throw exceptions
         exceptionDto(accountDto);
@@ -90,7 +95,16 @@ public class AccountServiceImpl implements AccountService {
     public CustomRegisterDto createAccount(CustomRegisterDto customRegisterDto) {
 
         // build customer
-        Customer customer = getCustomer(customRegisterDto);
+        if (!isAlpha(customRegisterDto.getFirstName()) || !isAlpha(customRegisterDto.getLastName())) {
+            throw ProjectException.badRequest("WrongFormatName", "Name should contain only letters");
+        }
+        if (!isNumberOnly(customRegisterDto.getPhone())) {
+            throw ProjectException.badRequest("WrongFormatPhone", "Phone number should contain only number");
+        }
+        Customer customer = new Customer();
+        customer.setLastName(customRegisterDto.getLastName());
+        customer.setFirstName(customRegisterDto.getFirstName());
+        customer.setPhone(customRegisterDto.getPhone());
         customer = customerRepository.save(customer);
 
         //Throw exceptions
@@ -129,19 +143,6 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.accountWithCountBet(limit,pageable);
     }
 
-    private static Customer getCustomer(CustomRegisterDto customRegisterDto) {
-        if (!isAlpha(customRegisterDto.getFirstName()) || !isAlpha(customRegisterDto.getLastName())) {
-            throw ProjectException.badRequest("WrongFormatName", "Name should contain only letters");
-        }
-        if (!isNumberOnly(customRegisterDto.getPhone())) {
-            throw ProjectException.badRequest("WrongFormatPhone", "Phone number should contain only number");
-        }
-        Customer customer = new Customer();
-        customer.setLastName(customRegisterDto.getLastName());
-        customer.setFirstName(customRegisterDto.getFirstName());
-        customer.setPhone(customRegisterDto.getPhone());
-        return customer;
-    }
 
     private void exceptionDto(AccountDto accountDto) {
         if (accountDto.getTotalBalance() < 0) {

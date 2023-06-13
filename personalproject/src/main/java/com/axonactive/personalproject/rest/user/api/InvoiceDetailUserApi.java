@@ -10,9 +10,8 @@ import java.util.List;
 @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 
 public interface InvoiceDetailUserApi {
-    @PostMapping("/{invoiceId}")
-    ResponseEntity<List<InvoiceDetailDto>> createInvoiceDetail(@RequestBody List<InvoiceDetailDto> invoiceDetailDto
-            , @PathVariable("invoiceId") Long invoiceId);
+    @PostMapping
+    ResponseEntity<List<InvoiceDetailDto>> createInvoiceDetail(@RequestBody List<InvoiceDetailDto> invoiceDetailDto);
     @GetMapping("/{id}")
     ResponseEntity<InvoiceDetailDto> getInvoiceDetailById(@PathVariable("id") Long id);
 }
