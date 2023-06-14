@@ -38,7 +38,6 @@ public class HouseServiceImpl implements HouseService {
     private final Double HOUSE_WIN = 0.02;
 
 
-
     @Override
     public List<HouseDto> getAllHouse() {
         List<House> houses = houseRepository.findAll();
@@ -90,7 +89,8 @@ public class HouseServiceImpl implements HouseService {
     public Long findWinOverUnderOddId(Long matchId) {
 
         // get football match
-        FootballMatch footballMatch = footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
+        FootballMatch footballMatch = footballMatchRepository.findById(matchId)
+                .orElseThrow(ProjectException::footballMatchNotFound);
 
         // get total score
         Long totalScore = footballMatch.getTotalScore();
@@ -107,10 +107,10 @@ public class HouseServiceImpl implements HouseService {
 
             Long oddId = os.getId();
 
-            //check possibility win of odd id under/over with fix set score
+            // check possibility win of odd id under/over with fix set score
             oddId = getWinUnderOverId(totalScore, overId, underId, setScore, oddId);
 
-            // Return the odd ID if it meets your criteria
+            // return the odd ID if it meets your criteria
             if (oddId != null) {
                 return oddId;
             }
@@ -118,6 +118,7 @@ public class HouseServiceImpl implements HouseService {
         // Return null or a default value if no matching odd is found
         return null;
     }
+
     @Override
     public Double calcWinAmount(Long invoiceId) {
         // Get the invoice
@@ -145,7 +146,6 @@ public class HouseServiceImpl implements HouseService {
                 winAmount += bet * oddRate;
             }
         }
-
         return winAmount;
     }
 
@@ -167,7 +167,6 @@ public class HouseServiceImpl implements HouseService {
         // get interest and basic calc
         Double interest = calcWinAmount(invoice.getId());
         if (interest != null) {
-
             //calc house interest
             Double houseWin = interest * HOUSE_WIN;
 
@@ -175,68 +174,72 @@ public class HouseServiceImpl implements HouseService {
             Double lastInterest = interest - houseWin;
 
             //calc sum for account
-            Double sumWinning = balance + lastInterest;
+            Double sumWinning = balance + lastInterest +invoiceBet;
 
             //calc ,set and save into house
-            house.setBalance(houseBalance + houseWin - lastInterest);
+            house.setBalance(houseBalance + houseWin - lastInterest - invoiceBet);
             houseRepository.save(house);
 
             //set and save into account
             account.setTotalBalance(sumWinning);
             accountRepository.save(account);
-
         }
     }
 
     @Override
-    public List<AccountAndTotalBet> findWinAccountByMatchId(Long matchId){
-        List<AccountAndTotalBet> accountAndTotalBets=new ArrayList<>();
+    public List<AccountAndTotalBet> findWinAccountByMatchId(Long matchId) {
+        List<AccountAndTotalBet> accountAndTotalBets = new ArrayList<>();
 
-        FootballMatch footballMatch=footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
+        FootballMatch footballMatch = footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
 
-        Long overUnderOddId=findWinOverUnderOddId(footballMatch.getId());
-        Long oddWinId=oddService.findWinOddIds(footballMatch.getId());
-        List<InvoiceDetail> invoicesDetail=invoiceDetailService.getInvoiceByMatchId(footballMatch.getId());
+        Long overUnderOddId = findWinOverUnderOddId(footballMatch.getId());
+        Long oddWinId = oddService.findWinOddIds(footballMatch.getId());
+        List<InvoiceDetail> invoicesDetail = invoiceDetailService.getInvoiceByMatchId(footballMatch.getId());
 
         Double winAmount = 0.0;
 
-        for(InvoiceDetail detail : invoicesDetail){
-            AccountAndTotalBet accountAndTotalBet=new AccountAndTotalBet();
-            Long oddId=detail.getOdd().getId();
-            Long accId=detail.getInvoice().getAccount().getId();
-            Double oddRate=detail.getOdd().getOddRate();
-            Double bet=detail.getBetAmount();
-            if(Objects.equals(oddId, overUnderOddId) || Objects.equals(oddId, oddWinId)){
+        for (InvoiceDetail detail : invoicesDetail) {
+            AccountAndTotalBet accountAndTotalBet = new AccountAndTotalBet();
+            Long oddId = detail.getOdd().getId();
+            Long accId = detail.getInvoice().getAccount().getId();
+            Double oddRate = detail.getOdd().getOddRate();
+            Double bet = detail.getBetAmount();
+            if (Objects.equals(oddId, overUnderOddId) || Objects.equals(oddId, oddWinId)) {
                 accountAndTotalBet.setAccountId(accId);
                 accountAndTotalBet.setBet(bet * oddRate);
-            }accountAndTotalBets.add(accountAndTotalBet);
+            }
+            accountAndTotalBets.add(accountAndTotalBet);
 
-        }return accountAndTotalBets;
+        }
+        return accountAndTotalBets;
     }
+
     @Override
     public List<AccountAndTotalBet> findLoseAccountByMatchId(Long matchId) {
-        List<AccountAndTotalBet> accountAndTotalBets=new ArrayList<>();
+        List<AccountAndTotalBet> accountAndTotalBets = new ArrayList<>();
 
-        FootballMatch footballMatch=footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
+        FootballMatch footballMatch = footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
 
-        Long overUnderOddId=findWinOverUnderOddId(footballMatch.getId());
-        Long oddWinId=oddService.findWinOddIds(footballMatch.getId());
-        List<InvoiceDetail> invoicesDetail=invoiceDetailService.getInvoiceByMatchId(footballMatch.getId());
+        Long overUnderOddId = findWinOverUnderOddId(footballMatch.getId());
+        Long oddWinId = oddService.findWinOddIds(footballMatch.getId());
+        List<InvoiceDetail> invoicesDetail = invoiceDetailService.getInvoiceByMatchId(footballMatch.getId());
 
         Double loseAmount = 0.0;
 
-        for(InvoiceDetail detail : invoicesDetail){
-            AccountAndTotalBet accountAndTotalBet=new AccountAndTotalBet();
-            Long oddId=detail.getOdd().getId();
-            Long accId=detail.getInvoice().getAccount().getId();
+        for (InvoiceDetail detail : invoicesDetail) {
+            AccountAndTotalBet accountAndTotalBet = new AccountAndTotalBet();
+            Long oddId = detail.getOdd().getId();
+            Long accId = detail.getInvoice().getAccount().getId();
 
-            if(!Objects.equals(oddId, overUnderOddId)  &&  !Objects.equals(oddId, oddWinId)){
+            if (!Objects.equals(oddId, overUnderOddId) && !Objects.equals(oddId, oddWinId)) {
                 accountAndTotalBet.setAccountId(accId);
                 loseAmount = detail.getBetAmount();
                 accountAndTotalBet.setBet(loseAmount);
-            }accountAndTotalBets.add(accountAndTotalBet);
+            }
+            accountAndTotalBets.add(accountAndTotalBet);
 
-        }return accountAndTotalBets;
+        }
+        return accountAndTotalBets;
     }
 
 
@@ -246,7 +249,7 @@ public class HouseServiceImpl implements HouseService {
         FootballMatch footballMatch = footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
         List<InvoiceDetail> invoicesDetail = invoiceDetailService.getInvoiceByMatchId(footballMatch.getId());
         List<AccountAndMaxWinInYear> accountAndMaxWinInYears = invoicesDetail.stream()
-                .filter(detail -> detail.getInvoice().getBetDate().getYear()== inputYear.getYear())
+                .filter(detail -> detail.getInvoice().getBetDate().getYear() == inputYear.getYear())
                 .map(detail -> {
                     AccountAndMaxWinInYear accountAndMaxWinInYear = new AccountAndMaxWinInYear();
                     accountAndMaxWinInYear.setAccountId(detail.getInvoice().getAccount().getId());
@@ -259,6 +262,8 @@ public class HouseServiceImpl implements HouseService {
                 .collect(Collectors.toList());
         return accountAndMaxWinInYears;
     }
+
+    //TODO remove if condition, just need to check whether the bet is over or under by comparing totalScore and SetScore
     private static Long getWinUnderOverId(Long totalScore, Long overId, Long underId, Double setScore, Long oddId) {
         if (setScore == 0.5 || setScore == 1.5 || setScore == 2.5 || setScore == 3.5) {
             if (totalScore < setScore) {
@@ -274,8 +279,8 @@ public class HouseServiceImpl implements HouseService {
                 oddId = overId;
             }
         }
-        if(setScore>3.5)    {
-            oddId=null;
+        if (setScore > 3.5) {
+            oddId = null;
         }
         return oddId;
     }
