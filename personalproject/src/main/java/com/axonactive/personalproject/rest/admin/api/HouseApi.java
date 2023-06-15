@@ -1,7 +1,7 @@
 package com.axonactive.personalproject.rest.admin.api;
 
 import com.axonactive.personalproject.service.customDto.AccountAndMaxWinInYear;
-import com.axonactive.personalproject.service.customDto.AccountAndTotalBet;
+import com.axonactive.personalproject.service.customDto.IdAndTotalBet;
 import com.axonactive.personalproject.service.dto.HouseDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +25,9 @@ public interface HouseApi {
     @PutMapping("/{id}")
     ResponseEntity<HouseDto> updateHouse(@RequestBody HouseDto houseDto,@PathVariable("id") Long id);
     @GetMapping("/accountwinlist")
-    ResponseEntity<List<AccountAndTotalBet>> findWinAccountByMatchId(@RequestParam("matchId") Long matchId);
+    ResponseEntity<List<IdAndTotalBet>> findWinAccountByMatchId(@RequestParam("matchId") Long matchId);
     @GetMapping("/accountloselist")
-    ResponseEntity<List<AccountAndTotalBet>> findLoseAccountByMatchId(@RequestParam("matchId") Long matchId);
+    ResponseEntity<List<IdAndTotalBet>> findLoseAccountByMatchId(@RequestParam("matchId") Long matchId);
     @GetMapping("/accountmostwin")
     ResponseEntity<List<AccountAndMaxWinInYear>> findAccountWinMostMoneyInYear(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate inputYear,
                                                                                @RequestParam Long input,

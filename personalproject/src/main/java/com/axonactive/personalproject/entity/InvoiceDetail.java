@@ -3,8 +3,10 @@ package com.axonactive.personalproject.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -27,4 +29,9 @@ public class InvoiceDetail {
     @Column(name = "bet_amount",nullable = false)
     private Double betAmount;
 
+    @Column(name = "payment_status")
+    private Boolean paymentStatus;
+    @CreationTimestamp
+    @Column(name ="bet_date",nullable = false)
+    private LocalDateTime betDate;
 }

@@ -13,7 +13,7 @@ public class CustomRegisterDto {
     private Long id;
     private String userName;
     @JsonIgnore
-    private String userPassword;
+    private String password;
     private Double totalBalance;
     private String email;
     private String lastName;

@@ -15,9 +15,9 @@ import java.util.List;
 
 @Repository
 public interface FootballMatchRepository extends JpaRepository<FootballMatch,Long> {
-    @Query(value = "SELECT distinct i.id FROM football_match fm, odd o, invoice_detail id, invoice i " +
-            "WHERE o.match_id = fm.id AND id.odd_id = o.id and id.invoice_id = i.id AND fm.id = :matchId ", nativeQuery = true)
-    List<Long> findInvoiceByMatchId(@Param("matchId") Long matchId);
+    @Query(value = "SELECT distinct id.id FROM football_match fm, odd o, invoice_detail id " +
+            "WHERE o.match_id = fm.id AND id.odd_id = o.id AND fm.id = :matchId ", nativeQuery = true)
+    List<Long> findInvoiceDetailByMatchId(@Param("matchId") Long matchId);
 
     @Query(value = "SELECT distinct h.id FROM football_match fm, odd o, house h " +
             "WHERE o.match_id = fm.id AND h.id=o.house_id AND fm.id = :matchId ", nativeQuery = true)

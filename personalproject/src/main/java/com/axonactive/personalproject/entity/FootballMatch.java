@@ -1,12 +1,13 @@
 package com.axonactive.personalproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -37,10 +38,13 @@ public class FootballMatch {
     @Column(name = "total_score")
     private Long totalScore;
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    @Column(name = "start_date",nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startDate;
 
     @OneToMany(mappedBy = "footballMatch", cascade = CascadeType.PERSIST)
     private List<Odd> odds;
+    @Column(name = "complete_status")
+    private Boolean completeStatus;
 
 }

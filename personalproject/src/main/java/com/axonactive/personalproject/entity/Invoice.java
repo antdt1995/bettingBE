@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -30,7 +27,6 @@ public class Invoice {
 
     @Column(name = "total_bet")
     private Double totalBet;
-    @CreationTimestamp
-    @Column(name ="bet_date",nullable = false)
-    private LocalDate betDate;
+
+
 }

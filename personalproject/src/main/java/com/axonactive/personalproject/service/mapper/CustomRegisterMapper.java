@@ -13,7 +13,7 @@ public interface CustomRegisterMapper {
     CustomRegisterMapper INSTANCE= Mappers.getMapper(CustomRegisterMapper.class);
     @Mapping(source = "account.id", target = "id")
     @Mapping(source = "account.userName", target = "userName")
-    @Mapping(source = "account.userPassword", target = "userPassword")
+    @Mapping(source = "account.password", target = "password")
     @Mapping(source = "account.totalBalance", target = "totalBalance")
     @Mapping(source = "account.email", target = "email")
     @Mapping(source = "customer.lastName", target = "lastName")

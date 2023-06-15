@@ -14,5 +14,7 @@ public class CustomerDto {
     private String lastName;
     private String firstName;
     private String phone;
+    private String bankAccount;
+    private String bankName;
 
 }

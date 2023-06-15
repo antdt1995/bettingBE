@@ -21,12 +21,4 @@ public class InvoiceUserResources implements InvoiceUserApi {
         return ResponseEntity.ok(invoiceService.getInvoiceById(id));
     }
 
-
-    @Override
-    public ResponseEntity<InvoiceDto> createInvoice(InvoiceDto invoiceDto, Long accountId) {
-        log.debug("--> Request Create invoice by account id {}",accountId);
-        log.info("create invoice");
-        InvoiceDto invoiceDto1=invoiceService.createInvoice(invoiceDto,accountId);
-        return ResponseEntity.created(URI.create("/bet/invoices/"+invoiceDto.getId())).body(invoiceDto1);
-    }
 }

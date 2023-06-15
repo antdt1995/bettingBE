@@ -37,7 +37,7 @@ public class AccountDetailImpl implements UserDetails {
         return new AccountDetailImpl(
                 account.getId(),
                 account.getUserName(),
-                account.getUserPassword(),
+                account.getPassword(),
                 authorities);
     }
     @Override

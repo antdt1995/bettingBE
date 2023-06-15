@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -38,11 +37,11 @@ public class Odd {
     private Double setScore;
 
     @Column(name = "end_date",nullable = false)
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @ManyToOne
     @JoinColumn(name = "house_id",nullable = false)
     private House house;
 
-
+    private Boolean active;
 }

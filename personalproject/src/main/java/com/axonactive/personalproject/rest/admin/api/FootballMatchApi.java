@@ -1,4 +1,5 @@
 package com.axonactive.personalproject.rest.admin.api;
+import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
 import com.axonactive.personalproject.service.dto.FootballMatchDto;
@@ -21,11 +22,11 @@ public interface FootballMatchApi {
     ResponseEntity<Void> deleteFootballMatchById(@PathVariable("id") Long id);
 
     @PostMapping("/{homeId}/{awayId}")
-    ResponseEntity<FootballMatchDto> createFootballMatch(@RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) FootballMatchDto footballMatchDto,
+    ResponseEntity<FootballMatchCustomDto> createFootballMatch(@RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) FootballMatchDto footballMatchDto,
                                                          @PathVariable("homeId") Long homeId,
                                                          @PathVariable("awayId") Long awayId);
     @PutMapping("/{id}")
-    ResponseEntity<FootballMatchDto> updateFootballMatch(@RequestBody FootballMatchDto footballMatchDto, @PathVariable("id") Long id);
+    ResponseEntity<FootballMatchCustomDto> updateFootballMatch(@RequestBody FootballMatchDto footballMatchDto, @PathVariable("id") Long id);
 
     @GetMapping("/matchlistbycountbet")
     ResponseEntity<List<FootballMatchWithCountTotalBet>> getAllMatchByCountTotalBet(@RequestParam ("fromDate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,

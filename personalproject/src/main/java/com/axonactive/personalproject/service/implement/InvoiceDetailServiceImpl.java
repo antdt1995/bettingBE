@@ -4,6 +4,7 @@ import com.axonactive.personalproject.entity.*;
 import com.axonactive.personalproject.exception.ProjectException;
 import com.axonactive.personalproject.repository.*;
 import com.axonactive.personalproject.service.InvoiceDetailService;
+import com.axonactive.personalproject.service.customDto.IdAndTotalBet;
 import com.axonactive.personalproject.service.customDto.InvoiceDetailDto;
 import com.axonactive.personalproject.service.mapper.InvoiceDetailMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
 
     @Override
     public List<InvoiceDetail> getInvoiceByMatchId(Long matchId) {
-        return invoiceDetailRepository.getInvoiceByMatchId(matchId);
+        return invoiceDetailRepository.getInvoiceDetailByMatchId(matchId);
     }
 
     //sum bet amount
@@ -88,6 +89,12 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
     public House findHouseByInvoiceid(Long invoiceId) {
         return invoiceDetailRepository.findHouseByInvoiceid(invoiceId);
     }
+
+    @Override
+    public List<IdAndTotalBet> totalBetAmountByMatchId(Long matchId) {
+        return invoiceDetailRepository.totalBetAmountByMatchId(matchId);
+    }
+
     public String getCurrentUsername(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
@@ -106,17 +113,26 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
             if (detailDto.getBetAmount() <= 0) {
                 throw ProjectException.badRequest("InvalidValue", "Bet cannot negative or equal to 0");
             }
+
             Odd odd = oddRepository.findById(detailDto.getOddId()).orElseThrow(ProjectException::OddNotFound);
+            LocalDateTime matchDate= odd.getFootballMatch().getStartDate();
             //make sure bet before match start
-            if(odd.getFootballMatch().getStartDate().isBefore(LocalDate.now()))   {
-                throw ProjectException.badRequest("InvalidValue", "Match already occur, cannot be bet");
+            if(odd.getEndDate().isAfter(matchDate))   {
+                throw ProjectException.badRequest("InvalidValue", "Match " + odd.getFootballMatch().getHomeTeam()+ " vs " + odd.getFootballMatch().getAwayTeam()  +" already occur, cannot be bet");
             }
+
+            //create single invoice detail
             InvoiceDetail invoiceDetail = new InvoiceDetail();
             invoiceDetail.setBetAmount(detailDto.getBetAmount());
             invoiceDetail.setInvoice(invoice);
             invoiceDetail.setOdd(odd);
             invoiceDetailRepository.save(invoiceDetail);
+            if (invoiceDetail.getBetDate().isAfter(matchDate)) {
+                throw ProjectException.badRequest("InvalidValue", "Match " + odd.getFootballMatch().getHomeTeam()+ " vs " + odd.getFootballMatch().getAwayTeam()  +" already occur, cannot be bet");
+            }
+            //TODO calculate total bet on Odd for cancel
             invoiceDetailList.add(invoiceDetail);
+
         }
         invoice.setInvoiceDetails(invoiceDetailList);
 

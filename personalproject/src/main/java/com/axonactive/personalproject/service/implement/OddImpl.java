@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -85,7 +86,7 @@ public class OddImpl implements OddService {
     @Override
     public OddCustomDto updateOdd(OddDto oddDto, Long id) {
         Odd odd = new Odd();
-        LocalDate startDate = odd.getFootballMatch().getStartDate();
+        LocalDateTime startDate = odd.getFootballMatch().getStartDate();
         exception(oddDto, startDate);
         odd.setOddRate(oddDto.getOddRate());
         odd.setSetScore(oddDto.getSetScore());
@@ -118,15 +119,18 @@ public class OddImpl implements OddService {
         return oddRepository.findOddByMatchId(footballMatch.getId());
     }
 
-    private static void exception(OddDto oddDto, LocalDate footballMatch) {
-        if (oddDto.getOddRate() < 0) {
-            throw ProjectException.badRequest("WrongValue", "Odd rate cannot negative");
+    private static void exception(OddDto oddDto, LocalDateTime footballMatch) {
+        if (oddDto.getOddRate() < 1) {
+            throw ProjectException.badRequest("WrongValue", "Odd rate must greater than 1");
         }
         if (oddDto.getSetScore() < 0) {
             throw ProjectException.badRequest("WrongValue", "Set score cannot negative");
         }
         if (oddDto.getEndDate().isAfter(footballMatch)) {
             throw ProjectException.badRequest("WrongDate", "End date must be set before or equal football match start date");
+        }
+        if(oddDto.getSetScore()>3.5){
+            throw ProjectException.badRequest("WrongValue", "Set score must be less than 3.5");
         }
     }
 }

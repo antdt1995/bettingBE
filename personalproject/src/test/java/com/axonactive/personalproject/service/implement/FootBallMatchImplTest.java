@@ -9,11 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static java.lang.System.out;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -23,7 +22,7 @@ private FootBallMatchService footBallMatchService;
     @Test
     void findInvoiceByMatchId() {
         Long id=10L;
-        List<Long> i=footBallMatchService.findInvoiceByMatchId(id);
+        List<Long> i=footBallMatchService.findInvoiceDetailByMatchId(id);
         i.forEach(out::println);
     }
 

@@ -59,20 +59,6 @@ public class InvoiceImpl implements InvoiceService {
         invoiceRepository.delete(invoice);
     }
 
-    @Override
-    public InvoiceDto createInvoice(InvoiceDto invoiceDto, Long accountId) {
-        Account account = accountRepository.findById(accountId).orElseThrow(ProjectException::AccountNotFound);
-
-
-        //build invoice
-        Invoice invoice = new Invoice();
-        invoice.setAccount(account);
-        invoice.setBetDate(invoiceDto.getBetDate());
-        invoice = invoiceRepository.save(invoice);
-
-        return InvoiceMapper.INSTANCE.toDto(invoice);
-
-    }
 
 
 }

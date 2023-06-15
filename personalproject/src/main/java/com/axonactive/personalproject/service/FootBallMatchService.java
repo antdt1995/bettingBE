@@ -13,9 +13,9 @@ public interface FootBallMatchService {
     List<FootballMatchCustomDto> findAllFootballMatch();
     FootballMatchCustomDto findFootballMatchById(Long id);
     void deleteFootballMatchById(Long id);
-    FootballMatchDto createFootballMatch(FootballMatchDto footballMatchDto, Long homeId,Long awayId);
-    FootballMatchDto updateFootballMatch(FootballMatchDto footballMatchDto, Long id);
-    List<Long> findInvoiceByMatchId(@Param("matchId") Long matchId);
+    FootballMatchCustomDto createFootballMatch(FootballMatchDto footballMatchDto, Long homeId,Long awayId);
+    FootballMatchCustomDto updateFootballMatch(FootballMatchDto footballMatchDto, Long id);
+    List<Long> findInvoiceDetailByMatchId(@Param("matchId") Long matchId);
     List<Long> findHouseByMatchId(@Param("matchId") Long matchId);
     List<FootballMatchWithTotalBet> getAllMatchWithTotalBetBetweenDate(LocalDate fromDate, LocalDate endDate);
     List<FootballMatchWithTotalBet> getAllMatchByTotalBet(@Param("fromDate") LocalDate fromDate, @Param("endDate") LocalDate endDate, Pageable pageable);

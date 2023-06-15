@@ -9,7 +9,7 @@ public interface InvoiceService {
     List<InvoiceDto> getAllInvoice();
     InvoiceDto getInvoiceById(Long id);
     void deleteInvoice(Long id);
-    InvoiceDto createInvoice(InvoiceDto invoiceDto, Long accountId);
+
 
 
 }

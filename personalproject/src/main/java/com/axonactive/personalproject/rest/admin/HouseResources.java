@@ -3,7 +3,7 @@ package com.axonactive.personalproject.rest.admin;
 import com.axonactive.personalproject.rest.admin.api.HouseApi;
 import com.axonactive.personalproject.service.HouseService;
 import com.axonactive.personalproject.service.customDto.AccountAndMaxWinInYear;
-import com.axonactive.personalproject.service.customDto.AccountAndTotalBet;
+import com.axonactive.personalproject.service.customDto.IdAndTotalBet;
 import com.axonactive.personalproject.service.dto.HouseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,12 +53,12 @@ public class HouseResources implements HouseApi {
     }
 
     @Override
-    public ResponseEntity<List<AccountAndTotalBet>> findWinAccountByMatchId(Long matchId) {
+    public ResponseEntity<List<IdAndTotalBet>> findWinAccountByMatchId(Long matchId) {
         return ResponseEntity.ok(houseService.findWinAccountByMatchId(matchId));
     }
 
     @Override
-    public ResponseEntity<List<AccountAndTotalBet>> findLoseAccountByMatchId(Long matchId) {
+    public ResponseEntity<List<IdAndTotalBet>> findLoseAccountByMatchId(Long matchId) {
         return ResponseEntity.ok(houseService.findLoseAccountByMatchId(matchId));
     }
 

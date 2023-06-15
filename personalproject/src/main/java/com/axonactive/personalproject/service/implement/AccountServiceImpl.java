@@ -86,7 +86,7 @@ public class AccountServiceImpl implements AccountService {
         //Update information
         account.setTotalBalance(accountDto.getTotalBalance());
         account.setUserName(accountDto.getUserName());
-        account.setUserPassword(accountDto.getUserPassword());
+        account.setPassword(accountDto.getUserPassword());
         account = accountRepository.save(account);
         return AccountMapper.INSTANCE.toDto(account);
     }
@@ -117,7 +117,7 @@ public class AccountServiceImpl implements AccountService {
                 .totalBalance(customRegisterDto.getTotalBalance())
                 .customer(customer)
                 .email(customRegisterDto.getEmail())
-                .userPassword(encoder.encode(customRegisterDto.getUserPassword()))
+                .password(encoder.encode(customRegisterDto.getPassword()))
                 .active(active)
                 .build();
         accountRepository.save(account);
@@ -175,7 +175,7 @@ public class AccountServiceImpl implements AccountService {
         if (!isAlphanumeric(customRegisterDto.getUserName())) {
             throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
         }
-        if (!isAlphanumericWithSpecial(customRegisterDto.getUserPassword())) {
+        if (!isAlphanumericWithSpecial(customRegisterDto.getPassword())) {
             throw ProjectException.badRequest("WrongUserPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
         }
         if (accountRepository.existsByUserName(customRegisterDto.getUserName())) {

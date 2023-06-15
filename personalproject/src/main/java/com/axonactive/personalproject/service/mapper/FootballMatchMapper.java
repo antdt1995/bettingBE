@@ -17,10 +17,4 @@ public interface FootballMatchMapper {
     FootballMatchCustomDto toDto(FootballMatch footballMatch);
     List<FootballMatchCustomDto> toDtos(List<FootballMatch> footballMatches);
 
-    FootballMatch toEntity(FootballMatchCustomDto footballMatchCustomDto);
-    List<FootballMatch> toEntities(List<FootballMatchCustomDto> footballMatchCustomDtos);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    FootballMatchDto toXDto(FootballMatch footballMatch);
-    List<FootballMatchDto> toXDtos(List<FootballMatch>footballMatches);
 }

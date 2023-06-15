@@ -1,6 +1,5 @@
 package com.axonactive.personalproject.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +25,9 @@ public class Account {
     @JoinColumn(name = "customer_id",nullable = false)
     private Customer customer;
 
+    @OneToMany(mappedBy = "account",cascade = CascadeType.PERSIST)
+    private List<Transaction> transactionList;
+
     @OneToMany(mappedBy = "account")
     private List<Invoice> invoices;
 
@@ -44,16 +46,16 @@ public class Account {
     @Column(name = "email",unique = true)
     private String email;
 
-    @Column(name = "user_password",nullable = false)
-    private String userPassword;
+    @Column(name = "password",nullable = false)
+    private String password;
 
     @Column(name = "total_balance")
     private Double totalBalance;
 
-    public Account(String userName, String email, String userPassword, Double totalBalance) {
+    public Account(String userName, String email, String password, Double totalBalance) {
         this.userName = userName;
         this.email = email;
-        this.userPassword = userPassword;
+        this.password = password;
         this.totalBalance = totalBalance;
     }
 }

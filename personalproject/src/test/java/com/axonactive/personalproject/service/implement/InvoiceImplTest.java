@@ -19,12 +19,6 @@ class InvoiceImplTest {
 private InvoiceImpl invoice;
     @Test
     void createInvoice() {
-        InvoiceDto invoiceDto=new InvoiceDto();
 
-        LocalDate betDate= LocalDate.parse("2023-05-05");
-        invoiceDto.setBetDate(betDate);
-        Long accId= 2L;
-        InvoiceDto i=invoice.createInvoice(invoiceDto,accId);
-        System.out.println(i);
     }
 }

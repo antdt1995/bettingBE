@@ -3,6 +3,7 @@ package com.axonactive.personalproject.rest.admin;
 import com.axonactive.personalproject.rest.admin.api.FootballMatchApi;
 import com.axonactive.personalproject.service.FootBallMatchService;
 
+import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
 import com.axonactive.personalproject.service.dto.FootballMatchDto;
@@ -35,18 +36,18 @@ public class FootballMatchResources implements FootballMatchApi {
     }
 
     @Override
-    public ResponseEntity<FootballMatchDto> createFootballMatch(FootballMatchDto footballMatchDto,
+    public ResponseEntity<FootballMatchCustomDto> createFootballMatch(FootballMatchDto footballMatchDto,
                                                                 Long homeId,
                                                                 Long awayId) {
         log.debug("--> Request create football match base on home team ");
-        FootballMatchDto footballMatchDtos = footBallMatchService.createFootballMatch(footballMatchDto, homeId, awayId);
+        FootballMatchCustomDto footballMatchDtos = footBallMatchService.createFootballMatch(footballMatchDto, homeId, awayId);
         return ResponseEntity.created(URI.create("/bet/footballmatchs/" + footballMatchDtos.getId())).body(footballMatchDtos);
     }
 
     @Override
-    public ResponseEntity<FootballMatchDto> updateFootballMatch(FootballMatchDto footballMatchDto, Long id) {
+    public ResponseEntity<FootballMatchCustomDto> updateFootballMatch(FootballMatchDto footballMatchDto, Long id) {
         log.debug("--> Request update football match id{}", id);
-        FootballMatchDto footballMatchDto1 = footBallMatchService.updateFootballMatch(footballMatchDto, id);
+        FootballMatchCustomDto footballMatchDto1 = footBallMatchService.updateFootballMatch(footballMatchDto, id);
         return ResponseEntity.ok().body(footballMatchDto1);
     }
 
