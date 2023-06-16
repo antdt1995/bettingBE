@@ -79,6 +79,7 @@ public class FootBallMatchImpl implements FootBallMatchService {
                 .startDate(footballMatchDto.getStartDate())
                 .homeTeam(homeTeam)
                 .awayTeam(awayTeam)
+                .completeStatus(false)
                 .build();
         footballMatch = footballMatchRepository.save(footballMatch);
         return FootballMatchMapper.INSTANCE.toDto(footballMatch);
@@ -100,6 +101,7 @@ public class FootBallMatchImpl implements FootBallMatchService {
         FootballMatch footballMatch = footballMatchRepository.findById(id).orElseThrow(ProjectException::footballMatchNotFound);
         setFieldIntoFootballMatch(footballMatchDto, footballMatch);
         footballMatch = footballMatchRepository.save(footballMatch);
+
         footballMatch.setCompleteStatus(true);
         footballMatch = footballMatchRepository.save(footballMatch);
 

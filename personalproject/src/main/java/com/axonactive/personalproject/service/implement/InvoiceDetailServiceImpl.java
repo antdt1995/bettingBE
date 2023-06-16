@@ -127,6 +127,7 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
             invoiceDetail.setBetAmount(detailDto.getBetAmount());
             invoiceDetail.setInvoice(invoice);
             invoiceDetail.setOdd(odd);
+            invoiceDetail.setPaymentStatus(false);
             invoiceDetailRepository.save(invoiceDetail);
             if (invoiceDetail.getBetDate().isAfter(matchDate)) {
                 throw ProjectException.badRequest("InvalidValue", "Match " + odd.getFootballMatch().getHomeTeam() + " vs " + odd.getFootballMatch().getAwayTeam() + " already occur, cannot be bet");
