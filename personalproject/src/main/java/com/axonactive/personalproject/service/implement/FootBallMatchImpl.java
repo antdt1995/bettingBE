@@ -105,15 +105,6 @@ public class FootBallMatchImpl implements FootBallMatchService {
         footballMatch.setCompleteStatus(true);
         footballMatch = footballMatchRepository.save(footballMatch);
 
-        if(footballMatch.getCompleteStatus()){
-            List<Long> invoiceDetailId = findInvoiceDetailByMatchId(id);
-            for (Long invoiceIdDetail : invoiceDetailId) {
-                houseServiceImpl.calcWinAmount(invoiceIdDetail);
-                houseServiceImpl.paidInterest(invoiceIdDetail);
-            }
-        }
-
-
         return FootballMatchMapper.INSTANCE.toDto(footballMatch);
     }
 

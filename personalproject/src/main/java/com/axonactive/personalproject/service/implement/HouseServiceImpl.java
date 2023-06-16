@@ -185,6 +185,10 @@ public class HouseServiceImpl implements HouseService {
         // get interest and basic calc
         Double interest = calcWinAmount(invoiceDetails.getId());
 
+        if (invoiceDetails.getPaymentStatus()){
+            throw ProjectException.badRequest("PaymentStatus", "Payment status cannot be changed");
+        }
+
         if (interest != null) {
             //calc house interest
             Double houseWin = interest * HOUSE_WIN;
@@ -203,6 +207,18 @@ public class HouseServiceImpl implements HouseService {
             //set status complete transaction
             invoiceDetails.setPaymentStatus(true);
             invoiceDetailRepository.save(invoiceDetails);
+        }
+    }
+
+    @Override
+    public void completePayment(Long matchId) {
+        FootballMatch footballMatch = footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
+        if (footballMatch.getCompleteStatus()) {
+            List<Long> invoiceDetailId = footballMatchRepository.findInvoiceDetailByMatchId(footballMatch.getId());
+            for (Long invoiceIdDetail : invoiceDetailId) {
+                calcWinAmount(invoiceIdDetail);
+                paidInterest(invoiceIdDetail);
+            }
         }
     }
 

@@ -15,7 +15,7 @@ public interface HouseService {
     HouseDto updateHouse(HouseDto houseDto,Long id);
 
     void paidInterest(Long invoiceDetailId);
-
+    void completePayment(Long matchId);
     List<IdAndTotalBet> findWinAccountByMatchId(Long matchId);
     List<IdAndTotalBet> findLoseAccountByMatchId(Long matchId);
     Double calcWinAmount(Long invoiceId);
