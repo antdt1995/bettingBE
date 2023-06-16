@@ -1,6 +1,7 @@
 package com.axonactive.personalproject.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "transaction")
 public class Transaction {
     @Id
@@ -34,4 +36,5 @@ public class Transaction {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    private Boolean complete;
 }

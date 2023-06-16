@@ -7,6 +7,8 @@ public class ProjectException {
     private static final String ACCOUNT_NOT_FOUND_MSG = "Account Not Found";
     private static final String HOUSE_NOT_FOUND_MSG_KEY = "HouseNotExisted";
     private static final String HOUSE_NOT_FOUND_MSG = "House Not Found";
+    private static final String Transaction_NOT_FOUND_MSG_KEY = "TransactionNotExisted";
+    private static final String Transaction_NOT_FOUND_MSG = "Transaction Not Found";
     private static final String ODD_NOT_FOUND_MSG_KEY = "OddNotExisted";
     private static final String ODD_NOT_FOUND_MSG = "Odd Not Found";
     private static final String ODD_TYPE_NOT_FOUND_MSG_KEY = "OddTypeNotExisted";
@@ -64,5 +66,8 @@ public class ProjectException {
 
     public static ResponseException OddTypeNotFound(){
         return notFound(ODD_TYPE_NOT_FOUND_MSG_KEY,ODD_TYPE_NOT_FOUND_MSG);
+    }
+    public static ResponseException TransactionNotFound(){
+        return notFound(Transaction_NOT_FOUND_MSG_KEY,Transaction_NOT_FOUND_MSG);
     }
 }
