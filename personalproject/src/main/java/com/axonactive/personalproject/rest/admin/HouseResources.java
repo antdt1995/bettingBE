@@ -21,6 +21,12 @@ public class HouseResources implements HouseApi {
     private final HouseService houseService;
 
     @Override
+    public ResponseEntity<Void> completePayment(Long matchId) {
+        houseService.completePayment(matchId);
+        return ResponseEntity.accepted().build();
+    }
+
+    @Override
     public ResponseEntity<List<HouseDto>> getAllHouse() {
        log.info("get all house");
         return ResponseEntity.ok(houseService.getAllHouse());

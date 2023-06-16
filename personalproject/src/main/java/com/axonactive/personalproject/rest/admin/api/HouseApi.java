@@ -14,6 +14,8 @@ import java.util.List;
 @RequestMapping("/bet/admin/houses")
 @PreAuthorize("hasRole('ADMIN')")
 public interface HouseApi {
+    @PostMapping("/complete/{matchId}")
+    ResponseEntity<Void> completePayment(Long matchId);
     @GetMapping
     ResponseEntity<List<HouseDto>> getAllHouse();
     @GetMapping("/{id}")
