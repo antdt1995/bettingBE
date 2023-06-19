@@ -112,6 +112,17 @@ public class OddImpl implements OddService {
     }
 
     @Override
+    public List<Double> findTotalBetAmountOfEachOddByMatchID(Long matchId) {
+        List<Double> totalBetAmountOfEachOdd = oddRepository.findTotalBetAmountOfEachOddByMatchID(matchId);
+        for(int i = 0; i < totalBetAmountOfEachOdd.size(); i++){
+            if(totalBetAmountOfEachOdd.get(i) == null){
+                totalBetAmountOfEachOdd.set(i,0.0);
+            }
+        }
+        return totalBetAmountOfEachOdd;
+    }
+
+    @Override
     public List<OddCustomDto> findOddByMatchId(Long matchId) {
         FootballMatch footballMatch=footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
         if (matchId == null) {

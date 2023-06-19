@@ -12,8 +12,9 @@ public class CustomRegisterDto {
     @JsonIgnore
     private Long id;
     private String userName;
-    @JsonIgnore
     private String password;
+    private String bankAccount;
+    private String bankName;
     private Double totalBalance;
     private String email;
     private String lastName;

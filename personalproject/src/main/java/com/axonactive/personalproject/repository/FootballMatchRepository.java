@@ -25,7 +25,10 @@ public interface FootballMatchRepository extends JpaRepository<FootballMatch,Lon
 
     @Query("select new com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet(fm.id, ft.name , sum(id.betAmount)) " +
             "from FootballMatch fm  ,Odd o ,InvoiceDetail id, FootballTeam ft " +
-            "where fm.homeTeam.id =ft.id   and fm.id =o.footballMatch.id and o.id =id.odd.id and fm.startDate between :fromDate and :endDate " +
+            "where fm.homeTeam.id = ft.id " +
+            "and fm.id =o.footballMatch.id " +
+            "and o.id =id.odd.id " +
+            "and fm.startDate between :fromDate and :endDate " +
             "group by fm.id ,ft.name ")
     List<FootballMatchWithTotalBet> getAllMatchWithTotalBetBetweenDate(@Param("fromDate") LocalDate fromDate, @Param("endDate") LocalDate endDate);
 

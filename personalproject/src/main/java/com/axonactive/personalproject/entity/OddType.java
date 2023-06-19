@@ -12,11 +12,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "odd_type")
 public class OddType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "odd_type",nullable = false)
     private String name;
-
 }

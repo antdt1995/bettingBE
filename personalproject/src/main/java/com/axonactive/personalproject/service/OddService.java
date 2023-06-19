@@ -19,4 +19,5 @@ public interface OddService {
     Long findWinOddIds(@Param("matchId")Long matchId);
     Long findOverOddId(@Param("matchId") Long matchId);
     Long findUnderOddId(@Param("matchId") Long matchId);
+    List<Double> findTotalBetAmountOfEachOddByMatchID(@Param("matchId") Long matchId);
 }

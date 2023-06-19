@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -29,6 +30,7 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
     private final AccountRepository accountRepository;
     private final OddRepository oddRepository;
     private final HouseRepository houseRepository;
+    private final FootballMatchRepository footballMatchRepository;
 
 
     @Override
@@ -114,12 +116,14 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
             if (detailDto.getBetAmount() <= 0) {
                 throw ProjectException.badRequest("InvalidValue", "Bet cannot negative or equal to 0");
             }
-
             Odd odd = oddRepository.findById(detailDto.getOddId()).orElseThrow(ProjectException::OddNotFound);
+            if (!odd.getActive()) {
+                throw ProjectException.badRequest("InvalidValue", "Odd is not active");
+            }
             LocalDateTime matchDate = odd.getFootballMatch().getStartDate();
             //make sure bet before match start
             if (odd.getEndDate().isAfter(matchDate)) {
-                throw ProjectException.badRequest("InvalidValue", "Match " + odd.getFootballMatch().getHomeTeam() + " vs " + odd.getFootballMatch().getAwayTeam() + " already occur, cannot be bet");
+                throw ProjectException.badRequest("InvalidValue", "Match " + odd.getFootballMatch().getHomeTeam() + " vs " + odd.getFootballMatch().getAwayTeam() + " already occured, cannot be bet");
             }
 
             //create single invoice detail
@@ -130,11 +134,10 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
             invoiceDetail.setPaymentStatus(false);
             invoiceDetailRepository.save(invoiceDetail);
             if (invoiceDetail.getBetDate().isAfter(matchDate)) {
-                throw ProjectException.badRequest("InvalidValue", "Match " + odd.getFootballMatch().getHomeTeam() + " vs " + odd.getFootballMatch().getAwayTeam() + " already occur, cannot be bet");
+                throw ProjectException.badRequest("InvalidValue", "Match " + odd.getFootballMatch().getHomeTeam() + " vs " + odd.getFootballMatch().getAwayTeam() + " already occured, cannot be bet");
             }
             //TODO calculate total bet on Odd for cancel
             invoiceDetailList.add(invoiceDetail);
-
         }
         invoice.setInvoiceDetails(invoiceDetailList);
 
@@ -151,13 +154,26 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         account.setTotalBalance(balance);
         accountRepository.save(account);
 
+
         //save into house
         House house = findHouseByInvoiceid(invoice.getId());
         house.setBalance(house.getBalance() + totalBet);
         houseRepository.save(house);
 
+        validateOddStatus(invoiceDetailDto);
+
         return InvoiceDetailMapper.INSTANCE.toDtos(invoiceDetailList);
     }
 
-
+    private void validateOddStatus(List<InvoiceDetailDto> invoiceDetailDtos) {
+        for (InvoiceDetailDto dto : invoiceDetailDtos) {
+            Odd odd = oddRepository.findById(dto.getOddId()).orElseThrow(ProjectException::OddNotFound);
+            FootballMatch footballMatch = footballMatchRepository.findById(odd.getFootballMatch().getId()).orElseThrow();
+            double highestTotalBet = Collections.max(oddRepository.findTotalBetAmountOfEachOddByMatchID(footballMatch.getId()));
+            double lowestTotalBet = Collections.min(oddRepository.findTotalBetAmountOfEachOddByMatchID(footballMatch.getId()));
+            if (highestTotalBet / lowestTotalBet > 0.3) {
+                odd.setActive(false);
+            }
+        }
+    }
 }

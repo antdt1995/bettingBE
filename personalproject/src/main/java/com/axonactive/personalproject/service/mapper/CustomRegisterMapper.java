@@ -19,6 +19,8 @@ public interface CustomRegisterMapper {
     @Mapping(source = "customer.lastName", target = "lastName")
     @Mapping(source = "customer.firstName", target = "firstName")
     @Mapping(source = "customer.phone", target = "phone")
+    @Mapping(source = "customer.bankAccount", target = "bankAccount")
+    @Mapping(source = "customer.bankName", target = "bankName")
     CustomRegisterDto toDto(Account account, Customer customer);
 
 }

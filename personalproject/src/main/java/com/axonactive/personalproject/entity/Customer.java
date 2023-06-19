@@ -20,10 +20,10 @@ public class Customer {
     @OneToMany(mappedBy = "customer",cascade = CascadeType.PERSIST)
     private List<Transaction> transactionList;
 
-    @Column(name = "last_name")
-    private String lastName;
     @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
     @Column(name = "phone")
     private String phone;
     @Column(name = "bank_account")

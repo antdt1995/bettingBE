@@ -40,4 +40,59 @@ public interface OddRepository extends JpaRepository<Odd, Long> {
             "WHERE fm.homeTeam.id = ft.id AND o.footballMatch.id = fm.id AND o.oddType.id = ot.id" +
             " and fm.id = :matchId  ")
     List<OddCustomDto> findOddByMatchId(@Param("matchId") Long matchId);
+
+    @Query(value = "SELECT SUM(id.bet_Amount) " +
+            "FROM football_match fm , invoice_detail id, odd o, odd_type ot " +
+            "WHERE o.match_id = fm.id " +
+            "AND o.odd_type = ot.id " +
+            "AND o.id = id.odd_id " +
+            "AND ot.id = 1 " +
+            "AND fm.id = :matchId " +
+            "UNION " +
+            "SELECT SUM(id.bet_Amount) " +
+            "FROM football_match fm , invoice_detail id, odd o, odd_type ot " +
+            "WHERE o.match_id = fm.id " +
+            "AND o.odd_type = ot.id " +
+            "AND o.id = id.odd_id " +
+            "AND ot.id = 2 " +
+            "AND fm.id = :matchId " +
+            "UNION " +
+            "SELECT SUM(id.bet_Amount) " +
+            "FROM football_match fm , invoice_detail id, odd o, odd_type ot " +
+            "WHERE o.match_id = fm.id " +
+            "AND o.odd_type = ot.id " +
+            "AND o.id = id.odd_id " +
+            "AND ot.id = 3 " +
+            "AND fm.id = :matchId " +
+            "UNION " +
+            "SELECT SUM(id.bet_Amount) " +
+            "FROM football_match fm , invoice_detail id, odd o, odd_type ot " +
+            "WHERE o.match_id = fm.id " +
+            "AND o.odd_type = ot.id " +
+            "AND o.id = id.odd_id " +
+            "AND ot.id = 4 " +
+            "AND fm.id = :matchId " +
+            "UNION " +
+            "SELECT SUM(id.bet_Amount) " +
+            "FROM football_match fm , invoice_detail id, odd o, odd_type ot " +
+            "WHERE o.match_id = fm.id " +
+            "AND o.odd_type = ot.id " +
+            "AND o.id = id.odd_id " +
+            "AND ot.id = 5 " +
+            "AND fm.id = :matchId ",nativeQuery = true)
+    List<Double> findTotalBetAmountOfEachOddByMatchID(@Param("matchId") Long matchId);
+
+
+//    @Query(value = "SELECT o.id FROM odd o, football_match fm " +
+//            "WHERE fm.id = o.match_id AND fm.id = :matchId AND o.id IN (" +
+//            "SELECT o.id FROM football_match fm, odd o, odd_type ot " +
+//            "WHERE o.match_id = fm.id AND o.odd_type = ot.id AND fm.home_team_score > fm.away_team_score AND ot.id = 1 " +
+//            "UNION " +
+//            "SELECT o.id FROM football_match fm, odd o, odd_type ot " +
+//            "WHERE o.match_id = fm.id AND o.odd_type = ot.id AND fm.home_team_score = fm.away_team_score AND ot.id = 2 " +
+//            "UNION " +
+//            "SELECT o.id FROM football_match fm, odd o, odd_type ot " +
+//            "WHERE o.match_id = fm.id AND o.odd_type = ot.id AND fm.home_team_score < fm.away_team_score AND ot.id = 3)"
+//            , nativeQuery = true)
+//    List<Long> findWinLoseOddIds(@Param("matchId") Long matchId);
 }

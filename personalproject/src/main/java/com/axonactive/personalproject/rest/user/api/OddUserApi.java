@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -13,4 +14,7 @@ import java.util.List;
 public interface OddUserApi {
     @GetMapping("/match/{matchId}")
     ResponseEntity<List<OddCustomDto>> findOddByMatchId(@PathVariable("matchId") Long matchId);
+
+    @GetMapping("/totalbetamount/{matchId}")
+    ResponseEntity<List<Double>> findTotalBetAmountOfEachOddByMatchID(@PathVariable("matchId") Long matchId);
 }

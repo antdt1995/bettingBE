@@ -18,14 +18,14 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     Boolean existsByEmail(String email);
 
     @Query("SELECT new com.axonactive.personalproject.service.customDto.AccountWithMaxBet (a.userName, MAX(i.totalBet)) " +
-            "FROM Account a ,Invoice i where a.id=i.account.id " +
+            "FROM Account a ,Invoice i where a.id = i.account.id " +
             "GROUP BY a.userName " +
             "ORDER BY MAX(i.totalBet) DESC")
     List<AccountWithMaxBet> accountWithMaxBet(int limit, Pageable pageable);
 
     @Query("SELECT new com.axonactive.personalproject.service.customDto.AccountWithCountBet (a.userName, count(i.id))  " +
             "FROM Account a, Invoice i " +
-            "WHERE a.id=i.account.id " +
+            "WHERE a.id = i.account.id " +
             "GROUP BY a.userName " +
             "ORDER BY count(i.id) DESC ")
     List<AccountWithCountBet> accountWithCountBet(int limit, Pageable pageable);

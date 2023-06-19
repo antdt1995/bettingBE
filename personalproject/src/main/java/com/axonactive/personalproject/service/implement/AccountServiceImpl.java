@@ -105,6 +105,8 @@ public class AccountServiceImpl implements AccountService {
         customer.setLastName(customRegisterDto.getLastName());
         customer.setFirstName(customRegisterDto.getFirstName());
         customer.setPhone(customRegisterDto.getPhone());
+        customer.setBankAccount(customRegisterDto.getBankAccount());
+        customer.setBankName(customRegisterDto.getBankName());
         customer = customerRepository.save(customer);
 
         //Throw exceptions
