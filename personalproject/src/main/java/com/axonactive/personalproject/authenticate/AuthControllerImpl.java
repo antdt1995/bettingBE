@@ -39,11 +39,11 @@ public class AuthControllerImpl implements AuthController {
     @Override
     public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
         if (!accountRepository.existsByUserName(loginRequest.getUserName())) {
-            throw ProjectException.badRequest("WrongValue", "User name or password is wrong");
+            throw ProjectException.badRequest("WrongValue", "Username or password is wrong");
         }
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 

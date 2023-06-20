@@ -1,7 +1,10 @@
 package com.axonactive.personalproject.repository;
 
 
+import com.axonactive.personalproject.entity.Account;
 import com.axonactive.personalproject.entity.FootballMatch;
+import com.axonactive.personalproject.entity.House;
+import com.axonactive.personalproject.entity.InvoiceDetail;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
 import org.springframework.data.domain.Pageable;
@@ -55,5 +58,16 @@ public interface FootballMatchRepository extends JpaRepository<FootballMatch,Lon
             Pageable pageable
     );
 
+    @Query("SELECT a " +
+            "FROM Account a, FootballMatch fm, Odd o, InvoiceDetail id, Invoice i " +
+            "WHERE o.footballMatch.id = fm.id " +
+            "AND o.id = id.odd.id " +
+            "AND id.invoice.id = i.id " +
+            "AND i.account.id = a.id " +
+            "AND fm.id = :matchId" )
+    List<Account> findAccountByMatchId(@Param("matchId") Long matchId);
 
+    @Query("SELECT h " +
+            "from House h")
+    House findHouse();
 }

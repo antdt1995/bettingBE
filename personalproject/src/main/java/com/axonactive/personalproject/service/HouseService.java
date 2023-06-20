@@ -21,4 +21,6 @@ public interface HouseService {
     Double calcWinAmount(Long invoiceId);
     Long findWinOverUnderOddId(Long matchId);
     List<AccountAndMaxWinInYear> findAccountWinMostMoneyInYear(LocalDate inputYear, Long input, Long matchId);
+
+    List<Double> houseMinimumWin(Long matchID);
 }

@@ -2,7 +2,9 @@ package com.axonactive.personalproject.service;
 import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
+import com.axonactive.personalproject.service.dto.AccountDto;
 import com.axonactive.personalproject.service.dto.FootballMatchDto;
+import com.axonactive.personalproject.service.dto.HouseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
@@ -20,5 +22,6 @@ public interface FootBallMatchService {
     List<FootballMatchWithTotalBet> getAllMatchWithTotalBetBetweenDate(LocalDate fromDate, LocalDate endDate);
     List<FootballMatchWithTotalBet> getAllMatchByTotalBet(@Param("fromDate") LocalDate fromDate, @Param("endDate") LocalDate endDate, Pageable pageable);
     List<FootballMatchWithCountTotalBet> getAllMatchByCountTotalBet(@Param("fromDate") LocalDate fromDate, @Param("endDate") LocalDate endDate,Pageable pageable);
-
+    List<AccountDto> findAccountByMatchId(Long matchID);
+    HouseDto findHouse();
 }

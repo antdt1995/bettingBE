@@ -16,6 +16,6 @@ public interface AuthController {
     @PostMapping("/signin")
     ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest);
     @PostMapping("/signup")
-    ResponseEntity<CustomRegisterDto> registerAccount( @RequestBody CustomRegisterDto customRegisterDto);
+    ResponseEntity<CustomRegisterDto> registerAccount(@RequestBody CustomRegisterDto customRegisterDto);
 
 }

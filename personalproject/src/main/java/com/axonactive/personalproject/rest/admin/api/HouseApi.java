@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@RequestMapping("/bet/admin/houses")
-@PreAuthorize("hasRole('ADMIN')")
+//@RequestMapping("/bet/admin/houses")
+//@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping("/public/houses")
 public interface HouseApi {
     @PostMapping("/complete/{matchId}")
     ResponseEntity<Void> completePayment(Long matchId);
@@ -34,4 +35,6 @@ public interface HouseApi {
     ResponseEntity<List<AccountAndMaxWinInYear>> findAccountWinMostMoneyInYear(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate inputYear,
                                                                                @RequestParam Long input,
                                                                                @RequestParam Long matchId);
+    @GetMapping("/housewinbymatchID/{matchId}")
+    ResponseEntity<List<Double>> calcWinAmount(@PathVariable("matchId") Long matchId);
 }
