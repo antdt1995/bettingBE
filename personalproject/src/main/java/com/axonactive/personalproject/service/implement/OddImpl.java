@@ -123,6 +123,13 @@ public class OddImpl implements OddService {
     }
 
     @Override
+    public void deleteOddsByMatchID(List<Long> oddIDs) {
+        for (Long id : oddIDs) {
+            oddRepository.deleteById(id);
+        }
+    }
+
+    @Override
     public List<OddCustomDto> findOddByMatchId(Long matchId) {
         FootballMatch footballMatch=footballMatchRepository.findById(matchId).orElseThrow(ProjectException::footballMatchNotFound);
         if (matchId == null) {

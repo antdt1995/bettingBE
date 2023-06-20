@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(	name = "account")
+@Table(name = "account")
 public class Account {
 
     @Id
@@ -22,18 +22,18 @@ public class Account {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id",nullable = false)
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "account",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST)
     private List<Transaction> transactionList;
 
     @OneToMany(mappedBy = "account")
     private List<Invoice> invoices;
 
 
-    @OneToMany(mappedBy = "account",cascade = CascadeType.PERSIST)
-    private List<AccountRoleAssignment> roles=new ArrayList<>();
+    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST)
+    private List<AccountRoleAssignment> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "account")
     private List<House> house;
@@ -43,10 +43,10 @@ public class Account {
     @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
 
-    @Column(name = "email",unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "total_balance")

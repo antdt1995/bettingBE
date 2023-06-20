@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 
 public interface AccountUserApi {
-    @GetMapping("/{id}")
-    ResponseEntity<AccountDto> getAccountById(@PathVariable("id") Long id);
+    @GetMapping
+    ResponseEntity<AccountDto> getAccountById();
     @PutMapping
     ResponseEntity<AccountDto> updateAccount(@RequestBody AccountDto accountDto);
 }

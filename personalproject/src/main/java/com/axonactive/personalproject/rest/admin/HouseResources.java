@@ -72,4 +72,9 @@ public class HouseResources implements HouseApi {
     public ResponseEntity<List<AccountAndMaxWinInYear>> findAccountWinMostMoneyInYear(LocalDate inputYear, Long input, Long matchId) {
         return ResponseEntity.ok().body(houseService.findAccountWinMostMoneyInYear(inputYear,input,matchId));
     }
+
+    @Override
+    public ResponseEntity<List<Double>> calcWinAmount(Long matchId) {
+        return ResponseEntity.ok(houseService.houseMinimumWin(matchId));
+    }
 }

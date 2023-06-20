@@ -55,11 +55,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDto getAccountById(Long id) {
-        if (id == null) {
-            throw ProjectException.badRequest("IdInvalid", "Id is invalid, please try another Id");
-        }
-        Account accounts = accountRepository.findById(id).orElseThrow(ProjectException::AccountNotFound);
+    public AccountDto getAccountById() {
+        Account accounts = accountRepository.findByUserName(getCurrentUsername()).orElseThrow(ProjectException::AccountNotFound);
         return AccountMapper.INSTANCE.toDto(accounts);
     }
 
@@ -86,7 +83,7 @@ public class AccountServiceImpl implements AccountService {
         //Update information
         account.setTotalBalance(accountDto.getTotalBalance());
         account.setUserName(accountDto.getUserName());
-        account.setPassword(accountDto.getUserPassword());
+        account.setPassword(accountDto.getPassword());
         account = accountRepository.save(account);
         return AccountMapper.INSTANCE.toDto(account);
     }
@@ -156,7 +153,7 @@ public class AccountServiceImpl implements AccountService {
         if (!isAlphanumeric(accountDto.getUserName())) {
             throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
         }
-        if (!isAlphanumericWithSpecial(accountDto.getUserPassword())) {
+        if (!isAlphanumericWithSpecial(accountDto.getPassword())) {
             throw ProjectException.badRequest("WrongPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
         }
         if (accountRepository.existsByUserName(accountDto.getUserName())) {

@@ -26,7 +26,7 @@ public class Odd {
     @JoinColumn(name = "match_id", nullable = false)
     private FootballMatch footballMatch;
 
-    @OneToMany(mappedBy = "odd")
+    @OneToMany(mappedBy = "odd", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<InvoiceDetail> invoiceDetails;
 

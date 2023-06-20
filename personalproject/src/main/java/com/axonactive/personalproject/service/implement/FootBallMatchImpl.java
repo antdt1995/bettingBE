@@ -2,32 +2,40 @@ package com.axonactive.personalproject.service.implement;
 
 import com.axonactive.personalproject.entity.*;
 import com.axonactive.personalproject.exception.ProjectException;
+import com.axonactive.personalproject.repository.AccountRepository;
 import com.axonactive.personalproject.repository.FootballMatchRepository;
+import com.axonactive.personalproject.repository.InvoiceDetailRepository;
 import com.axonactive.personalproject.service.FootBallMatchService;
 import com.axonactive.personalproject.service.FootBallTeamService;
 
 import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
+import com.axonactive.personalproject.service.dto.AccountDto;
 import com.axonactive.personalproject.service.dto.FootballMatchDto;
 import com.axonactive.personalproject.service.dto.FootballTeamDto;
-import com.axonactive.personalproject.service.mapper.FootballMatchMapper;
-import com.axonactive.personalproject.service.mapper.FootballTeamMapper;
+import com.axonactive.personalproject.service.dto.HouseDto;
+import com.axonactive.personalproject.service.mapper.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class FootBallMatchImpl implements FootBallMatchService {
     private final FootballMatchRepository footballMatchRepository;
     private final FootBallTeamService footBallTeamService;
-    private final HouseServiceImpl houseServiceImpl;
+    private final AccountRepository accountRepository;
+    private final InvoiceDetailServiceImpl invoiceDetailService;
+    private final InvoiceDetailRepository invoiceDetailRepository;
+
 
     private static void setFieldIntoFootballMatch(FootballMatchDto footballMatchDto, FootballMatch footballMatch) {
         footballMatch.setAwayScore(footballMatchDto.getAwayScore());
@@ -60,8 +68,11 @@ public class FootBallMatchImpl implements FootBallMatchService {
     @Override
     public void deleteFootballMatchById(Long id) {
         FootballMatch footballMatch = footballMatchRepository.findById(id).orElseThrow(ProjectException::footballMatchNotFound);
+        returnBetMoneyWhenMatchIsCancelled(id);
         footballMatchRepository.delete(footballMatch);
     }
+
+
 
     @Override
     public FootballMatchCustomDto createFootballMatch(FootballMatchDto footballMatchDto, Long homeTeamId, Long awayTeamId) {
@@ -119,7 +130,32 @@ public class FootBallMatchImpl implements FootBallMatchService {
     }
 
     @Override
+    public List<AccountDto> findAccountByMatchId(Long matchID) {
+        return AccountMapper.INSTANCE.toDtos(footballMatchRepository.findAccountByMatchId(matchID));
+    }
+
+    @Override
+    public HouseDto findHouse() {
+        return HouseMapper.INSTANCE.toDto(footballMatchRepository.findHouse());
+    }
+
+
+    @Override
     public List<FootballMatchWithTotalBet> getAllMatchByTotalBet(LocalDate fromDate, LocalDate endDate, Pageable pageable) {
         return footballMatchRepository.getAllMatchByTotalBet(fromDate, endDate, pageable);
+    }
+
+
+
+
+    private void returnBetMoneyWhenMatchIsCancelled(Long matchID){
+        List<Long> invoiceDetailIDs = footballMatchRepository.findInvoiceDetailByMatchId(matchID);
+        for (Long id : invoiceDetailIDs) {
+            InvoiceDetail invoiceDetail = invoiceDetailRepository.findById(id).orElseThrow();
+            Account account = accountRepository.findById(invoiceDetail.getInvoice().getAccount().getId()).orElseThrow();
+            account.setTotalBalance(account.getTotalBalance() + invoiceDetail.getBetAmount());
+            House house = invoiceDetailService.findHouseByInvoiceid(invoiceDetail.getInvoice().getId());
+            house.setBalance(house.getBalance() - invoiceDetail.getBetAmount());
+        }
     }
 }

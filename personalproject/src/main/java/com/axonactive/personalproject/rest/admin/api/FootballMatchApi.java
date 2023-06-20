@@ -36,4 +36,5 @@ public interface FootballMatchApi {
     ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchByTotalBet(@RequestParam ("fromDate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                                                     @RequestParam ("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                                                                                     @RequestParam ("limit") int limit, Pageable pageable);
+
 }

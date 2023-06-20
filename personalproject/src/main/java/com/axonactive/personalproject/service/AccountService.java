@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface AccountService {
     List<AccountDto> getAllAccount();
-    AccountDto getAccountById(Long id);
+    AccountDto getAccountById();
     void deleteAccount(Long id);
     AccountDto updateAccount(AccountDto accountDto);
     CustomRegisterDto createAccount(CustomRegisterDto customRegisterDto);

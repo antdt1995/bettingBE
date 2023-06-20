@@ -4,6 +4,7 @@ import com.axonactive.personalproject.entity.Account;
 import com.axonactive.personalproject.entity.AccountRoleAssignment;
 import com.axonactive.personalproject.entity.Role;
 import com.axonactive.personalproject.exception.ProjectException;
+import com.axonactive.personalproject.repository.AccountRepository;
 import com.axonactive.personalproject.repository.AccountRoleAssignmentRepository;
 import com.axonactive.personalproject.service.AccountRoleAssignService;
 import com.axonactive.personalproject.service.customDto.AccountRoleAssignCustomDto;
@@ -21,7 +22,7 @@ import java.util.List;
 @Slf4j
 public class AccountRoleAssignmentServiceImpl implements AccountRoleAssignService {
     private final AccountRoleAssignmentRepository accountRoleAssignmentRepository;
-    private final AccountServiceImpl accountService;
+    private final AccountRepository accountRepository;
     @Override
     public List<AccountRoleAssignCustomDto> getAllAssign() {
         List<AccountRoleAssignment> accountRoleAssignments=accountRoleAssignmentRepository.findAll();
@@ -51,8 +52,7 @@ public class AccountRoleAssignmentServiceImpl implements AccountRoleAssignServic
 
     @Override
     public AccountRoleAssignCustomDto createRole(AccountRoleAssignCustomDto accountRoleAssignDto, Long accountId) {
-        AccountDto accountDto=accountService.getAccountById(accountId);
-        Account account= AccountMapper.INSTANCE.toEntity(accountDto);
+        Account account= accountRepository.findById(accountId).orElseThrow(ProjectException::AccountNotFound);
         AccountRoleAssignment assignment = AccountRoleAssignment.builder()
                 .role(Role.valueOf(accountRoleAssignDto.getRole()))
                 .account(account)

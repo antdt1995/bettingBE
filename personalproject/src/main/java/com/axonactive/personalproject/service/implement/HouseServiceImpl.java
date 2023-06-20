@@ -230,11 +230,11 @@ public class HouseServiceImpl implements HouseService {
 
         Long overUnderOddId = findWinOverUnderOddId(footballMatch.getId());
         Long oddWinId = oddService.findWinOddIds(footballMatch.getId());
-        List<InvoiceDetail> invoicesDetail = invoiceDetailService.getInvoiceByMatchId(footballMatch.getId());
+        List<InvoiceDetail> invoiceDetails = invoiceDetailService.getInvoiceByMatchId(footballMatch.getId());
 
         Double winAmount = 0.0;
 
-        for (InvoiceDetail detail : invoicesDetail) {
+        for (InvoiceDetail detail : invoiceDetails) {
             IdAndTotalBet idAndTotalBet = new IdAndTotalBet();
             Long oddId = detail.getOdd().getId();
             Long accId = detail.getInvoice().getAccount().getId();
@@ -296,5 +296,17 @@ public class HouseServiceImpl implements HouseService {
                 .limit(input)
                 .collect(Collectors.toList());
         return accountAndMaxWinInYears;
+    }
+
+    @Override
+    public List<Double> houseMinimumWin(Long matchID) {
+        List<Double> betAmountOfEachOdd = oddService.findTotalBetAmountOfEachOddByMatchID(matchID);
+        for(int i = 0; i < betAmountOfEachOdd.size();i++){
+            if(betAmountOfEachOdd.get(i) == null){
+                betAmountOfEachOdd.set(i, 0.0);
+            }
+            betAmountOfEachOdd.set(i, betAmountOfEachOdd.get(i) * HOUSE_WIN);
+        }
+        return betAmountOfEachOdd;
     }
 }

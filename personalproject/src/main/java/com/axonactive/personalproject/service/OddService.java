@@ -20,4 +20,6 @@ public interface OddService {
     Long findOverOddId(@Param("matchId") Long matchId);
     Long findUnderOddId(@Param("matchId") Long matchId);
     List<Double> findTotalBetAmountOfEachOddByMatchID(@Param("matchId") Long matchId);
+
+    void deleteOddsByMatchID(List<Long> oddIDs);
 }

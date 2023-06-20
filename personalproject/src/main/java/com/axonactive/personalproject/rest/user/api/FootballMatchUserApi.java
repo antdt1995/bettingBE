@@ -2,6 +2,9 @@ package com.axonactive.personalproject.rest.user.api;
 
 import com.axonactive.personalproject.service.customDto.FootballMatchCustomDto;
 import com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet;
+import com.axonactive.personalproject.service.customDto.InvoiceDetailDto;
+import com.axonactive.personalproject.service.dto.AccountDto;
+import com.axonactive.personalproject.service.dto.HouseDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,4 +26,9 @@ public interface FootballMatchUserApi {
     ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchWithTotalBetBetweenDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                                                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate);
 
+    @GetMapping("/betaccountbymatch/{matchId}")
+    ResponseEntity<List<AccountDto>> findAccountByMatchId(@PathVariable("matchId") Long matchId);
+
+    @GetMapping("/gethouse")
+    ResponseEntity<HouseDto> findHouse();
 }

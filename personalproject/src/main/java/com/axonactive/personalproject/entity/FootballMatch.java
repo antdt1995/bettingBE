@@ -38,11 +38,11 @@ public class FootballMatch {
     @Column(name = "total_score")
     private Long totalScore;
 
-    @Column(name = "start_date",nullable = false)
+    @Column(name = "start_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDate;
 
-    @OneToMany(mappedBy = "footballMatch", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "footballMatch", cascade = CascadeType.REMOVE)
     private List<Odd> odds;
     @Column(name = "complete_status")
     private Boolean completeStatus;

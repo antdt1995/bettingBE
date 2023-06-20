@@ -17,8 +17,8 @@ public class AccountUserResources implements AccountUserApi {
 
 
     @Override
-    public ResponseEntity<AccountDto> getAccountById( Long id) {
-        AccountDto accountDto = accountService.getAccountById(id);
+    public ResponseEntity<AccountDto> getAccountById() {
+        AccountDto accountDto = accountService.getAccountById();
         return ResponseEntity.ok().body(accountDto);
     }
 
