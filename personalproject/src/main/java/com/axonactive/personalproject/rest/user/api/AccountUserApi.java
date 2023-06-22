@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/bet/user/accounts")
 @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-
 public interface AccountUserApi {
     @GetMapping
     ResponseEntity<AccountDto> getAccountById();
