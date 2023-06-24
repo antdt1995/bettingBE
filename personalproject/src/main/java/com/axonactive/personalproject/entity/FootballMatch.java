@@ -39,7 +39,7 @@ public class FootballMatch {
     private Long totalScore;
 
     @Column(name = "start_date")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime startDate;
 
     @OneToMany(mappedBy = "footballMatch", cascade = CascadeType.REMOVE)

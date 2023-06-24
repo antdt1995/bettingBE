@@ -17,7 +17,7 @@ public class FootballMatchDto {
     private Long awayScore;
     private Long totalScore;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime startDate;
 
 }

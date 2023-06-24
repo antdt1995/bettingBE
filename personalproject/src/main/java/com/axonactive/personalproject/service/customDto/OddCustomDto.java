@@ -17,6 +17,6 @@ public class OddCustomDto {
     private String homeTeamName;
     private Double oddRate;
     private Double setScore;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endDate;
 }

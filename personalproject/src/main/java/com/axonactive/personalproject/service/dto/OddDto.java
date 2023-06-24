@@ -16,7 +16,7 @@ public class OddDto {
     private Long id;
     private Double oddRate;
     private Double setScore;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endDate;
 
 }

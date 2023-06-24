@@ -144,18 +144,13 @@ public class AccountServiceImpl implements AccountService {
 
 
     private void exceptionDto(AccountDto accountDto) {
-        if (accountDto.getTotalBalance() < 0) {
-            throw ProjectException.badRequest("WrongValue", "Balance cannot equal or less than 0");
-        }
-        if (!isNumeric(accountDto.getTotalBalance())) {
-            throw ProjectException.badRequest("WrongFormatType", "Balance should contain only numbers");
-        }
+
         if (!isAlphanumeric(accountDto.getUserName())) {
             throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
         }
-        if (!isAlphanumericWithSpecial(accountDto.getPassword())) {
-            throw ProjectException.badRequest("WrongPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
-        }
+//        if (!isAlphanumericWithSpecial(accountDto.getPassword())) {
+//            throw ProjectException.badRequest("WrongPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
+//        }
         if (accountRepository.existsByUserName(accountDto.getUserName())) {
             throw ProjectException.badRequest("UserNameExisted", "User name is already taken");
         }
@@ -165,18 +160,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private void exception(CustomRegisterDto customRegisterDto) {
-        if (customRegisterDto.getTotalBalance() <= 0) {
-            throw ProjectException.badRequest("WrongValue", "Balance cannot equal or less than 0");
-        }
-        if (!isNumeric(customRegisterDto.getTotalBalance())) {
-            throw ProjectException.badRequest("WrongFormatType", "Balance should contain only numbers");
-        }
+
         if (!isAlphanumeric(customRegisterDto.getUserName())) {
             throw ProjectException.badRequest("WrongUserFormat", "User should only contain alphabet and number");
         }
-        if (!isAlphanumericWithSpecial(customRegisterDto.getPassword())) {
-            throw ProjectException.badRequest("WrongUserPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
-        }
+//        if (!isAlphanumericWithSpecial(customRegisterDto.getPassword())) {
+//            throw ProjectException.badRequest("WrongUserPasswordFormat", "Password should only contain alphabet,number, special character and minimum 6 characters");
+//        }
         if (accountRepository.existsByUserName(customRegisterDto.getUserName())) {
             throw ProjectException.badRequest("UserNameExisted", "User name is already taken");
         }
