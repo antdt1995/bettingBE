@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -29,12 +30,12 @@ public interface FootballMatchApi {
     ResponseEntity<FootballMatchCustomDto> updateFootballMatch(@RequestBody FootballMatchDto footballMatchDto, @PathVariable("id") Long id);
 
     @GetMapping("/matchlistbycountbet")
-    ResponseEntity<List<FootballMatchWithCountTotalBet>> getAllMatchByCountTotalBet(@RequestParam ("fromDate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                                                          @RequestParam ("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+    ResponseEntity<List<FootballMatchWithCountTotalBet>> getAllMatchByCountTotalBet(@RequestParam ("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime fromDate,
+                                                                          @RequestParam ("endDate")  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime endDate,
                                                                                @RequestParam ("limit") int limit, Pageable pageable);
     @GetMapping("/matchlistbysumbet")
-    ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchByTotalBet(@RequestParam ("fromDate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-                                                                                    @RequestParam ("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+    ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchByTotalBet(@RequestParam ("fromDate")@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime fromDate,
+                                                                                    @RequestParam ("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime endDate,
                                                                                     @RequestParam ("limit") int limit, Pageable pageable);
 
 }

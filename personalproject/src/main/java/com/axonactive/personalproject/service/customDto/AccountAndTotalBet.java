@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountAndTotalBet {
-    private Long accountId;
+    private Long Id;
     private Double bet;
 }

@@ -242,7 +242,7 @@ public class HouseServiceImpl implements HouseService {
             Double bet = detail.getBetAmount();
             if (Objects.equals(oddId, overUnderOddId) || Objects.equals(oddId, oddWinId)) {
                 idAndTotalBet.setId(accId);
-                idAndTotalBet.setBet(bet * oddRate);
+                idAndTotalBet.setBet((bet * oddRate) -bet);
             }
             idAndTotalBets.add(idAndTotalBet);
 

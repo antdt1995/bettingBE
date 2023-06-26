@@ -15,6 +15,5 @@ public interface OddUserApi {
     @GetMapping("/match/{matchId}")
     ResponseEntity<List<OddCustomDto>> findOddByMatchId(@PathVariable("matchId") Long matchId);
 
-    @GetMapping("/totalbetamount/{matchId}")
-    ResponseEntity<List<Double>> findTotalBetAmountOfEachOddByMatchID(@PathVariable("matchId") Long matchId);
+
 }

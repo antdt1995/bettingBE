@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -120,12 +121,12 @@ public class FootBallMatchImpl implements FootBallMatchService {
     }
 
     @Override
-    public List<FootballMatchWithTotalBet> getAllMatchWithTotalBetBetweenDate(LocalDate fromDate, LocalDate endDate) {
+    public List<FootballMatchWithTotalBet> getAllMatchWithTotalBetBetweenDate(LocalDateTime fromDate, LocalDateTime endDate) {
         return footballMatchRepository.getAllMatchWithTotalBetBetweenDate(fromDate, endDate);
     }
 
     @Override
-    public List<FootballMatchWithCountTotalBet> getAllMatchByCountTotalBet(LocalDate fromDate, LocalDate endDate, Pageable pageable) {
+    public List<FootballMatchWithCountTotalBet> getAllMatchByCountTotalBet(LocalDateTime fromDate, LocalDateTime endDate, Pageable pageable) {
         return footballMatchRepository.getAllMatchByCountTotalBet(fromDate, endDate, pageable);
     }
 
@@ -141,7 +142,7 @@ public class FootBallMatchImpl implements FootBallMatchService {
 
 
     @Override
-    public List<FootballMatchWithTotalBet> getAllMatchByTotalBet(LocalDate fromDate, LocalDate endDate, Pageable pageable) {
+    public List<FootballMatchWithTotalBet> getAllMatchByTotalBet(LocalDateTime fromDate, LocalDateTime endDate, Pageable pageable) {
         return footballMatchRepository.getAllMatchByTotalBet(fromDate, endDate, pageable);
     }
 

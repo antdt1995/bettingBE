@@ -48,4 +48,8 @@ public class OddResources implements OddApi {
         OddCustomDto oddCustomDto=oddService.updateOdd(oddDto,id);
         return ResponseEntity.ok().body(oddCustomDto);
     }
+    @Override
+    public ResponseEntity<List<Double>> findTotalBetAmountOfEachOddByMatchID(Long matchId) {
+        return ResponseEntity.ok(oddService.findTotalBetAmountOfEachOddByMatchID(matchId));
+    }
 }

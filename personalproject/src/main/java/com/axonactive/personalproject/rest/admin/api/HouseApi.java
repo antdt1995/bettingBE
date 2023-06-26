@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-//@RequestMapping("/bet/admin/houses")
-//@PreAuthorize("hasRole('ADMIN')")
-@RequestMapping("/public/houses")
+@RequestMapping("/bet/admin/houses")
+@PreAuthorize("hasRole('ADMIN')")
 public interface HouseApi {
     @PostMapping("/complete/{matchId}")
     ResponseEntity<Void> completePayment(Long matchId);

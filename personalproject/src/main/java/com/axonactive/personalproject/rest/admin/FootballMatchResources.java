@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -52,13 +53,13 @@ public class FootballMatchResources implements FootballMatchApi {
     }
 
     @Override
-    public ResponseEntity<List<FootballMatchWithCountTotalBet>> getAllMatchByCountTotalBet(LocalDate fromDate, LocalDate endDate, int limit, Pageable pageable) {
+    public ResponseEntity<List<FootballMatchWithCountTotalBet>> getAllMatchByCountTotalBet(LocalDateTime fromDate, LocalDateTime endDate, int limit, Pageable pageable) {
         pageable = PageRequest.of(0, limit);
         return ResponseEntity.ok().body(footBallMatchService.getAllMatchByCountTotalBet(fromDate, endDate, pageable));
     }
 
     @Override
-    public ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchByTotalBet(LocalDate fromDate, LocalDate endDate, int limit, Pageable pageable) {
+    public ResponseEntity<List<FootballMatchWithTotalBet>> getAllMatchByTotalBet(LocalDateTime fromDate, LocalDateTime endDate, int limit, Pageable pageable) {
         pageable = PageRequest.of(0, limit);
         return ResponseEntity.ok().body(footBallMatchService.getAllMatchByTotalBet(fromDate, endDate, pageable));
     }

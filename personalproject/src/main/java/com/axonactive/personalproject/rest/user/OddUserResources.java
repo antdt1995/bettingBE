@@ -21,12 +21,8 @@ public class OddUserResources implements OddUserApi {
 
     @Override
     public ResponseEntity<List<OddCustomDto>> findOddByMatchId(Long matchId) {
-        log.info("Create odd");
         return ResponseEntity.ok(oddService.findOddByMatchId(matchId));
     }
 
-    @Override
-    public ResponseEntity<List<Double>> findTotalBetAmountOfEachOddByMatchID(Long matchId) {
-        return ResponseEntity.ok(oddService.findTotalBetAmountOfEachOddByMatchID(matchId));
-    }
+
 }

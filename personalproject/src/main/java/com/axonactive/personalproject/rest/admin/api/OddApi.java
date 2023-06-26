@@ -25,5 +25,6 @@ public interface OddApi {
     @PutMapping("/{id}")
     ResponseEntity<OddCustomDto> updateOdd(@RequestBody OddDto oddDto, @PathVariable("id") Long id);
 
-
+    @GetMapping("/totalbetamount/{matchId}")
+    ResponseEntity<List<Double>> findTotalBetAmountOfEachOddByMatchID(@PathVariable("matchId") Long matchId);
 }

@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -33,7 +34,7 @@ public interface FootballMatchRepository extends JpaRepository<FootballMatch,Lon
             "and o.id =id.odd.id " +
             "and fm.startDate between :fromDate and :endDate " +
             "group by fm.id ,ft.name ")
-    List<FootballMatchWithTotalBet> getAllMatchWithTotalBetBetweenDate(@Param("fromDate") LocalDate fromDate, @Param("endDate") LocalDate endDate);
+    List<FootballMatchWithTotalBet> getAllMatchWithTotalBetBetweenDate(@Param("fromDate") LocalDateTime fromDate, @Param("endDate") LocalDateTime endDate);
 
     @Query("SELECT new com.axonactive.personalproject.service.customDto.FootballMatchWithCountTotalBet(fm.id, ft.name, count(id.betAmount)) " +
             "FROM FootballMatch fm, Odd o, InvoiceDetail id, FootballTeam ft " +
@@ -42,8 +43,8 @@ public interface FootballMatchRepository extends JpaRepository<FootballMatch,Lon
             "GROUP BY fm.id, ft.name " +
             "ORDER BY count(id.betAmount) DESC")
     List<FootballMatchWithCountTotalBet> getAllMatchByCountTotalBet(
-            @Param("fromDate") LocalDate fromDate,
-            @Param("endDate") LocalDate endDate,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("endDate") LocalDateTime endDate,
             Pageable pageable
     );
     @Query("SELECT new com.axonactive.personalproject.service.customDto.FootballMatchWithTotalBet(fm.id, ft.name, sum(id.betAmount)) " +
@@ -53,8 +54,8 @@ public interface FootballMatchRepository extends JpaRepository<FootballMatch,Lon
             "GROUP BY fm.id, ft.name " +
             "ORDER BY sum(id.betAmount) DESC")
     List<FootballMatchWithTotalBet> getAllMatchByTotalBet(
-            @Param("fromDate") LocalDate fromDate,
-            @Param("endDate") LocalDate endDate,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("endDate") LocalDateTime endDate,
             Pageable pageable
     );
 
