@@ -104,6 +104,9 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
 
     @Override
     public List<InvoiceDetailDto> createInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDto) {
+
+//        validateOddStatus(invoiceDetailDto);
+
         //create new invoice
         Invoice invoice = new Invoice();
         Account account = accountRepository.findByUserName(getCurrentUsername()).orElseThrow(ProjectException::AccountNotFound);
@@ -160,7 +163,7 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         house.setBalance(house.getBalance() + totalBet);
         houseRepository.save(house);
 
-        validateOddStatus(invoiceDetailDto);
+
 
         return InvoiceDetailMapper.INSTANCE.toDtos(invoiceDetailList);
     }

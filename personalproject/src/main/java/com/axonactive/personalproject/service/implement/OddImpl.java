@@ -79,7 +79,7 @@ public class OddImpl implements OddService {
         odd.setEndDate(oddDto.getEndDate());
         odd.setOddType(oddType);
         odd.setHouse(house);
-        odd.setActive(false);
+        odd.setActive(true);
         odd = oddRepository.save(odd);
         return OddMapper.INSTANCE.toDto(odd);
     }
